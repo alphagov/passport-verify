@@ -1,0 +1,35 @@
+{
+  "name": "passport-verify",
+  "version": "1.0.0",
+  "description": "A passport.js plugin for authenticating with Verify and Verify Service Provider",
+  "main": "./build/lib/passport-verify-strategy.js",
+  "types": "./build/lib/passport-verify-strategy.d.ts",
+  "scripts": {
+    "preinstall": "node -e 'if(!/yarn\\.js$/.test(process.env.npm_execpath))throw \"NPM not supported, please use Yarn to install dependencies ($ yarn install).\\n\"'",
+    "test": "npm run build && npm run lint && ./node_modules/.bin/mocha ./build/test/*",
+    "build": "tsc -d",
+    "lint": "./node_modules/.bin/tslint -c tslint.json -p ."
+  },
+  "author": "Verify",
+  "license": "MIT",
+  "dependencies": {
+    "node-fetch": "^1.7.1",
+    "passport-strategy": "^1.0.0"
+  },
+  "devDependencies": {
+    "@types/express-serve-static-core": "^4.0.48",
+    "@types/mocha": "^2.2.41",
+    "@types/node": "^7.0.32",
+    "@types/node-fetch": "^1.6.7",
+    "@types/passport-strategy": "^0.2.30",
+    "@types/serve-static": "^1.7.31",
+    "mocha": "^3.4.2",
+    "testdouble": "3.0.0",
+    "tslint": "^5.4.3",
+    "tslint-config-standard": "^5.0.2",
+    "typescript": "^2.4.0"
+  },
+  "files": [
+    "./build/lib/passport-verify-strategy.js"
+  ]
+}
