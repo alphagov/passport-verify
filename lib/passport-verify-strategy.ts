@@ -14,9 +14,7 @@ export interface Address {
   lines?: string[],
   postCode?: string,
   internationalPostCode?: string,
-  uprn?: string,
-  fromDate?: string,
-  toDate?: string
+  uprn?: string
 }
 
 export interface Attributes {
