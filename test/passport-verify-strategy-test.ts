@@ -51,7 +51,10 @@ describe('The passport-verify strategy', function () {
 
   const exampleServiceErrorResponse = {
     status: 500,
-    body: 'Internal Server Error'
+    body: {
+      reason: 'INTERNAL_SERVER_ERROR',
+      message: 'Internal Server Error'
+    }
   }
 
   const exampleUser = {
@@ -132,7 +135,7 @@ describe('The passport-verify strategy', function () {
 
     td.when(mockClient.translateResponse(exampleSaml.body.SAMLResponse, 'TODO secure-cookie')).thenReturn(exampleServiceErrorResponse)
     return strategy.authenticate(exampleSaml).then(() => {
-      td.verify(strategy.error(new Error(exampleServiceErrorResponse.body)))
+      td.verify(strategy.error(new Error(exampleServiceErrorResponse.body.reason)))
     })
   })
 
