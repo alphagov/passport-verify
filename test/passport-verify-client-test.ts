@@ -43,10 +43,10 @@ describe('The passport-verify client', function () {
       let data = ''
       req.on('data', (chunk) => data += chunk)
       req.on('end', () => {
-        if (JSON.parse(data).response === AUTHENTICATION_FAILED_SCENARIO) {
+        if (JSON.parse(data).samlResponse === AUTHENTICATION_FAILED_SCENARIO) {
           res.statusCode = 401
           res.end(JSON.stringify(exampleAuthenticationFailedResponse))
-        } else if (JSON.parse(data).response === SUCCESS_SCENARIO) {
+        } else if (JSON.parse(data).samlResponse === SUCCESS_SCENARIO) {
           res.statusCode = 200
           res.end(JSON.stringify(exampleTranslatedResponse))
         } else {

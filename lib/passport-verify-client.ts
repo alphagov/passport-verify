@@ -38,7 +38,7 @@ export default class PassportVerifyClient {
   translateResponse (samlResponse: string, secureToken: string) {
     return this._request('POST', this.verifyServiceProviderHost + '/translate-response',
         { 'Content-Type': 'application/json' },
-        `{ "response": "${samlResponse}", "secureToken": "${secureToken}" }`)
+        `{ "samlResponse": "${samlResponse}", "secureToken": "${secureToken}" }`)
   }
 
 }
