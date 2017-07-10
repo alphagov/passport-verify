@@ -26,7 +26,7 @@ Usage
    const bodyParser = require('body-parser')
 
    // Real applications should have a real backend for storing users.
-   const fakeUserDataBase = new Set()
+   const fakeUserDataBase = {}
 
    // Passport-Verify dependes on any bodyParser
    // to be configured as a middleware.
@@ -63,6 +63,12 @@ Usage
          const newUser = Object.assign({ id: user.pid }, user.attributes)
          fakeUserDatabase[user.pid] = newUser
        }
+
+       if (!fakeUserDatabase[user.pid]) {
+        // This should be an error case if the local matching strategy is
+        // done correctly.
+        throw new Error('Local matching strategy has defined that the user exists, but the PID could not be found in the database.')
+      }
 
        return Object.assign({ levelOfAssurence: user.levelOfAssurance }, fakeUserDatabase[user.pid])
      }
