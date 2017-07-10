@@ -33,42 +33,48 @@ Usage
    app.use(bodyParser.urlencoded({extended: false}))
 
    passport.use(passportVerify.createStrategy({
- 
+
      verifyServiceProviderHost: 'http://localhost:50400',
- 
+
      logger: console,
- 
-     // A callback for finding or creating the user from the
-     // application's database.
-     // This function is called at the end of the authentication flow and
+
+     // A callback for a new user authentication.
+     // This function is called at the end of the authentication flow
+     // with a user user object that contains details of the user in attributes.
      // it should either return a user object or false if the user is not
      // accepted by the application for whatever reason. It can also return a
      // Promise in case it is asynchronous.
-     acceptUser: (user) => {
+     createUser: (user) => {
 
-       // A new user will be given with an attributes object that
-       // describe the user details. Users that are already known by
-       // the application will not have an attributes-field.
-       // Whether a user is new or not will be defined by the local matching
-       // strategy of the application. See Verify Integration guides for further
-       // details on local matching.
-       if (user.attributes) {
-
-         if (fakeUserDatabase[user.pid]) {
-           // This should be an error case if the local matching strategy is
-           // done correctly.
-           throw new Error('User PID already exists')
-         }
-
-         const newUser = Object.assign({ id: user.pid }, user.attributes)
-         fakeUserDatabase[user.pid] = newUser
+       // This should be an error case if the local matching strategy is
+       // done correctly.
+       if (fakeUserDatabase[user.pid]) {
+         throw new Error(
+           'Local matching strategy has defined ' +
+           'the user to be new to the application, ' +
+           'but the User PID already exists.')
        }
 
+       fakeUserDatabase[user.pid] = Object.assign({id: user.pid}, user.attributes)
+       return Object.assign({ levelOfAssurence: user.levelOfAssurance }, fakeUserDatabase[user.pid])
+     },
+
+     // A callback for an existing user authentication.
+     // This function is called at the end of the authentication flow with
+     // an object that contains the user pid. 
+     // The function should either return a user object or false if the user is not
+     // accepted by the application for whatever reason. It can also return a
+     // Promise in case it is asynchronous.
+     verifyUser: (user) => {
+
+       // This should be an error case if the local matching strategy is
+       // done correctly.
        if (!fakeUserDatabase[user.pid]) {
-        // This should be an error case if the local matching strategy is
-        // done correctly.
-        throw new Error('Local matching strategy has defined that the user exists, but the PID could not be found in the database.')
-      }
+         throw new Error(
+           'Local matching strategy has defined ' +
+           'that the user exists, but the PID could ' +
+           'not be found in the database.')
+       }
 
        return Object.assign({ levelOfAssurence: user.levelOfAssurance }, fakeUserDatabase[user.pid])
      }
@@ -124,7 +130,7 @@ Creates and configures a `PassportVerifyStrategy` that can be used for authentic
 
    An object that conforms to the typical logger api
 
- * __options.acceptUser: (user: VerifyServiceProviderUser) => User | boolean__
+ * __options.createUser: (user: VerifyServiceProviderUser) => User | boolean__
 
    ```javascript
    VerifyServiceProviderUser: {
@@ -146,15 +152,29 @@ Creates and configures a `PassportVerifyStrategy` that can be used for authentic
        cycle3: string,
        middleNameVerified: boolean,
        dateOfBirthVerified: boolean,
-       firstNameVerified: boolean 
-     }   
+       firstNameVerified: boolean
+     }
    }
    ```
 
-   A callback for finding or creating the user from the application's database. 
+   A callback for creating the user to the application's database.
    The callback receives one parameter - `user`, which is an object from Verify that contains details of the authenticated user.
    The callback should return either a user object for the session or false if the user is not accepted by the service.
-   The user object will have `attributes` only if it is a new user for the relying party.
+   The callback can also return a Promise of a user.
+
+ * __options.verifyUser: (user: VerifyServiceProviderUser) => User | boolean__
+
+   ```javascript
+   VerifyServiceProviderUser: {
+     pid: string,
+     levelOfAssurance: string(LEVEL_1 | LEVEL_2 | LEVEL_3)
+   }
+   ```
+
+   A callback for creating the user to the application's database.
+   The callback receives one parameter - `user`, which is an object from Verify that contains details of the authenticated user.
+   The callback should return either a user object for the session or false if the user is not accepted by the service.
+   The callback can also return a Promise of a user.
 
 __passport.authenticate('verify', function callback (error, user, infoOrError, status) { ... })__
 

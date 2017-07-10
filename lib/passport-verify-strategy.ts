@@ -44,7 +44,8 @@ export interface ErrorBody {
 export interface PassportVerifyOptions {
   verifyServiceProviderHost: string,
   logger: any,
-  acceptUser: (user: TranslatedResponseBody) => any
+  createUser: (user: TranslatedResponseBody) => any,
+  verifyUser: (user: TranslatedResponseBody) => any
 }
 
 export const USER_NOT_ACCEPTED_ERROR = Symbol('The user was not accepted by the application.')
@@ -54,7 +55,8 @@ export class PassportVerifyStrategy extends Strategy {
   public name: string = 'verify'
 
   constructor (private client: PassportVerifyClient,
-               private acceptUser: (user: TranslatedResponseBody) => any) {
+               private createUser: (user: TranslatedResponseBody) => any,
+               private verifyUser: (user: TranslatedResponseBody) => any) {
     super()
   }
 
@@ -77,7 +79,7 @@ export class PassportVerifyStrategy extends Strategy {
   async _translateResponse (samlResponse: string) {
     const response = await this.client.translateResponse(samlResponse, 'TODO secure-cookie')
     if (response.status === 200) {
-      const user = await this.acceptUser(response.body as TranslatedResponseBody)
+      const user = await this._acceptUser(response.body as TranslatedResponseBody)
       if (user) {
         this.success(user, response.body)
       } else {
@@ -91,6 +93,14 @@ export class PassportVerifyStrategy extends Strategy {
       throw new Error(errorBody.reason)
     } else {
       throw new Error(response.body as any)
+    }
+  }
+
+  async _acceptUser (user: TranslatedResponseBody) {
+    if (user.attributes) {
+      return this.createUser(user)
+    } else {
+      return this.verifyUser(user)
     }
   }
 
@@ -116,5 +126,5 @@ export function createStrategy (options: PassportVerifyOptions) {
   }
 
   const client = new PassportVerifyClient(options.verifyServiceProviderHost, logger)
-  return new PassportVerifyStrategy(client, options.acceptUser)
+  return new PassportVerifyStrategy(client, options.createUser, options.verifyUser)
 }

@@ -63,13 +63,13 @@ describe('The passport-verify strategy', function () {
 
   function createStrategy () {
     const mockClient = new MockClient()
-    const strategy = new PassportVerifyStrategy(mockClient, () => exampleUser) as any
+    const strategy = new PassportVerifyStrategy(mockClient, () => exampleUser, () => exampleUser) as any
     return { mockClient, strategy }
   }
 
   it('should render a SAML AuthnRequest form', function () {
     const mockClient = new MockClient()
-    const strategy = new PassportVerifyStrategy(mockClient, () => exampleUser)
+    const strategy = new PassportVerifyStrategy(mockClient, () => undefined, () => undefined)
     const request: any = { res: { send: td.function() } }
     td.when(mockClient.generateAuthnRequest()).thenReturn(exampleAuthnRequestResponse)
     return strategy.authenticate(request).then(() => {
@@ -90,9 +90,22 @@ describe('The passport-verify strategy', function () {
     })
   })
 
-  it('should fail if the application does not accept the user', function () {
+  it('should fail if the application does not accept a new user', function () {
     const mockClient = new MockClient()
-    const strategy = new PassportVerifyStrategy( mockClient, () => undefined ) as any
+    const strategy = new PassportVerifyStrategy( mockClient, () => false, () => undefined ) as any
+
+    // Mimicking passport's attaching of its fail method to the Strategy instance
+    strategy.fail = td.function()
+
+    td.when(mockClient.translateResponse(exampleSaml.body.SAMLResponse, 'TODO secure-cookie')).thenReturn(exampleTranslatedResponse)
+    return strategy.authenticate(exampleSaml).then(() => {
+      td.verify(strategy.fail(USER_NOT_ACCEPTED_ERROR))
+    })
+  })
+
+  it('should fail if the application does not accept a known user', function () {
+    const mockClient = new MockClient()
+    const strategy = new PassportVerifyStrategy( mockClient, () => undefined, () => false ) as any
 
     // Mimicking passport's attaching of its fail method to the Strategy instance
     strategy.fail = td.function()
