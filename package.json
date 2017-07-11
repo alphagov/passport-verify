@@ -1,16 +1,20 @@
 {
   "name": "passport-verify",
-  "version": "1.0.0",
-  "description": "A passport.js plugin for authenticating with Verify and Verify Service Provider",
+  "version": "0.0.1",
+  "description": "A passport.js strategy for authenticating with Verify and Verify Service Provider",
+  "repository": "https://github.com/alphagov/passport-verify",
+  "bugs": "https://github.com/alphagov/passport-verify/issues",
   "main": "./build/lib/passport-verify-strategy.js",
   "types": "./build/lib/passport-verify-strategy.d.ts",
   "scripts": {
-    "preinstall": "node -e 'if(!/yarn\\.js$/.test(process.env.npm_execpath))throw \"NPM not supported, please use Yarn to install dependencies ($ yarn install).\\n\"'",
-    "test": "npm run build && npm run lint && ./node_modules/.bin/mocha ./build/test/*",
+    "prepublishOnly": "npm test",
+    "test": "npm run build && npm run lint && mocha ./build/test/*",
     "build": "tsc -d",
-    "lint": "./node_modules/.bin/tslint -c tslint.json -p ."
+    "lint": "tslint -c tslint.json -p ."
   },
-  "author": "Verify",
+  "author": {
+    "name": "Government Digital Service developers"
+  },
   "license": "MIT",
   "dependencies": {
     "node-fetch": "^1.7.1",
@@ -30,6 +34,6 @@
     "typescript": "^2.4.0"
   },
   "files": [
-    "./build/lib/passport-verify-strategy.js"
+    "build"
   ]
 }
