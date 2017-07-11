@@ -1,0 +1,9 @@
+node_modules
+test
+tsconfig.*
+tslint.json
+.travis.yml
+.gitignore
+.DS_Store
+*.log
+pre-commit.sh
