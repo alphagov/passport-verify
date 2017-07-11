@@ -3,7 +3,14 @@ passport-verify
 
 Passport-Verify is a passport.js plugin for authenticating with Verify Hub using passport.js and prototype-0 of Verify Service Provider.
 
-__Terminology__
+Status
+---------------
+
+**This project is in the discovery phase and is not ready for use in production.**
+
+Terminology
+---------------
+
  * _Identity Provider_ is a Service that can authenticate users
  * _Relying party_ is a Service that needs to authenticate users
  * _Verify Hub_ acts as an Identity Provider for Relying Parties
