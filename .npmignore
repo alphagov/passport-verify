@@ -6,4 +6,4 @@ tslint.json
 .gitignore
 .DS_Store
 *.log
-pre-commit.sh
+*.sh
