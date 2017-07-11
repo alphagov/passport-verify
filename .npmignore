@@ -1,5 +1,6 @@
 node_modules
 test
+build/test
 tsconfig.*
 tslint.json
 .travis.yml
