@@ -98,9 +98,15 @@ export class PassportVerifyStrategy extends Strategy {
 
   async _acceptUser (user: TranslatedResponseBody) {
     if (user.attributes) {
-      return this.createUser(user)
+      const newUser = this.createUser(user)
+      if (!newUser) { return newUser }
+      newUser._isNewUser = true
+      return newUser
     } else {
-      return this.verifyUser(user)
+      const existingUser = this.verifyUser(user)
+      if (!existingUser) { return existingUser }
+      existingUser._isNewUser = false
+      return existingUser
     }
   }
 

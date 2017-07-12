@@ -4,8 +4,8 @@
   "description": "A passport.js strategy for authenticating with Verify and Verify Service Provider",
   "repository": "https://github.com/alphagov/passport-verify",
   "bugs": "https://github.com/alphagov/passport-verify/issues",
-  "main": "./build/lib/passport-verify-strategy.js",
-  "types": "./build/lib/passport-verify-strategy.d.ts",
+  "main": "./build/lib/index.js",
+  "types": "./build/lib/index.d.ts",
   "scripts": {
     "prepublishOnly": "npm test",
     "test": "npm run build && npm run lint && mocha ./build/test/*",
