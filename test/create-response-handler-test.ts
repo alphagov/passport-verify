@@ -1,5 +1,6 @@
 import * as assert from 'assert'
-import { createResponseHandler, Scenarios } from '../lib/helpers'
+import { createResponseHandler, Scenarios } from '../lib/create-response-handler'
+import { TranslatedResponseBody } from '../lib/passport-verify-strategy'
 import * as td from 'testdouble'
 
 function verifyNotCalled (fn: any) {
@@ -34,10 +35,10 @@ describe('The createResponseHandler function', () => {
   })
 
   it('callback should call onMatch when called with an existing user', () => {
-    const error = null
-    const user = { _isNewUser: false }
-    const info = null
-    const status = null
+    const error = null as any
+    const user = {}
+    const info = { pid: '', levelOfAssurance: '' }
+    const status = null as any
 
     const result = createResponseHandler(scenarios)(error, user, info, status)
 
@@ -49,10 +50,10 @@ describe('The createResponseHandler function', () => {
   })
 
   it('callback should call onCreateUser when called with an new user', () => {
-    const error = null
-    const user = { _isNewUser: true }
-    const info = null
-    const status = null
+    const error = null as any
+    const user = {}
+    const info = { pid: '', levelOfAssurance: '', attributes: {} }
+    const status = null as any
 
     const result = createResponseHandler(scenarios)(error, user, info, status)
 
@@ -64,10 +65,10 @@ describe('The createResponseHandler function', () => {
   })
 
   it('callback should call onAuthnFailed when called with no user and no error', () => {
-    const error = null
+    const error = null as any
     const user = null
     const info = 'some-failure-message'
-    const status = null
+    const status = null as any
 
     const result = createResponseHandler(scenarios)(error, user, info, status)
 
@@ -79,10 +80,10 @@ describe('The createResponseHandler function', () => {
   })
 
   it('callback should call onError when called with an error', () => {
-    const error = 'some-really-bad-error'
+    const error = new Error('some-really-bad-error')
     const user = null
-    const info = null
-    const status = null
+    const info = null as any
+    const status = null as any
 
     const result = createResponseHandler(scenarios)(error, user, info, status)
 

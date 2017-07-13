@@ -48,7 +48,7 @@ export interface PassportVerifyOptions {
   verifyUser: (user: TranslatedResponseBody) => any
 }
 
-export const USER_NOT_ACCEPTED_ERROR = Symbol('The user was not accepted by the application.')
+export const USER_NOT_ACCEPTED_ERROR = 'The user was not accepted by the application.'
 
 export class PassportVerifyStrategy extends Strategy {
 
@@ -81,7 +81,7 @@ export class PassportVerifyStrategy extends Strategy {
     if (response.status === 200) {
       const user = await this._acceptUser(response.body as TranslatedResponseBody)
       if (user) {
-        this.success(user, response.body)
+        this.success(user, response.body as TranslatedResponseBody)
       } else {
         this.fail(USER_NOT_ACCEPTED_ERROR)
       }
@@ -98,15 +98,9 @@ export class PassportVerifyStrategy extends Strategy {
 
   async _acceptUser (user: TranslatedResponseBody) {
     if (user.attributes) {
-      const newUser = this.createUser(user)
-      if (!newUser) { return newUser }
-      newUser._isNewUser = true
-      return newUser
+      return this.createUser(user)
     } else {
-      const existingUser = this.verifyUser(user)
-      if (!existingUser) { return existingUser }
-      existingUser._isNewUser = false
-      return existingUser
+      return this.verifyUser(user)
     }
   }
 
@@ -121,8 +115,8 @@ export class PassportVerifyStrategy extends Strategy {
     }
   }
 
-  success (user: any, info: any) { throw new Error('`success` should be overridden by passport') }
-  fail (argv1: any, argv2?: any) { throw new Error('`fail` should be overridden by passport') }
+  success (user: any, info: TranslatedResponseBody) { throw new Error('`success` should be overridden by passport') }
+  fail (challenge: any, status?: number) { throw new Error('`fail` should be overridden by passport') }
   error (reason: Error) { throw reason }
 }
 
