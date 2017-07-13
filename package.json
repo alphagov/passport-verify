@@ -4,13 +4,14 @@
   "description": "A passport.js strategy for authenticating with Verify and Verify Service Provider",
   "repository": "https://github.com/alphagov/passport-verify",
   "bugs": "https://github.com/alphagov/passport-verify/issues",
-  "main": "./build/lib/index.js",
-  "types": "./build/lib/index.d.ts",
+  "main": "./build/lib/passport-verify.js",
+  "types": "./build/lib/passport-verify.d.ts",
   "scripts": {
-    "prepublishOnly": "npm test",
-    "test": "npm run build && npm run lint && mocha ./build/test/*",
+    "prepublishOnly": "npm test && npm run docs && echo 'Make sure you remember to push the latest docs'",
+    "test": "npm run build && mocha ./build/test/* && npm run lint",
     "build": "tsc -d",
-    "lint": "tslint -c tslint.json -p ."
+    "lint": "tslint -c tslint.json -p .",
+    "docs": "mv {,.}test && typedoc --readme none --out docs --excludePrivate; mv {.,}test"
   },
   "author": {
     "name": "Government Digital Service developers"
@@ -31,6 +32,7 @@
     "testdouble": "3.0.0",
     "tslint": "^5.4.3",
     "tslint-config-standard": "^5.0.2",
+    "typedoc": "^0.7.1",
     "typescript": "^2.4.0"
   },
   "files": [

@@ -1,5 +1,5 @@
 import * as assert from 'assert'
-import { createResponseHandler, Scenarios } from '../lib/create-response-handler'
+import { createResponseHandler, ResponseScenarios } from '../lib/create-response-handler'
 import { TranslatedResponseBody } from '../lib/passport-verify-strategy'
 import * as td from 'testdouble'
 
@@ -8,7 +8,7 @@ function verifyNotCalled (fn: any) {
 }
 
 describe('The createResponseHandler function', () => {
-  let scenarios: Scenarios
+  let scenarios: ResponseScenarios
   let onMatch: any
   let onCreateUser: any
   let onAuthnFailed: any

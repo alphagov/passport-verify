@@ -1,7 +1,11 @@
+/**
+ * A passport.js strategy for GOV.UK Verify
+ */
+/** */
 import { Strategy } from 'passport-strategy'
 import * as express from 'express'
 import { createSamlForm } from './saml-form'
-import PassportVerifyClient from './passport-verify-client'
+import { default as VerifyServiceProviderClient, Logger } from './verify-service-provider-client'
 
 export interface AuthnRequestResponse {
   samlRequest: string,
@@ -41,20 +45,32 @@ export interface ErrorBody {
   message: string
 }
 
+/**
+ * Configuration options and callbacks for the `PassportVerifyStrategy`.
+ */
 export interface PassportVerifyOptions {
-  verifyServiceProviderHost: string,
-  logger: any,
-  createUser: (user: TranslatedResponseBody) => any,
-  verifyUser: (user: TranslatedResponseBody) => any
 }
 
+/**
+ * The error message thrown if the `createUser` or `verifyUser` callbacks fail to return a user object.
+ */
 export const USER_NOT_ACCEPTED_ERROR = 'The user was not accepted by the application.'
 
+/**
+ * A passport.js strategy for GOV.UK Verify
+ *
+ * ```
+ * passport.use(passportVerifyStrategy)
+ * ```
+ *
+ * Users of `passport-verify` should use [[createStrategy]] to create
+ * instances of `PassportVerifyStrategy` rather than calling the constructor directly.
+ */
 export class PassportVerifyStrategy extends Strategy {
 
   public name: string = 'verify'
 
-  constructor (private client: PassportVerifyClient,
+  constructor (private client: VerifyServiceProviderClient,
                private createUser: (user: TranslatedResponseBody) => any,
                private verifyUser: (user: TranslatedResponseBody) => any) {
     super()
@@ -68,7 +84,11 @@ export class PassportVerifyStrategy extends Strategy {
     }
   }
 
-  _handleRequest (req: express.Request) {
+  success (user: any, info: TranslatedResponseBody) { throw new Error('`success` should be overridden by passport') }
+  fail (challenge: any, status?: number) { throw new Error('`fail` should be overridden by passport') }
+  error (reason: Error) { throw reason }
+
+  private _handleRequest (req: express.Request) {
     if (req.body && req.body.SAMLResponse) {
       return this._translateResponse(req.body.SAMLResponse)
     } else {
@@ -76,7 +96,7 @@ export class PassportVerifyStrategy extends Strategy {
     }
   }
 
-  async _translateResponse (samlResponse: string) {
+  private async _translateResponse (samlResponse: string) {
     const response = await this.client.translateResponse(samlResponse, 'TODO secure-cookie')
     if (response.status === 200) {
       const user = await this._acceptUser(response.body as TranslatedResponseBody)
@@ -96,7 +116,7 @@ export class PassportVerifyStrategy extends Strategy {
     }
   }
 
-  async _acceptUser (user: TranslatedResponseBody) {
+  private async _acceptUser (user: TranslatedResponseBody) {
     if (user.attributes) {
       return this.createUser(user)
     } else {
@@ -104,7 +124,7 @@ export class PassportVerifyStrategy extends Strategy {
     }
   }
 
-  async _renderAuthnRequest (response: express.Response): Promise<express.Response> {
+  private async _renderAuthnRequest (response: express.Response): Promise<express.Response> {
     const authnRequestResponse = await this.client.generateAuthnRequest()
     if (authnRequestResponse.status === 200) {
       const authnRequestResponseBody = authnRequestResponse.body as AuthnRequestResponse
@@ -114,17 +134,31 @@ export class PassportVerifyStrategy extends Strategy {
       throw new Error(errorBody.reason)
     }
   }
-
-  success (user: any, info: TranslatedResponseBody) { throw new Error('`success` should be overridden by passport') }
-  fail (challenge: any, status?: number) { throw new Error('`fail` should be overridden by passport') }
-  error (reason: Error) { throw reason }
 }
 
-export function createStrategy (options: PassportVerifyOptions) {
-  const logger = options.logger || {
-    info: () => undefined
-  }
-
-  const client = new PassportVerifyClient(options.verifyServiceProviderHost, logger)
-  return new PassportVerifyStrategy(client, options.createUser, options.verifyUser)
+/**
+ * Creates an instance of [[PassportVerifyStrategy]]
+ *
+ * @param verifyServiceProviderHost The URL that the Verify Service Provider is running on (e.g. http://localhost:50400)
+ * @param logger A logger for the strategy. If you don't want the strategy
+ * to log you can pass an object with no-operation methods.
+ * @param createUser A callback that will be invoked when a response with a new user is received.
+ * The `user` object will contain the users' attributes (i.e. firstName, surname etc.).
+ * Your callback should store details of the user in your datastore and return an object representing the user.
+ * @param verifyUser A callback that will be invoked when a response with a matched user is received.
+ * Your callback should look the user up in your datastore using their `pid` (persistent identitfier)
+ * and return an object representing the user.
+ * @returns A strategy to be registered in passport with
+ * ```
+ * passport.use(passportVerifyStrategy)
+ * ```
+ */
+export function createStrategy (
+  verifyServiceProviderHost: string,
+  logger: Logger,
+  createUser: (user: TranslatedResponseBody) => object | false,
+  verifyUser: (user: TranslatedResponseBody) => object | false
+) {
+  const client = new VerifyServiceProviderClient(verifyServiceProviderHost, logger || { info: () => undefined })
+  return new PassportVerifyStrategy(client, createUser, verifyUser)
 }

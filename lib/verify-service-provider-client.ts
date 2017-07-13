@@ -1,11 +1,17 @@
-import fetch from 'node-fetch'
-import { Response } from 'node-fetch'
+/**
+ * An HTTP client that communicates with the Verify Service Provider.
+ *
+ * Users of `passport-verify` should use `createStrategy` rather than
+ * instantiating this class directly.
+ */
+/** */
+import { default as fetch, Response } from 'node-fetch'
 
 export interface Logger {
-  info: Function
+  info (message?: any, ...optionalParams: any[]): void
 }
 
-export default class PassportVerifyClient {
+export default class VerifyServiceProviderClient {
 
   constructor (private verifyServiceProviderHost: string, private logger: Logger) {}
 

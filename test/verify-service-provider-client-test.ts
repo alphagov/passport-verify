@@ -1,6 +1,6 @@
 import * as assert from 'assert'
 import * as http from 'http'
-import PassportVerifyClient from '../lib/passport-verify-client'
+import VerifyServiceProviderClient from '../lib/verify-service-provider-client'
 import * as td from 'testdouble'
 
 describe('The passport-verify client', function () {
@@ -82,7 +82,7 @@ describe('The passport-verify client', function () {
   })
 
   it('should generate authnRequest', function () {
-    const client = new PassportVerifyClient(mockVerifyServiceProviderUrl, logger)
+    const client = new VerifyServiceProviderClient(mockVerifyServiceProviderUrl, logger)
 
     return client.generateAuthnRequest()
       .then(response => {
@@ -92,7 +92,7 @@ describe('The passport-verify client', function () {
   })
 
   it('should translate response body', function () {
-    const client = new PassportVerifyClient(mockVerifyServiceProviderUrl, logger)
+    const client = new VerifyServiceProviderClient(mockVerifyServiceProviderUrl, logger)
 
     return client.translateResponse(SUCCESS_SCENARIO, 'some-secure-token')
       .then(response => {
@@ -102,7 +102,7 @@ describe('The passport-verify client', function () {
   })
 
   it('should resolve error responses', function () {
-    const client = new PassportVerifyClient(mockVerifyServiceProviderUrl, logger)
+    const client = new VerifyServiceProviderClient(mockVerifyServiceProviderUrl, logger)
 
     return client.translateResponse(AUTHENTICATION_FAILED_SCENARIO, 'some-secure-token')
       .then(response => {
@@ -112,8 +112,8 @@ describe('The passport-verify client', function () {
   })
 
   it('should log requests', function () {
-    const testLogger = { info: td.function() }
-    const client = new PassportVerifyClient(mockVerifyServiceProviderUrl, testLogger)
+    const testLogger = { info: td.function() as (message?: any, ...optionalParams: any[]) => void }
+    const client = new VerifyServiceProviderClient(mockVerifyServiceProviderUrl, testLogger)
 
     return client.generateAuthnRequest()
       .then(response => {

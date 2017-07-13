@@ -1,11 +1,11 @@
 import * as assert from 'assert'
 import { PassportVerifyStrategy, USER_NOT_ACCEPTED_ERROR } from '../lib/passport-verify-strategy'
-import PassportVerifyClient from '../lib/passport-verify-client'
+import VerifyServiceProviderClient from '../lib/verify-service-provider-client'
 import * as td from 'testdouble'
 
 describe('The passport-verify strategy', function () {
 
-  const MockClient = td.constructor(PassportVerifyClient)
+  const MockClient = td.constructor(VerifyServiceProviderClient)
 
   const exampleSaml = {
     body: {

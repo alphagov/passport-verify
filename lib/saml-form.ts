@@ -1,3 +1,7 @@
+/**
+ * @hidden
+ */
+/** */
 export function createSamlForm (location: string, samlRequest: string) {
   return `
     <form method='post' action='${location}'>

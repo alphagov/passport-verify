@@ -41,11 +41,13 @@ Usage
    // to be configured as a middleware.
    app.use(bodyParser.urlencoded({extended: false}))
 
-   passport.use(passportVerify.createStrategy({
+   passport.use(passportVerify.createStrategy(
 
-     verifyServiceProviderHost: 'http://localhost:50400',
+     // verifyServiceProviderHost
+     'http://localhost:50400',
 
-     logger: console,
+     // logger
+     console,
 
      // A callback for a new user authentication.
      // This function is called at the end of the authentication flow
@@ -53,7 +55,7 @@ Usage
      // it should either return a user object or false if the user is not
      // accepted by the application for whatever reason. It can also return a
      // Promise in case it is asynchronous.
-     createUser: (user) => {
+     function createUser (user) {
 
        // This should be an error case if the local matching strategy is
        // done correctly.
@@ -74,7 +76,7 @@ Usage
      // The function should either return a user object or false if the user is not
      // accepted by the application for whatever reason. It can also return a
      // Promise in case it is asynchronous.
-     verifyUser: (user) => {
+     function verifyUser (user) {
 
        // This should be an error case if the local matching strategy is
        // done correctly.
@@ -87,7 +89,7 @@ Usage
 
        return Object.assign({ levelOfAssurence: user.levelOfAssurance }, fakeUserDatabase[user.pid])
      }
-   }))
+   ))
    ```
 
 1. Configure routes for the authentication flow
@@ -114,134 +116,17 @@ Usage
 
    See https://github.com/alphagov/verify-service-provider/blob/master/prototypes/prototype-0/stub-rp/src/app.ts for
    a more detailed example with session support.
-
 API
----
+-----------
 
-__passportVerify.createStrategy(options): PassportVerifyStrategy__
-
-Creates and configures a `PassportVerifyStrategy` that can be used for authentication with passport. The strategy instance should be passed to
-`passport.use()`-method.
-
- * __options.verifyServiceProviderHost: string__
-
-   The location of Verify Service Provider
-
- * __options.logger: object__
-
-   An object that conforms to the typical logger api
-
- * __options.createUser: (user: VerifyServiceProviderUser) => User | boolean__
-
-   ```javascript
-   VerifyServiceProviderUser: {
-     pid: string,
-     levelOfAssurance: string(LEVEL_1 | LEVEL_2 | LEVEL_3),
-     attributes: {
-       surnameVerified: boolean,
-       firstName: string,
-       address: {
-         internationalPostCode: string
-         uprn: string,
-         verified: boolean,
-         postCode: string,
-         lines: string[]
-       },
-       surname: string,
-       middleName: string,
-       dateOfBirth: ISO8601String,
-       cycle3: string,
-       middleNameVerified: boolean,
-       dateOfBirthVerified: boolean,
-       firstNameVerified: boolean
-     }
-   }
-   ```
-
-   A callback for creating the user to the application's database.
-   The callback receives one parameter - `user`, which is an object from Verify that contains details of the authenticated user.
-   The callback should return either a user object for the session or false if the user is not accepted by the service.
-   The callback can also return a Promise of a user.
-
- * __options.verifyUser: (user: VerifyServiceProviderUser) => User | boolean__
-
-   ```javascript
-   VerifyServiceProviderUser: {
-     pid: string,
-     levelOfAssurance: string(LEVEL_1 | LEVEL_2 | LEVEL_3)
-   }
-   ```
-
-   A callback for creating the user to the application's database.
-   The callback receives one parameter - `user`, which is an object from Verify that contains details of the authenticated user.
-   The callback should return either a user object for the session or false if the user is not accepted by the service.
-   The callback can also return a Promise of a user.
-
-__passport.authenticate('verify', function callback (error, user, infoOrError, status) { ... })__
-
-Typically passport.js is used to redirect the user to a new page after the authentication succeeds or fails.
-While this can be done with passport-verify, it would be better to use a callback-method to catch the details of
-why the user failed to authenticate and deal with it approppriately.
-
-It is recommended that you use `passportVerify.createResponseHandler()` to handle this callback as follows:
-
-```javascript
-app.post('/verify/response', (req, res, next) => (
-  passport.authenticate('verify',
-    passportVerify.createResponseHandler({
-      onMatch:
-        user => /**/,
-      onCreateUser:
-        user => /**/,
-      onAuthnFailed:
-        failure => /**/,
-      onError:
-        error => /**/,
-    })
-  )
-)(req, res, next))
-```
-
-Note that the callbacks are defined inside a closure that has access to `req`, `res`, and `next` so your callbacks
-can log the user in / redirect etc.
-
-__passportVerify.createResponseHandler({ onMatch: ..., onCreateUser: ..., onAuthnFailed: ..., onError: ... })__
-
-To make handling the `passport.authenticate()` callback easier we provide a `createResponseHandler` function.
-This takes separate callbacks for each of the response scenarios you have to handle and returns a function that
-will call the appropriate callback when called by passport.
-
- * __onMatch:__
-
-   Called when handling a success response from a user that was matched by your matching service. Your callback
-   should redirect the user to the appropriate page so they can begin using your service.
-
- * __onCreateUser:__
-
-   Called when handling a success response from a user that was not matched by your matching service, but who
-   has had a new account created. Your callback should redirect the user to the appropriate page so they can
-   begin using your service (you may or may not want to treat new users differently to existing users).
-
- * __onAuthnFailed:__
-
-   Called when the user failed to authenticate in a non-erroneous way. For example if the user clicked cancel
-   or got their password wrong. Your callback should redirect the user to a page offering them other ways to
-   use your service (e.g. using a non-verify way of proving their identity or going somewhere in person).
-
- * __onError:__
-
-   Called when the response from verify can't be handled correctly (for example if its signature is invalid or
-   if its validUntil date is in the past). Your callback should render an error page telling the user that
-   there are technical problems with Verify.
+See [https://alphagov.github.io/passport-verify/modules/_passport_verify_.html](the API documentation) for more details.
 
 Development
 -----------
 
-passport-verify uses `yarn` to manage dependencies. See https://yarnpkg.com/en/
-
 __Install the dependencies__
 ```
-yarn install
+npm install
 ```
 
 __Compile and test the code__
@@ -249,14 +134,15 @@ __Compile and test the code__
 ./pre-commit.sh
 ```
 
-To make changes to passport-verify which may need to be tested in another application:  "Link" projects, rather than copying the entire directory in.
+To make changes to passport-verify which may need to be tested in another application:
+"Link" projects, rather than copying the entire directory in:
 
 ```
 # In passport-verify
 cd ./passport-verify
-yarn link
+npm link
 # In your application
 cd ./some-application
-yarn link passport-verify
+npm link passport-verify
 ```
 
