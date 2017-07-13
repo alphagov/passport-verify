@@ -251,8 +251,7 @@ __Compile and test the code__
 ./pre-commit.sh
 ```
 
-If you're making changes to passport-verify which you need to test in another application
-it may be more convenient to "link" the projects (rather than copying the entire directory in).
+To make changes to passport-verify which may need to be tested in another application:  "Link" projects, rather than copying the entire directory in.
 
 ```
 # In passport-verify
