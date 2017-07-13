@@ -96,28 +96,20 @@ Usage
    app.post('/verify/start', passport.authenticate('verify'))
 
    // route for handling a callback from verify
-   app.post('/verify/response', (req, res, next) => {
-
-     // Create an authentication middleware inline and call it.
-     // This way we get exact error details in the callback.
-     (passport.authenticate('verify', function (error, user, infoOrError, status) {
- 
-       // An unexpected error has occurred.
-       if (error) {
-         return res.render('error-page.njk', { error: error.message })
-       }
- 
-       // User is authenticated and accepted by the application
-       if (user) {
-         return req.logIn(user, () => res.redirect('/'))
-       }
- 
-       // User authentication failed or the application did not accept the user
-       return res.render('authentication-failed-page.njk', { error: infoOrError })
- 
-     }))(req, res, next)
-
-   })
+   app.post('/verify/response', (req, res, next) => (
+     passport.authenticate('verify',
+       passportVerify.createResponseHandler({
+         onMatch:
+           user => req.logIn(user, () => res.redirect('/service-landing-page')),
+         onCreateUser:
+           user => req.logIn(user, () => res.redirect('/service-landing-page')),
+         onAuthnFailed:
+           failure => res.render('authentication-failed-page.njk', { error: failure }),
+         onError:
+           error => res.render('error-page.njk', { error: error.message })
+       })
+     )
+   )(req, res, next))
    ```
 
    See https://github.com/alphagov/verify-service-provider/blob/master/prototypes/prototype-0/stub-rp/src/app.ts for
@@ -189,52 +181,58 @@ __passport.authenticate('verify', function callback (error, user, infoOrError, s
 
 Typically passport.js is used to redirect the user to a new page after the authentication succeeds or fails.
 While this can be done with passport-verify, it would be better to use a callback-method to catch the details of
-why the user failed to authenticate and deal with it approppriately. (it is unfortunate that passport does not differentiate
-between success and fail callbacks, which is why one method has to deal with both cases.)
+why the user failed to authenticate and deal with it approppriately.
 
- * __error:__ `Error`
+It is recommended that you use `passportVerify.createResponseHandler()` to handle this callback as follows:
 
-   An Error instance if an unexpected error has occurred
+```javascript
+app.post('/verify/response', (req, res, next) => (
+  passport.authenticate('verify',
+    passportVerify.createResponseHandler({
+      onMatch:
+        user => /**/,
+      onCreateUser:
+        user => /**/,
+      onAuthnFailed:
+        failure => /**/,
+      onError:
+        error => /**/,
+    })
+  )
+)(req, res, next))
+```
 
- * __user:__ `User | boolean`
+Note that the callbacks are defined inside a closure that has access to `req`, `res`, and `next` so your callbacks
+can log the user in / redirect etc.
 
-   A User object returned by `options.acceptUser`-function. `false` if authentication has failed.
+__passportVerify.createResponseHandler({ onMatch: ..., onCreateUser: ..., onAuthnFailed: ..., onError: ... })__
 
- * __infoOrError__: `VerifyServiceProviderUser | string | Symbol`
+To make handling the `passport.authenticate()` callback easier we provide a `createResponseHandler` function.
+This takes separate callbacks for each of the response scenarios you have to handle and returns a function that
+will call the appropriate callback when called by passport.
 
-   Further details of the response.
+ * __onMatch:__
 
-   On success
-   ```
-   VerifyServiceProviderUser: object
-   ```
+   Called when handling a success response from a user that was matched by your matching service. Your callback
+   should redirect the user to the appropriate page so they can begin using your service.
 
-   On Error or Authentication Failure from Verify Hub
-   ```
-   BAD_REQUEST | 
-   INTERNAL_SERVER_ERROR | 
-   AUTHENTICATION_FAILED | 
-   NO_MATCH | 
-   CANCELLATION : string
-   ```
+ * __onCreateUser:__
 
-   On `options.acceptUser` returning false
+   Called when handling a success response from a user that was not matched by your matching service, but who
+   has had a new account created. Your callback should redirect the user to the appropriate page so they can
+   begin using your service (you may or may not want to treat new users differently to existing users).
 
-   ```
-   require('Passport-Verify').USER_NOT_ACCEPTED_ERROR: Symbol
-   ```
+ * __onAuthnFailed:__
 
- * __status:__ `number`
+   Called when the user failed to authenticate in a non-erroneous way. For example if the user clicked cancel
+   or got their password wrong. Your callback should redirect the user to a page offering them other ways to
+   use your service (e.g. using a non-verify way of proving their identity or going somewhere in person).
 
-   Response status code from Verify Service Provider.
+ * __onError:__
 
-   ```
-   400 on Bad Request
-   401 on Authentication Failed
-   500 on Internal Server Error
-   ```
-
-
+   Called when the response from verify can't be handled correctly (for example if its signature is invalid or
+   if its validUntil date is in the past). Your callback should render an error page telling the user that
+   there are technical problems with Verify.
 
 Development
 -----------
