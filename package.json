@@ -11,7 +11,7 @@
     "test": "npm run build && mocha ./build/test/* && npm run lint",
     "build": "tsc -d",
     "lint": "tslint -c tslint.json -p .",
-    "docs": "mv {,.}test && typedoc --readme none --out docs --excludePrivate; mv {.,}test"
+    "docs": "mv {,.}test && typedoc --readme none --out docs --excludePrivate && touch docs/.nojekyll; mv {.,}test"
   },
   "author": {
     "name": "Government Digital Service developers"
