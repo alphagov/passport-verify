@@ -119,7 +119,7 @@ Usage
 API
 -----------
 
-See [https://alphagov.github.io/passport-verify/modules/_passport_verify_.html](the API documentation) for more details.
+See [the API documentation](https://alphagov.github.io/passport-verify/modules/_passport_verify_.html) for more details.
 
 Development
 -----------
