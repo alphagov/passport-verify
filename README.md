@@ -3,33 +3,26 @@ passport-verify
 
 [![Build Status](https://travis-ci.org/alphagov/passport-verify.svg?branch=master)](https://travis-ci.org/alphagov/passport-verify) [![Known Vulnerabilities](https://snyk.io/test/github/alphagov/passport-verify/badge.svg)](https://snyk.io/test/github/alphagov/passport-verify)
 
-Passport-Verify is a passport.js plugin for authenticating with Verify Hub using passport.js and prototype-0 of Verify Service Provider.
+`passport-verify` is the best way to integrate with GOV.UK Verify if you are using node and [passport.js](http://passportjs.org/).
 
 Status
 ---------------
 
 **This project is in the discovery phase and is not ready for use in production.**
 
-Terminology
----------------
-
- * _Identity Provider_ is a Service that can authenticate users
- * _Relying party_ is a Service that needs to authenticate users
- * _Verify Hub_ acts as an Identity Provider for Relying Parties
- * _Verify Service Provider_ is a Service that consumes and produces SAML messages that can be used to communicate with Verify Hub https://github.com/alphagov/verify-service-provider/tree/master/prototypes/prototype-0/verify-service-provider
- * _Passport.js_ is a node js library that provides a generic authentication framework for various authentication providers. http://passportjs.org/
-
 Usage
 -----
 
-1. Install passport-verify
+1. Install `passport-verify`
    ```bash
    npm install --save passport-verify
    ```
 
-1. Install Verify Service Provider. https://github.com/alphagov/verify-service-provider/tree/master/prototypes/prototype-0/verify-service-provider
+1. Install [Verify Service Provider](https://github.com/alphagov/verify-service-provider/tree/master/prototypes/prototype-0/verify-service-provider).
 
-1. Configure passport-verify strategy
+1. Configure `passport-verify` [strategy](http://passportjs.org/docs/configure#strategies).
+
+   See [createStrategy](https://alphagov.github.io/passport-verify/modules/_passport_verify_strategy_.html#createstrategy) in the API documentation.
    ```javascript
    const passportVerify = require('passport-verify')
    const bodyParser = require('body-parser')
@@ -93,6 +86,10 @@ Usage
    ```
 
 1. Configure routes for the authentication flow
+
+   See [createResponseHandler](https://alphagov.github.io/passport-verify/modules/_create_response_handler_.html#createresponsehandler) 
+   and its [callbacks](https://alphagov.github.io/passport-verify/interfaces/_create_response_handler_.responsescenarios.html#onauthnfailed) in the API documentation.
+
    ```javascript
    // route for authenticating a user
    app.post('/verify/start', passport.authenticate('verify'))
@@ -114,15 +111,28 @@ Usage
    )(req, res, next))
    ```
 
-   See https://github.com/alphagov/verify-service-provider/blob/master/prototypes/prototype-0/stub-rp/src/app.ts for
+   See [the example implementation](https://github.com/alphagov/verify-service-provider/blob/master/prototypes/prototype-0/stub-rp/src/app.ts) for
    a more detailed example with session support.
+
 API
 -----------
 
 See [the API documentation](https://alphagov.github.io/passport-verify/modules/_passport_verify_.html) for more details.
 
+Terminology
+---------------
+
+ * _Identity Provider_ is a Service that can authenticate users
+ * _Relying party_ is a Service that needs to authenticate users
+ * [_Verify Service Provider_](https://github.com/alphagov/verify-service-provider/tree/master/prototypes/prototype-0/verify-service-provider)
+    is a service that consumes and produces SAML messages that can be used to communicate with GOV.UK Verify
+ * [_Passport.js_](http://passportjs.org/) is a node js library that provides a generic authentication framework for various authentication providers. 
+
+
 Development
 -----------
+
+If you want to make changes to `passport-verify` itself, fork the repository then:
 
 __Install the dependencies__
 ```
@@ -133,16 +143,3 @@ __Compile and test the code__
 ```
 ./pre-commit.sh
 ```
-
-To make changes to passport-verify which may need to be tested in another application:
-"Link" projects, rather than copying the entire directory in:
-
-```
-# In passport-verify
-cd ./passport-verify
-npm link
-# In your application
-cd ./some-application
-npm link passport-verify
-```
-
