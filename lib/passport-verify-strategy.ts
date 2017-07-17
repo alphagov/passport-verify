@@ -54,7 +54,7 @@ export interface PassportVerifyOptions {
 /**
  * The error message thrown if the `createUser` or `verifyUser` callbacks fail to return a user object.
  */
-export const USER_NOT_ACCEPTED_ERROR = 'The user was not accepted by the application.'
+export const USER_NOT_ACCEPTED_ERROR = 'USER_NOT_ACCEPTED_ERROR'
 
 /**
  * A passport.js strategy for GOV.UK Verify

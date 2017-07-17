@@ -48,7 +48,13 @@ export interface ResponseScenarios {
    * to use your service (e.g. using a non-verify way of proving their
    * identity or going somewhere in person).
    *
-   * The callback will be provided with a `failure` object, which will be TODO WAT?
+   * The callback will be provided with a `failure` string, which can be one of
+   *  - BAD_REQUEST
+   *  - INTERNAL_SERVER_ERROR
+   *  - AUTHENTICATION_FAILED
+   *  - NO_MATCH
+   *  - CANCELLATION
+   *  - USER_NOT_ACCEPTED_ERROR
    */
   onAuthnFailed: (failure: string) => any,
   /**
