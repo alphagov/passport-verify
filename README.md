@@ -18,7 +18,7 @@ Usage
    npm install --save passport-verify
    ```
 
-1. Install [Verify Service Provider](https://github.com/alphagov/verify-service-provider/tree/master/prototypes/prototype-0/verify-service-provider).
+1. Install [Verify Service Provider](https://github.com/alphagov/verify-service-provider).
 
 1. Configure `passport-verify` [strategy](http://passportjs.org/docs/configure#strategies).
 
@@ -111,7 +111,7 @@ Usage
    )(req, res, next))
    ```
 
-   See [the example implementation](https://github.com/alphagov/verify-service-provider/blob/master/prototypes/prototype-0/stub-rp/src/app.ts) for
+   See [the example implementation](https://github.com/alphagov/passport-verify-stub-relying-party/blob/master/src/app.ts) for
    a more detailed example with session support.
 
 API
@@ -124,7 +124,7 @@ Terminology
 
  * _Identity Provider_ is a Service that can authenticate users
  * _Relying party_ is a Service that needs to authenticate users
- * [_Verify Service Provider_](https://github.com/alphagov/verify-service-provider/tree/master/prototypes/prototype-0/verify-service-provider)
+ * [_Verify Service Provider_](https://github.com/alphagov/verify-service-provider)
     is a service that consumes and produces SAML messages that can be used to communicate with GOV.UK Verify
  * [_Passport.js_](http://passportjs.org/) is a node js library that provides a generic authentication framework for various authentication providers. 
 
