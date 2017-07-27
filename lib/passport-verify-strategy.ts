@@ -9,7 +9,7 @@ import { default as VerifyServiceProviderClient, Logger } from './verify-service
 
 export interface AuthnRequestResponse {
   samlRequest: string,
-  secureToken: string,
+  requestId: string,
   location: string
 }
 
@@ -89,15 +89,15 @@ export class PassportVerifyStrategy extends Strategy {
   error (reason: Error) { throw reason }
 
   private _handleRequest (req: express.Request) {
-    if (req.body && req.body.SAMLResponse) {
-      return this._translateResponse(req.body.SAMLResponse)
+    if (req.body && req.body.SAMLResponse && req.body.requestId) {
+      return this._translateResponse(req.body.SAMLResponse, req.body.requestId)
     } else {
       return this._renderAuthnRequest((req as any).res)
     }
   }
 
-  private async _translateResponse (samlResponse: string) {
-    const response = await this.client.translateResponse(samlResponse, 'TODO secure-cookie')
+  private async _translateResponse (samlResponse: string, requestId: string) {
+    const response = await this.client.translateResponse(samlResponse, requestId)
     if (response.status === 200) {
       const user = await this._acceptUser(response.body as TranslatedResponseBody)
       if (user) {

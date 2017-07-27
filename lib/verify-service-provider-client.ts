@@ -41,10 +41,10 @@ export default class VerifyServiceProviderClient {
     return this._request('POST', this.verifyServiceProviderHost + '/generate-request')
   }
 
-  translateResponse (samlResponse: string, secureToken: string) {
+  translateResponse (samlResponse: string, requestId: string) {
     return this._request('POST', this.verifyServiceProviderHost + '/translate-response',
         { 'Content-Type': 'application/json' },
-        `{ "samlResponse": "${samlResponse}", "secureToken": "${secureToken}" }`)
+        `{ "samlResponse": "${samlResponse}", "requestId": "${requestId}" }`)
   }
 
 }

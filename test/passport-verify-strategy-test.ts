@@ -10,7 +10,7 @@ describe('The passport-verify strategy', function () {
   const exampleSaml = {
     body: {
       SAMLResponse: 'some-saml-response',
-      RelayState: 'some-relay-state'
+      requestId: 'some-request-id'
     }
   }
 
@@ -18,7 +18,7 @@ describe('The passport-verify strategy', function () {
     status: 200,
     body: {
       samlRequest: 'some-saml-req',
-      secureToken: 'some-secure-token',
+      requestId: 'some-request-id',
       location: 'http://hub-sso-uri'
     }
   }
@@ -78,13 +78,12 @@ describe('The passport-verify strategy', function () {
     })
   })
 
-  it('should convert a successful SAML AuthnResponse to the application user object', function () {
+  it('should convert a successful SAML Response to the application user object', function () {
     const { mockClient, strategy } = createStrategy()
 
     // Mimicking passport's attaching of its success method to the Strategy instance
     strategy.success = td.function()
-
-    td.when(mockClient.translateResponse(exampleSaml.body.SAMLResponse, 'TODO secure-cookie')).thenReturn(exampleTranslatedResponse)
+    td.when(mockClient.translateResponse(exampleSaml.body.SAMLResponse, 'some-request-id')).thenReturn(exampleTranslatedResponse)
     return strategy.authenticate(exampleSaml).then(() => {
       td.verify(strategy.success(td.matchers.contains(exampleUser), td.matchers.anything()))
     })
@@ -97,7 +96,7 @@ describe('The passport-verify strategy', function () {
     // Mimicking passport's attaching of its fail method to the Strategy instance
     strategy.fail = td.function()
 
-    td.when(mockClient.translateResponse(exampleSaml.body.SAMLResponse, 'TODO secure-cookie')).thenReturn(exampleTranslatedResponse)
+    td.when(mockClient.translateResponse(exampleSaml.body.SAMLResponse, 'some-request-id')).thenReturn(exampleTranslatedResponse)
     return strategy.authenticate(exampleSaml).then(() => {
       td.verify(strategy.fail(USER_NOT_ACCEPTED_ERROR))
     })
@@ -110,7 +109,7 @@ describe('The passport-verify strategy', function () {
     // Mimicking passport's attaching of its fail method to the Strategy instance
     strategy.fail = td.function()
 
-    td.when(mockClient.translateResponse(exampleSaml.body.SAMLResponse, 'TODO secure-cookie')).thenReturn(exampleTranslatedResponse)
+    td.when(mockClient.translateResponse(exampleSaml.body.SAMLResponse, 'some-request-id')).thenReturn(exampleTranslatedResponse)
     return strategy.authenticate(exampleSaml).then(() => {
       td.verify(strategy.fail(USER_NOT_ACCEPTED_ERROR))
     })
@@ -122,7 +121,7 @@ describe('The passport-verify strategy', function () {
     // Mimicking passport's attaching of its fail method to the Strategy instance
     strategy.fail = td.function()
 
-    td.when(mockClient.translateResponse(exampleSaml.body.SAMLResponse, 'TODO secure-cookie')).thenReturn(exampleAuthenticationFailedResponse)
+    td.when(mockClient.translateResponse(exampleSaml.body.SAMLResponse, 'some-request-id')).thenReturn(exampleAuthenticationFailedResponse)
     return strategy.authenticate(exampleSaml).then(() => {
       td.verify(strategy.fail(exampleAuthenticationFailedResponse.body.reason, exampleAuthenticationFailedResponse.status))
     })
@@ -134,7 +133,7 @@ describe('The passport-verify strategy', function () {
     // Mimicking passport's attaching of its fail method to the Strategy instance
     strategy.error = td.function()
 
-    td.when(mockClient.translateResponse(exampleSaml.body.SAMLResponse, 'TODO secure-cookie')).thenReturn(exampleBadRequestResponse)
+    td.when(mockClient.translateResponse(exampleSaml.body.SAMLResponse, 'some-request-id')).thenReturn(exampleBadRequestResponse)
     return strategy.authenticate(exampleSaml).then(() => {
       td.verify(strategy.error(new Error(exampleBadRequestResponse.body.reason)))
     })
@@ -146,7 +145,7 @@ describe('The passport-verify strategy', function () {
     // Mimicking passport's attaching of its fail method to the Strategy instance
     strategy.error = td.function()
 
-    td.when(mockClient.translateResponse(exampleSaml.body.SAMLResponse, 'TODO secure-cookie')).thenReturn(exampleServiceErrorResponse)
+    td.when(mockClient.translateResponse(exampleSaml.body.SAMLResponse, 'some-request-id')).thenReturn(exampleServiceErrorResponse)
     return strategy.authenticate(exampleSaml).then(() => {
       td.verify(strategy.error(new Error(exampleServiceErrorResponse.body.reason)))
     })

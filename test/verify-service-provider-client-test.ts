@@ -9,7 +9,7 @@ describe('The passport-verify client', function () {
 
   const exampleAuthnRequest = {
     samlRequest: 'some-saml-req',
-    secureToken: 'some-secure-token',
+    requestId: 'some-request-id',
     location: 'http://hub-sso-uri'
   }
 
@@ -94,7 +94,7 @@ describe('The passport-verify client', function () {
   it('should translate response body', function () {
     const client = new VerifyServiceProviderClient(mockVerifyServiceProviderUrl, logger)
 
-    return client.translateResponse(SUCCESS_SCENARIO, 'some-secure-token')
+    return client.translateResponse(SUCCESS_SCENARIO, 'some-request-id')
       .then(response => {
         assert.equal(response.status, 200)
         assert.deepEqual(response.body, exampleTranslatedResponse)
@@ -104,7 +104,7 @@ describe('The passport-verify client', function () {
   it('should resolve error responses', function () {
     const client = new VerifyServiceProviderClient(mockVerifyServiceProviderUrl, logger)
 
-    return client.translateResponse(AUTHENTICATION_FAILED_SCENARIO, 'some-secure-token')
+    return client.translateResponse(AUTHENTICATION_FAILED_SCENARIO, 'some-request-id')
       .then(response => {
         assert.equal(response.status, 401)
         assert.deepEqual(response.body, exampleAuthenticationFailedResponse)
@@ -118,7 +118,7 @@ describe('The passport-verify client', function () {
     return client.generateAuthnRequest()
       .then(response => {
         td.verify(testLogger.info('passport-verify', 'POST', 'http://localhost:3003/generate-request', ''))
-        td.verify(testLogger.info('passport-verify', '200 OK', '{\"samlRequest\":\"some-saml-req\",\"secureToken\":\"some-secure-token\",\"location\":\"http://hub-sso-uri\"}'))
+        td.verify(testLogger.info('passport-verify', '200 OK', '{\"samlRequest\":\"some-saml-req\",\"requestId\":\"some-request-id\",\"location\":\"http://hub-sso-uri\"}'))
       })
   })
 
