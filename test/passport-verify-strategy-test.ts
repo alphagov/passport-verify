@@ -63,13 +63,23 @@ describe('The passport-verify strategy', function () {
 
   function createStrategy () {
     const mockClient = new MockClient()
-    const strategy = new PassportVerifyStrategy(mockClient, () => exampleUser, () => exampleUser, () => exampleAuthnRequestResponse.body.requestId) as any
+    const strategy = new PassportVerifyStrategy(
+      mockClient,
+      () => exampleUser,
+      () => exampleUser,
+      () => undefined,
+      () => 'some-request-id') as any
     return { mockClient, strategy }
   }
 
   it('should render a SAML AuthnRequest form', function () {
     const mockClient = new MockClient()
-    const strategy = new PassportVerifyStrategy(mockClient, () => undefined, () => undefined, () => undefined)
+    const strategy = new PassportVerifyStrategy(
+      mockClient,
+      () => undefined,
+      () => undefined,
+      () => undefined,
+      () => '')
     const request: any = { res: { send: td.function() } }
     td.when(mockClient.generateAuthnRequest()).thenReturn(exampleAuthnRequestResponse)
     return strategy.authenticate(request).then(() => {
@@ -78,14 +88,13 @@ describe('The passport-verify strategy', function () {
     })
   })
 
-  it('should execute the saveRequestId callback', function () {
+  it('should execute the setRequestId callback', function () {
     const { mockClient, strategy } = createStrategy()
-    strategy.saveRequestId = td.function()
-
+    strategy.setRequestId = td.function()
     const request: any = { res: { send: td.function() } }
     td.when(mockClient.generateAuthnRequest()).thenReturn(exampleAuthnRequestResponse)
     return strategy.authenticate(request).then(() => {
-      td.verify(strategy.saveRequestId(exampleAuthnRequestResponse.body.requestId))
+      td.verify(strategy.setRequestId(exampleAuthnRequestResponse.body.requestId, request))
     })
   })
 
@@ -102,7 +111,13 @@ describe('The passport-verify strategy', function () {
 
   it('should fail if the application does not accept a new user', function () {
     const mockClient = new MockClient()
-    const strategy = new PassportVerifyStrategy( mockClient, () => false, () => undefined, () => undefined) as any
+    const strategy = new PassportVerifyStrategy(
+      mockClient,
+      () => false,
+      () => undefined,
+      () => undefined,
+      () => 'some-request-id'
+    ) as any
 
     // Mimicking passport's attaching of its fail method to the Strategy instance
     strategy.fail = td.function()
@@ -115,7 +130,13 @@ describe('The passport-verify strategy', function () {
 
   it('should fail if the application does not accept a known user', function () {
     const mockClient = new MockClient()
-    const strategy = new PassportVerifyStrategy( mockClient, () => undefined, () => false, () => undefined ) as any
+    const strategy = new PassportVerifyStrategy(
+      mockClient,
+      () => undefined,
+      () => false,
+      () => undefined,
+      () => 'some-request-id'
+    ) as any
 
     // Mimicking passport's attaching of its fail method to the Strategy instance
     strategy.fail = td.function()
