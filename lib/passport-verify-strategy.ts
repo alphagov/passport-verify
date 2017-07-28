@@ -72,7 +72,8 @@ export class PassportVerifyStrategy extends Strategy {
 
   constructor (private client: VerifyServiceProviderClient,
                private createUser: (user: TranslatedResponseBody) => any,
-               private verifyUser: (user: TranslatedResponseBody) => any) {
+               private verifyUser: (user: TranslatedResponseBody) => any,
+               private saveRequestId: (requestId: string) => any) {
     super()
   }
 
@@ -128,6 +129,7 @@ export class PassportVerifyStrategy extends Strategy {
     const authnRequestResponse = await this.client.generateAuthnRequest()
     if (authnRequestResponse.status === 200) {
       const authnRequestResponseBody = authnRequestResponse.body as AuthnRequestResponse
+      this.saveRequestId(authnRequestResponseBody.requestId)
       return response.send(createSamlForm(authnRequestResponseBody.location, authnRequestResponseBody.samlRequest))
     } else {
       const errorBody = authnRequestResponse.body as ErrorBody
@@ -157,8 +159,9 @@ export function createStrategy (
   verifyServiceProviderHost: string,
   logger: Logger,
   createUser: (user: TranslatedResponseBody) => object | false,
-  verifyUser: (user: TranslatedResponseBody) => object | false
+  verifyUser: (user: TranslatedResponseBody) => object | false,
+  saveRequestId: (requestId: string) => object | false
 ) {
   const client = new VerifyServiceProviderClient(verifyServiceProviderHost, logger || { info: () => undefined })
-  return new PassportVerifyStrategy(client, createUser, verifyUser)
+  return new PassportVerifyStrategy(client, createUser, verifyUser, saveRequestId)
 }
