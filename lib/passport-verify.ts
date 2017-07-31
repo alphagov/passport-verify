@@ -9,7 +9,9 @@
  *   verifyServiceProviderHost,
  *   logger,
  *   function createUser (user) { },
- *   function verifyUser (user) { }
+ *   function verifyUser (user) { },
+ *   function setRequestId (requestId, request) { },
+ *   function getRequestId (request) { }
  * ))
  * ```
  *
