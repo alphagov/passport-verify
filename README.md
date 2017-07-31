@@ -81,7 +81,39 @@ Usage
        }
 
        return Object.assign({ levelOfAssurence: user.levelOfAssurance }, fakeUserDatabase[user.pid])
-     }
+     },
+
+    // A callback that saves the unique request ID associated with the SAML messages
+    // to the user's session.
+    // This function is called after the Verify Service Provider has generated and
+    // returned the AuthnRequest and associated RequestID.
+    // The requestID should be saved in a secure manner, and such that it
+    // corresponds to the user's current session and can be retrieved in order to validate
+    // that SAML response that is returned from the IDP corresponds to the original AuthnRequest.
+    function setRequestId (requestId: string, request: any) {
+
+      // The following is an example that saves the requestId using the express-session middleware
+      // This would require express-session to be initialised with a secure secret e.g:
+
+      // const session = require('express-session')
+      //
+      // app.use(session({
+      //  secret: 'super secret secure token',
+      //  resave: true,
+      //  saveUninitialized: true
+      // }))
+
+      request.session.requestId = requestId
+    },
+
+    // A callback that returns the requestId that corresponds to the user's session.
+    // This is used by the Verify Service Provider to ensure SAMLResponses received from IDPS
+    // correspond to a the user's active session.
+    function getRequestId (request: any) {
+
+      // The following is an example that retrieves the request ID from the express-session object.
+      return request.session.requestId
+    }
    ))
    ```
 
