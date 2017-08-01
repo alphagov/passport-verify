@@ -10,7 +10,7 @@ describe('The passport-verify client', function () {
   const exampleAuthnRequest = {
     samlRequest: 'some-saml-req',
     requestId: 'some-request-id',
-    location: 'http://hub-sso-uri'
+    ssoLocation: 'http://hub-sso-uri'
   }
 
   const exampleTranslatedResponse = {
@@ -117,8 +117,8 @@ describe('The passport-verify client', function () {
 
     return client.generateAuthnRequest()
       .then(response => {
-        td.verify(testLogger.info('passport-verify', 'POST', 'http://localhost:3003/generate-request', ''))
-        td.verify(testLogger.info('passport-verify', '200 OK', '{\"samlRequest\":\"some-saml-req\",\"requestId\":\"some-request-id\",\"location\":\"http://hub-sso-uri\"}'))
+        td.verify(testLogger.info('passport-verify', 'POST', 'http://localhost:3003/generate-request', '{ \"levelOfAssurance\": \"LEVEL_2\" }'))
+        td.verify(testLogger.info('passport-verify', '200 OK', '{\"samlRequest\":\"some-saml-req\",\"requestId\":\"some-request-id\",\"ssoLocation\":\"http://hub-sso-uri\"}'))
       })
   })
 

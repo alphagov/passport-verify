@@ -10,7 +10,7 @@ import { default as VerifyServiceProviderClient, Logger } from './verify-service
 export interface AuthnRequestResponse {
   samlRequest: string,
   requestId: string,
-  location: string
+  ssoLocation: string
 }
 
 export interface Address {
@@ -22,16 +22,17 @@ export interface Address {
 }
 
 export interface Attributes {
-  firstName?: string,
-  firstNameVerified?: boolean,
-  middleName?: string,
-  middleNameVerified?: boolean,
-  surname?: string,
-  surnameVerified?: boolean,
-  dateOfBirth?: string,
-  dateOfBirthVerified?: boolean,
-  address?: Address,
+  firstName?: VerifiableAttribute<String>,
+  middleName?: VerifiableAttribute<String>,
+  surname?: VerifiableAttribute<String>,
+  dateOfBirth?: VerifiableAttribute<String>,
+  address?: VerifiableAttribute<Address>,
   cycle3?: string
+}
+
+export interface VerifiableAttribute<T> {
+  value: T,
+  verified: boolean
 }
 
 export interface TranslatedResponseBody {
@@ -134,7 +135,7 @@ export class PassportVerifyStrategy extends Strategy {
       const authnRequestResponseBody = authnRequestResponse.body as AuthnRequestResponse
       this.saveRequestId(authnRequestResponseBody.requestId, request)
       const response = (request as any).res
-      return response.send(createSamlForm(authnRequestResponseBody.location, authnRequestResponseBody.samlRequest))
+      return response.send(createSamlForm(authnRequestResponseBody.ssoLocation, authnRequestResponseBody.samlRequest))
     } else {
       const errorBody = authnRequestResponse.body as ErrorBody
       throw new Error(errorBody.reason)
