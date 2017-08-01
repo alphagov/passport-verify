@@ -38,7 +38,9 @@ export default class VerifyServiceProviderClient {
   }
 
   generateAuthnRequest () {
-    return this._request('POST', this.verifyServiceProviderHost + '/generate-request')
+    return this._request('POST', this.verifyServiceProviderHost + '/generate-request',
+    { 'Content-Type': 'application/json' },
+        `{ "levelOfAssurance": "LEVEL_2" }`)
   }
 
   translateResponse (samlResponse: string, requestId: string) {
