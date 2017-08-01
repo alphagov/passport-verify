@@ -78,8 +78,8 @@ passport.<span class="hljs-keyword">use</span>(passportVerify.createStrategy(
   logger,
   <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">createUser</span> <span class="hljs-params">(user)</span> </span>{ },
   <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">verifyUser</span> <span class="hljs-params">(user)</span> </span>{ },
-  <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">setRequestId</span> <span class="hljs-params">(requestId, request)</span> </span>{ },
-  <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">getRequestId</span> <span class="hljs-params">(request)</span> </span>{ }
+  <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">saveRequestId</span> <span class="hljs-params">(requestId, request)</span> </span>{ },
+  <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">loadRequestId</span> <span class="hljs-params">(request)</span> </span>{ }
 ))
 </code></pre><pre><code><span class="hljs-comment">// route for authenticating a user</span>
 app.post(<span class="hljs-string">'/verify/start'</span>, passport.authenticate(<span class="hljs-string">'verify'</span>))
