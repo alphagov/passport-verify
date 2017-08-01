@@ -19,7 +19,7 @@ describe('The passport-verify strategy', function () {
     body: {
       samlRequest: 'some-saml-req',
       requestId: 'some-request-id',
-      location: 'http://hub-sso-uri'
+      ssoLocation: 'http://hub-sso-uri'
     }
   }
 
