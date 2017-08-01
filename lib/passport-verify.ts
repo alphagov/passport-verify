@@ -10,8 +10,8 @@
  *   logger,
  *   function createUser (user) { },
  *   function verifyUser (user) { },
- *   function setRequestId (requestId, request) { },
- *   function getRequestId (request) { }
+ *   function saveRequestId (requestId, request) { },
+ *   function loadRequestId (request) { }
  * ))
  * ```
  *

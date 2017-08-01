@@ -88,13 +88,13 @@ describe('The passport-verify strategy', function () {
     })
   })
 
-  it('should execute the setRequestId callback', function () {
+  it('should execute the saveRequestId callback', function () {
     const { mockClient, strategy } = createStrategy()
-    strategy.setRequestId = td.function()
+    strategy.saveRequestId = td.function()
     const request: any = { res: { send: td.function() } }
     td.when(mockClient.generateAuthnRequest()).thenReturn(exampleAuthnRequestResponse)
     return strategy.authenticate(request).then(() => {
-      td.verify(strategy.setRequestId(exampleAuthnRequestResponse.body.requestId, request))
+      td.verify(strategy.saveRequestId(exampleAuthnRequestResponse.body.requestId, request))
     })
   })
 
