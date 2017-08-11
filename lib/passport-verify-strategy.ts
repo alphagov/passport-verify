@@ -14,7 +14,6 @@ export interface AuthnRequestResponse {
 }
 
 export interface Address {
-  verified?: boolean,
   lines?: string[],
   postCode?: string,
   internationalPostCode?: string,
