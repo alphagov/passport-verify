@@ -28,7 +28,7 @@ Usage
    const bodyParser = require('body-parser')
 
    // Real applications should have a real backend for storing users.
-   const fakeUserDataBase = {}
+   const fakeUserDatabase = {}
 
    // Passport-Verify dependes on any bodyParser
    // to be configured as a middleware.
@@ -111,7 +111,8 @@ Usage
     // correspond to a the user's active session.
     function loadRequestId (request: any) {
 
-      // The following is an example that retrieves the request ID from the express-session object.
+      // The following is an example that retrieves the request ID from the aforementioned 
+      // express-session object.
       return request.session.requestId
     }
    ))
@@ -128,19 +129,26 @@ Usage
 
    // route for handling a callback from verify
    app.post('/verify/response', (req, res, next) => (
-     passport.authenticate('verify',
-       passportVerify.createResponseHandler({
-         onMatch:
-           user => req.logIn(user, () => res.redirect('/service-landing-page')),
-         onCreateUser:
-           user => req.logIn(user, () => res.redirect('/service-landing-page')),
-         onAuthnFailed:
-           failure => res.render('authentication-failed-page.njk', { error: failure }),
-         onError:
-           error => res.render('error-page.njk', { error: error.message })
-       })
-     )
-   )(req, res, next))
+   
+     // in this example, authenticate() is being called from within the route handler
+     // rather than being used as middleware, this provides access to the request
+     // and response objects through closure
+     const authMiddleware = passport.authenticate('verify', function (error, user, infoOrError, status) {
+
+      if (error) {
+        return res.send(`TODO: render error-page with message ${error: error.message}`)
+      }
+
+      if (user) {
+        // passport-verify requires the use of a custom callback to handle successful
+        // authentication
+        return req.logIn(user, () => res.send('TODO: redirect to service landing page')))
+      }
+
+      return res.send(`TODO: redirect to authentication failed page with ${error: infoOrError}`)
+
+    })
+    authMiddleware(req, res, next)
    ```
 
    See [the example implementation](https://github.com/alphagov/passport-verify-stub-relying-party/blob/master/src/app.ts) for
