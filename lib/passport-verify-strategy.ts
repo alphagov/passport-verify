@@ -14,7 +14,6 @@ export interface AuthnRequestResponse {
 }
 
 export interface Address {
-  verified?: boolean,
   lines?: string[],
   postCode?: string,
   internationalPostCode?: string,
@@ -22,16 +21,17 @@ export interface Address {
 }
 
 export interface Attributes {
-  firstName?: string,
-  firstNameVerified?: boolean,
-  middleName?: string,
-  middleNameVerified?: boolean,
-  surname?: string,
-  surnameVerified?: boolean,
-  dateOfBirth?: string,
-  dateOfBirthVerified?: boolean,
-  address?: Address,
+  firstName?: VerifiableAttribute<String>,
+  middleName?: VerifiableAttribute<String>,
+  surname?: VerifiableAttribute<String>,
+  dateOfBirth?: VerifiableAttribute<String>,
+  address?: VerifiableAttribute<Address>,
   cycle3?: string
+}
+
+export interface VerifiableAttribute<T> {
+  value: T,
+  verified: boolean
 }
 
 export interface TranslatedResponseBody {

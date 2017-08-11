@@ -2,9 +2,9 @@
  * @hidden
  */
 /** */
-export function createSamlForm (location: string, samlRequest: string) {
+export function createSamlForm (ssoLocation: string, samlRequest: string) {
   return `
-    <form method='post' action='${location}'>
+    <form method='post' action='${ssoLocation}'>
       <h1>Send SAML Authn request to hub</h1>
       <input type='hidden' name='SAMLRequest' value='${samlRequest}'/>
       <input type='hidden' name='relayState' value=''/>
