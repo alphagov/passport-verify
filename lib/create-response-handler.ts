@@ -11,7 +11,7 @@
  */
 /** */
 
-import { TranslatedResponseBody } from './passport-verify-strategy'
+import { TranslatedResponseBody, Scenario, AuthnFailureReason } from './passport-verify-strategy'
 
 /**
  * ResponseScenarios
@@ -56,7 +56,7 @@ export interface ResponseScenarios {
    *  - CANCELLATION
    *  - USER_NOT_ACCEPTED_ERROR
    */
-  onAuthnFailed: (failure: string) => any,
+  onAuthnFailed: (failure: AuthnFailureReason) => any,
   /**
    * Called when the response from verify can't be handled correctly
    * (for example if its signature is invalid or if its validUntil date
@@ -78,16 +78,17 @@ export interface ResponseScenarios {
  * @param responseScenarios Callbacks to handle each type of response that Verify can return
  */
 export function createResponseHandler (responseScenarios: ResponseScenarios) {
-  return function (error: Error, user: any, infoOrError: TranslatedResponseBody|string, status: number) {
+  return function (error: Error, user: any, infoOrError: TranslatedResponseBody|AuthnFailureReason, status: number) {
     if (error) {
       return responseScenarios.onError(error)
     }
     if (user) {
-      if ((infoOrError as TranslatedResponseBody).attributes) {
+      const responseBody = infoOrError as TranslatedResponseBody
+      if (responseBody.scenario === Scenario.ACCOUNT_CREATION) {
         return responseScenarios.onCreateUser(user)
       }
       return responseScenarios.onMatch(user)
     }
-    return responseScenarios.onAuthnFailed(infoOrError as string)
+    return responseScenarios.onAuthnFailed(infoOrError as AuthnFailureReason)
   }
 }

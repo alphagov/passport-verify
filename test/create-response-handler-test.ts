@@ -1,6 +1,6 @@
 import * as assert from 'assert'
 import { createResponseHandler, ResponseScenarios } from '../lib/create-response-handler'
-import { TranslatedResponseBody } from '../lib/passport-verify-strategy'
+import { TranslatedResponseBody, Scenario, AuthnFailureReason } from '../lib/passport-verify-strategy'
 import * as td from 'testdouble'
 
 function verifyNotCalled (fn: any) {
@@ -37,7 +37,7 @@ describe('The createResponseHandler function', () => {
   it('callback should call onMatch when called with an existing user', () => {
     const error = null as any
     const user = {}
-    const info = { pid: '', levelOfAssurance: '' }
+    const info = { scenario: Scenario.SUCCESS_MATCH, pid: '', levelOfAssurance: '' }
     const status = null as any
 
     const result = createResponseHandler(scenarios)(error, user, info, status)
@@ -52,7 +52,7 @@ describe('The createResponseHandler function', () => {
   it('callback should call onCreateUser when called with an new user', () => {
     const error = null as any
     const user = {}
-    const info = { pid: '', levelOfAssurance: '', attributes: {} }
+    const info = { scenario: Scenario.ACCOUNT_CREATION, pid: '', levelOfAssurance: '', attributes: {} }
     const status = null as any
 
     const result = createResponseHandler(scenarios)(error, user, info, status)
@@ -67,7 +67,7 @@ describe('The createResponseHandler function', () => {
   it('callback should call onAuthnFailed when called with no user and no error', () => {
     const error = null as any
     const user = null
-    const info = 'some-failure-message'
+    const info = AuthnFailureReason.BAD_REQUEST
     const status = null as any
 
     const result = createResponseHandler(scenarios)(error, user, info, status)

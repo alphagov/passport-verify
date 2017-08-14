@@ -35,6 +35,7 @@ export interface VerifiableAttribute<T> {
 }
 
 export interface TranslatedResponseBody {
+  scenario: Scenario,
   pid: string,
   levelOfAssurance: string,
   attributes?: Attributes
@@ -45,16 +46,30 @@ export interface ErrorBody {
   message: string
 }
 
+export enum Scenario {
+  SUCCESS_MATCH,
+  ACCOUNT_CREATION,
+  NO_MATCH,
+  CANCELLATION,
+  AUTHENTICATION_FAILED,
+  REQUEST_ERROR,
+  INTERNAL_SERVER_ERROR
+}
+
+export enum AuthnFailureReason {
+  BAD_REQUEST,
+  INTERNAL_SERVER_ERROR,
+  AUTHENTICATION_FAILED,
+  NO_MATCH,
+  CANCELLATION,
+  USER_NOT_ACCEPTED_ERROR
+}
+
 /**
  * Configuration options and callbacks for the `PassportVerifyStrategy`.
  */
 export interface PassportVerifyOptions {
 }
-
-/**
- * The error message thrown if the `createUser` or `verifyUser` callbacks fail to return a user object.
- */
-export const USER_NOT_ACCEPTED_ERROR = 'USER_NOT_ACCEPTED_ERROR'
 
 /**
  * A passport.js strategy for GOV.UK Verify
@@ -103,11 +118,14 @@ export class PassportVerifyStrategy extends Strategy {
     const samlResponse = (req as any).body.SAMLResponse
     const response = await this.client.translateResponse(samlResponse, requestId)
     if (response.status === 200) {
-      const user = await this._acceptUser(response.body as TranslatedResponseBody)
+      const responseBody = response.body as TranslatedResponseBody
+      const user = await this._acceptUser(responseBody)
       if (user) {
         this.success(user, response.body as TranslatedResponseBody)
+      } else if (responseBody.scenario === Scenario.NO_MATCH) {
+        this.fail(AuthnFailureReason.NO_MATCH)
       } else {
-        this.fail(USER_NOT_ACCEPTED_ERROR)
+        this.fail(AuthnFailureReason.USER_NOT_ACCEPTED_ERROR)
       }
     } else if (response.status === 401) {
       const errorBody = response.body as ErrorBody
@@ -121,9 +139,9 @@ export class PassportVerifyStrategy extends Strategy {
   }
 
   private async _acceptUser (user: TranslatedResponseBody) {
-    if (user.attributes) {
+    if (user.scenario === Scenario.ACCOUNT_CREATION) {
       return this.createUser(user)
-    } else {
+    } else if (user.scenario === Scenario.SUCCESS_MATCH) {
       return this.verifyUser(user)
     }
   }
