@@ -18,14 +18,16 @@
   },
   "license": "MIT",
   "dependencies": {
-    "node-fetch": "^1.7.1",
-    "passport-strategy": "^1.0.0",
     "@types/express-serve-static-core": "^4.0.48",
     "@types/mocha": "^2.2.41",
     "@types/node": "^7.0.32",
-    "@types/node-fetch": "^1.6.7",
     "@types/passport-strategy": "^0.2.30",
-    "@types/serve-static": "^1.7.31"
+    "@types/request": "^2.0.0",
+    "@types/request-promise-native": "^1.0.6",
+    "@types/serve-static": "^1.7.31",
+    "passport-strategy": "^1.0.0",
+    "request": "^2.81.0",
+    "request-promise-native": "^1.0.4"
   },
   "devDependencies": {
     "mocha": "^3.4.2",

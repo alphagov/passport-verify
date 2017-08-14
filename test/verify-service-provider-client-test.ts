@@ -43,10 +43,11 @@ describe('The passport-verify client', function () {
       let data = ''
       req.on('data', (chunk) => data += chunk)
       req.on('end', () => {
-        if (JSON.parse(data).samlResponse === AUTHENTICATION_FAILED_SCENARIO) {
+        const json = JSON.parse(data)
+        if (json.samlResponse === AUTHENTICATION_FAILED_SCENARIO) {
           res.statusCode = 401
           res.end(JSON.stringify(exampleAuthenticationFailedResponse))
-        } else if (JSON.parse(data).samlResponse === SUCCESS_SCENARIO) {
+        } else if (json.samlResponse === SUCCESS_SCENARIO) {
           res.statusCode = 200
           res.end(JSON.stringify(exampleTranslatedResponse))
         } else {
@@ -117,8 +118,8 @@ describe('The passport-verify client', function () {
 
     return client.generateAuthnRequest()
       .then(response => {
-        td.verify(testLogger.info('passport-verify', 'POST', 'http://localhost:3003/generate-request', '{ \"levelOfAssurance\": \"LEVEL_2\" }'))
-        td.verify(testLogger.info('passport-verify', '200 OK', '{\"samlRequest\":\"some-saml-req\",\"requestId\":\"some-request-id\",\"ssoLocation\":\"http://hub-sso-uri\"}'))
+        td.verify(testLogger.info('passport-verify', 'POST', 'http://localhost:3003/generate-request', { levelOfAssurance: 'LEVEL_2' }))
+        td.verify(testLogger.info('passport-verify', { samlRequest: 'some-saml-req', requestId: 'some-request-id', ssoLocation: 'http://hub-sso-uri' }))
       })
   })
 

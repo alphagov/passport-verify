@@ -5,7 +5,7 @@
  * instantiating this class directly.
  */
 /** */
-import { default as fetch, Response } from 'node-fetch'
+import * as request from 'request-promise-native'
 
 export interface Logger {
   info (message?: any, ...optionalParams: any[]): void
@@ -15,38 +15,38 @@ export default class VerifyServiceProviderClient {
 
   constructor (private verifyServiceProviderHost: string, private logger: Logger) {}
 
-  async _request (method: string, url: string, headers?: any, requestBody?: string): Promise<{ status: number, body: object }> {
-    function parseBody (response: Response, body: string) {
-      if (response.headers.get('content-type').includes('application/json')) return JSON.parse(body)
-      else return body
-    }
-
+  async _request (method: string, url: string, headers?: any, requestBody?: Object): Promise<{ status: number, body: object }> {
     this.logger.info('passport-verify', method, url, requestBody || '')
-    const response = await fetch(url, {
-      method: method,
-      headers: headers,
-      body: requestBody
-    })
-    const body = await response.text()
-    this.logger.info('passport-verify', `${response.status} ${response.statusText}`, body)
-    const parsedBody = parseBody(response, body)
-
-    return {
-      status: response.status,
-      body: parsedBody
+    try {
+      const responseBody = await request({
+        uri: url,
+        method: method,
+        json: true,
+        headers: headers,
+        body: requestBody
+      })
+      this.logger.info('passport-verify', responseBody)
+      return {
+        status: 200,
+        body: responseBody
+      }
+    } catch (reason) {
+      return {
+        status: reason.statusCode,
+        body: reason.error
+      }
     }
   }
 
   generateAuthnRequest () {
     return this._request('POST', this.verifyServiceProviderHost + '/generate-request',
-    { 'Content-Type': 'application/json' },
-        `{ "levelOfAssurance": "LEVEL_2" }`)
+      { 'Content-Type': 'application/json' },
+      { levelOfAssurance: 'LEVEL_2' })
   }
 
   translateResponse (samlResponse: string, requestId: string) {
     return this._request('POST', this.verifyServiceProviderHost + '/translate-response',
-        { 'Content-Type': 'application/json' },
-        `{ "samlResponse": "${samlResponse}", "requestId": "${requestId}" }`)
+      { 'Content-Type': 'application/json' },
+      { 'samlResponse': samlResponse, 'requestId': requestId })
   }
-
 }
