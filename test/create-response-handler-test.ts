@@ -1,6 +1,6 @@
 import * as assert from 'assert'
 import { createResponseHandler, ResponseScenarios } from '../lib/create-response-handler'
-import { TranslatedResponseBody, Scenario, AuthnFailureReason } from '../lib/passport-verify-strategy'
+import { TranslatedResponseBody, Scenario } from '../lib/passport-verify-strategy'
 import * as td from 'testdouble'
 
 function verifyNotCalled (fn: any) {
@@ -12,18 +12,24 @@ describe('The createResponseHandler function', () => {
   let onMatch: any
   let onCreateUser: any
   let onAuthnFailed: any
+  let onNoMatch: any
+  let onCancel: any
   let onError: any
 
   beforeEach(() => {
     onMatch = td.function()
     onCreateUser = td.function()
     onAuthnFailed = td.function()
+    onNoMatch = td.function()
+    onCancel = td.function()
     onError = td.function()
 
     scenarios = {
       onMatch,
       onCreateUser,
       onAuthnFailed,
+      onNoMatch,
+      onCancel,
       onError
     }
   })
@@ -46,6 +52,8 @@ describe('The createResponseHandler function', () => {
 
     verifyNotCalled(onCreateUser)
     verifyNotCalled(onAuthnFailed)
+    verifyNotCalled(onNoMatch)
+    verifyNotCalled(onCancel)
     verifyNotCalled(onError)
   })
 
@@ -61,22 +69,94 @@ describe('The createResponseHandler function', () => {
 
     verifyNotCalled(onMatch)
     verifyNotCalled(onAuthnFailed)
+    verifyNotCalled(onNoMatch)
+    verifyNotCalled(onCancel)
     verifyNotCalled(onError)
   })
 
   it('callback should call onAuthnFailed when called with no user and no error', () => {
     const error = null as any
     const user = null
-    const info = AuthnFailureReason.BAD_REQUEST
+    const info = Scenario.AUTHENTICATION_FAILED
     const status = null as any
 
     const result = createResponseHandler(scenarios)(error, user, info, status)
 
-    td.verify(onAuthnFailed(info))
+    td.verify(onAuthnFailed())
 
     verifyNotCalled(onMatch)
     verifyNotCalled(onCreateUser)
+    verifyNotCalled(onNoMatch)
+    verifyNotCalled(onCancel)
     verifyNotCalled(onError)
+  })
+
+  it('callback should call onNoMatch when called with no user, no error, and a NO_MATCH scenario', () => {
+    const error = null as any
+    const user = null
+    const info = Scenario.NO_MATCH
+    const status = null as any
+
+    const result = createResponseHandler(scenarios)(error, user, info, status)
+
+    td.verify(onNoMatch())
+
+    verifyNotCalled(onMatch)
+    verifyNotCalled(onCreateUser)
+    verifyNotCalled(onAuthnFailed)
+    verifyNotCalled(onCancel)
+    verifyNotCalled(onError)
+  })
+
+  it('callback should call onCancel when called with no user, no error, and a CANCELLATION scenario', () => {
+    const error = null as any
+    const user = null
+    const info = Scenario.CANCELLATION
+    const status = null as any
+
+    const result = createResponseHandler(scenarios)(error, user, info, status)
+
+    td.verify(onCancel())
+
+    verifyNotCalled(onMatch)
+    verifyNotCalled(onCreateUser)
+    verifyNotCalled(onAuthnFailed)
+    verifyNotCalled(onNoMatch)
+    verifyNotCalled(onError)
+  })
+
+  it('callback should call onError when called with no user, no error, and an inappropriate scenario', () => {
+    const error = null as any
+    const user = null
+    const info = Scenario.SUCCESS_MATCH
+    const status = null as any
+
+    const result = createResponseHandler(scenarios)(error, user, info, status)
+
+    td.verify(onError(new Error('Unrecognised Scenario SUCCESS_MATCH')))
+
+    verifyNotCalled(onMatch)
+    verifyNotCalled(onCreateUser)
+    verifyNotCalled(onAuthnFailed)
+    verifyNotCalled(onNoMatch)
+    verifyNotCalled(onCancel)
+  })
+
+  it('callback should call onError when called with no user, no error, and a REQUEST_ERROR info', () => {
+    const error = null as any
+    const user = null
+    const info = Scenario.REQUEST_ERROR
+    const status = null as any
+
+    const result = createResponseHandler(scenarios)(error, user, info, status)
+
+    td.verify(onError(new Error('SAML Response was an error')))
+
+    verifyNotCalled(onMatch)
+    verifyNotCalled(onCreateUser)
+    verifyNotCalled(onAuthnFailed)
+    verifyNotCalled(onNoMatch)
+    verifyNotCalled(onCancel)
   })
 
   it('callback should call onError when called with an error', () => {
@@ -92,5 +172,7 @@ describe('The createResponseHandler function', () => {
     verifyNotCalled(onMatch)
     verifyNotCalled(onCreateUser)
     verifyNotCalled(onAuthnFailed)
+    verifyNotCalled(onNoMatch)
+    verifyNotCalled(onCancel)
   })
 })
