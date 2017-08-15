@@ -47,22 +47,22 @@ export interface ErrorBody {
 }
 
 export enum Scenario {
-  SUCCESS_MATCH,
-  ACCOUNT_CREATION,
-  NO_MATCH,
-  CANCELLATION,
-  AUTHENTICATION_FAILED,
-  REQUEST_ERROR,
-  INTERNAL_SERVER_ERROR
+  SUCCESS_MATCH = 'SUCCESS_MATCH',
+  ACCOUNT_CREATION = 'ACCOUNT_CREATION',
+  NO_MATCH = 'NO_MATCH',
+  CANCELLATION = 'CANCELLATION',
+  AUTHENTICATION_FAILED = 'AUTHENTICATION_FAILED',
+  REQUEST_ERROR = 'REQUEST_ERROR',
+  INTERNAL_SERVER_ERROR = 'INTERNAL_SERVER_ERROR'
 }
 
 export enum AuthnFailureReason {
-  BAD_REQUEST,
-  INTERNAL_SERVER_ERROR,
-  AUTHENTICATION_FAILED,
-  NO_MATCH,
-  CANCELLATION,
-  USER_NOT_ACCEPTED_ERROR
+  BAD_REQUEST = 'BAD_REQUEST',
+  INTERNAL_SERVER_ERROR = 'INTERNAL_SERVER_ERROR',
+  AUTHENTICATION_FAILED = 'AUTHENTICATION_FAILED',
+  NO_MATCH = 'NO_MATCH',
+  CANCELLATION = 'CANCELLATION',
+  USER_NOT_ACCEPTED_ERROR = 'USER_NOT_ACCEPTED_ERROR'
 }
 
 /**
@@ -117,33 +117,46 @@ export class PassportVerifyStrategy extends Strategy {
     const requestId = this.loadRequestId(req)
     const samlResponse = (req as any).body.SAMLResponse
     const response = await this.client.translateResponse(samlResponse, requestId)
-    if (response.status === 200) {
-      const responseBody = response.body as TranslatedResponseBody
-      const user = await this._acceptUser(responseBody)
-      if (user) {
-        this.success(user, response.body as TranslatedResponseBody)
-      } else if (responseBody.scenario === Scenario.NO_MATCH) {
-        this.fail(AuthnFailureReason.NO_MATCH)
-      } else {
-        this.fail(AuthnFailureReason.USER_NOT_ACCEPTED_ERROR)
-      }
-    } else if (response.status === 401) {
-      const errorBody = response.body as ErrorBody
-      this.fail(errorBody.reason, response.status)
-    } else if ([400, 500].includes(response.status)) {
-      const errorBody = response.body as ErrorBody
-      throw new Error(errorBody.reason)
-    } else {
-      throw new Error(response.body as any)
+    switch (response.status) {
+      case 200:
+        const responseBody = response.body as TranslatedResponseBody
+        await this._handleSuccessResponse(responseBody)
+        break
+      case 401:
+        this.fail((response.body as ErrorBody).reason, response.status)
+        break
+      case 400:
+      case 500:
+        throw new Error((response.body as ErrorBody).reason)
+      default:
+        throw new Error(response.body as any)
     }
   }
 
-  private async _acceptUser (user: TranslatedResponseBody) {
-    if (user.scenario === Scenario.ACCOUNT_CREATION) {
-      return this.createUser(user)
-    } else if (user.scenario === Scenario.SUCCESS_MATCH) {
-      return this.verifyUser(user)
+  private async _handleSuccessResponse (responseBody: TranslatedResponseBody) {
+    switch (responseBody.scenario) {
+      case Scenario.ACCOUNT_CREATION:
+        await this._verifyUser(responseBody, this.createUser)
+        break
+      case Scenario.SUCCESS_MATCH:
+        await this._verifyUser(responseBody, this.verifyUser)
+        break
+      case Scenario.NO_MATCH:
+        this.fail(AuthnFailureReason.NO_MATCH)
+        break
+      default:
+        this.fail(AuthnFailureReason.USER_NOT_ACCEPTED_ERROR)
     }
+  }
+
+  private async _verifyUser (responseBody: TranslatedResponseBody, fetchUser: (user: TranslatedResponseBody) => any) {
+    const user = await fetchUser(responseBody)
+    if (user) {
+      this.success(user, responseBody)
+    } else {
+      this.fail(AuthnFailureReason.USER_NOT_ACCEPTED_ERROR)
+    }
+    return Promise.resolve()
   }
 
   private async _renderAuthnRequest (request: express.Request): Promise<express.Response> {

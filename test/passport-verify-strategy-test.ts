@@ -33,6 +33,16 @@ describe('The passport-verify strategy', function () {
     }
   }
 
+  const exampleAccountCreationTranslatedResponse = {
+    status: 200,
+    body: {
+      scenario: Scenario.ACCOUNT_CREATION,
+      pid: 'some-pid',
+      levelOfAssurance: 'LEVEL_2',
+      attributes: {}
+    }
+  }
+
   const exampleNoMatchTranslatedResponse = {
     status: 200,
     body: {
@@ -151,7 +161,7 @@ describe('The passport-verify strategy', function () {
     // Mimicking passport's attaching of its fail method to the Strategy instance
     strategy.fail = td.function()
 
-    td.when(mockClient.translateResponse(exampleSaml.body.SAMLResponse, 'some-request-id')).thenReturn(exampleTranslatedResponse)
+    td.when(mockClient.translateResponse(exampleSaml.body.SAMLResponse, 'some-request-id')).thenReturn(exampleAccountCreationTranslatedResponse)
     return strategy.authenticate(exampleSaml).then(() => {
       td.verify(strategy.fail(AuthnFailureReason.USER_NOT_ACCEPTED_ERROR))
     })

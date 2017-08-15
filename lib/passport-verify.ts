@@ -34,7 +34,25 @@
  */
 /** */
 
-import { createStrategy, TranslatedResponseBody, Attributes, VerifiableAttribute, Address } from './passport-verify-strategy'
+import {
+  createStrategy,
+  TranslatedResponseBody,
+  Attributes,
+  VerifiableAttribute,
+  Address,
+  AuthnFailureReason,
+  Scenario
+} from './passport-verify-strategy'
+
 import { createResponseHandler } from './create-response-handler'
 
-export { createStrategy, createResponseHandler, TranslatedResponseBody, Attributes, VerifiableAttribute, Address }
+export {
+  createStrategy,
+  createResponseHandler,
+  TranslatedResponseBody,
+  Attributes,
+  VerifiableAttribute,
+  Address,
+  AuthnFailureReason,
+  Scenario
+}
