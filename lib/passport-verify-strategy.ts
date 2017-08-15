@@ -41,8 +41,8 @@ export interface TranslatedResponseBody {
   attributes?: Attributes
 }
 
-export interface ErrorBody {
-  reason: string,
+export interface ErrorMessage {
+  code: number,
   message: string
 }
 
@@ -123,11 +123,11 @@ export class PassportVerifyStrategy extends Strategy {
         await this._handleSuccessResponse(responseBody)
         break
       case 401:
-        this.fail((response.body as ErrorBody).reason, response.status)
+        this.fail((response.body as ErrorMessage).code, response.status)
         break
       case 400:
       case 500:
-        throw new Error((response.body as ErrorBody).reason)
+        throw new Error((response.body as ErrorMessage).message)
       default:
         throw new Error(response.body as any)
     }
@@ -167,8 +167,8 @@ export class PassportVerifyStrategy extends Strategy {
       const response = (request as any).res
       return response.send(createSamlForm(authnRequestResponseBody.ssoLocation, authnRequestResponseBody.samlRequest))
     } else {
-      const errorBody = authnRequestResponse.body as ErrorBody
-      throw new Error(errorBody.reason)
+      const errorBody = authnRequestResponse.body as ErrorMessage
+      throw new Error(errorBody.message)
     }
   }
 }

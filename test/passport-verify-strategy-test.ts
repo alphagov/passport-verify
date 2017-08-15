@@ -56,7 +56,7 @@ describe('The passport-verify strategy', function () {
   const exampleAuthenticationFailedResponse = {
     status: 401,
     body: {
-      reason: 'AUTHENTICATION_FAILED',
+      code: 401,
       message: 'Authentication failed'
     }
   }
@@ -64,7 +64,7 @@ describe('The passport-verify strategy', function () {
   const exampleBadRequestResponse = {
     status: 400,
     body: {
-      reason: 'Bad Request',
+      code: 400,
       message: 'Bad bad request'
     }
   }
@@ -72,7 +72,7 @@ describe('The passport-verify strategy', function () {
   const exampleServiceErrorResponse = {
     status: 500,
     body: {
-      reason: 'INTERNAL_SERVER_ERROR',
+      code: 500,
       message: 'Internal Server Error'
     }
   }
@@ -194,7 +194,7 @@ describe('The passport-verify strategy', function () {
 
     td.when(mockClient.translateResponse(exampleSaml.body.SAMLResponse, 'some-request-id')).thenReturn(exampleAuthenticationFailedResponse)
     return strategy.authenticate(exampleSaml).then(() => {
-      td.verify(strategy.fail(exampleAuthenticationFailedResponse.body.reason, exampleAuthenticationFailedResponse.status))
+      td.verify(strategy.fail(exampleAuthenticationFailedResponse.body.code, exampleAuthenticationFailedResponse.status))
     })
   })
 
@@ -206,7 +206,7 @@ describe('The passport-verify strategy', function () {
 
     td.when(mockClient.translateResponse(exampleSaml.body.SAMLResponse, 'some-request-id')).thenReturn(exampleBadRequestResponse)
     return strategy.authenticate(exampleSaml).then(() => {
-      td.verify(strategy.error(new Error(exampleBadRequestResponse.body.reason)))
+      td.verify(strategy.error(new Error(exampleBadRequestResponse.body.message)))
     })
   })
 
@@ -218,7 +218,7 @@ describe('The passport-verify strategy', function () {
 
     td.when(mockClient.translateResponse(exampleSaml.body.SAMLResponse, 'some-request-id')).thenReturn(exampleServiceErrorResponse)
     return strategy.authenticate(exampleSaml).then(() => {
-      td.verify(strategy.error(new Error(exampleServiceErrorResponse.body.reason)))
+      td.verify(strategy.error(new Error(exampleServiceErrorResponse.body.message)))
     })
   })
 
