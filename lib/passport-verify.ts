@@ -40,7 +40,6 @@ import {
   Attributes,
   VerifiableAttribute,
   Address,
-  AuthnFailureReason,
   Scenario
 } from './passport-verify-strategy'
 
@@ -53,6 +52,5 @@ export {
   Attributes,
   VerifiableAttribute,
   Address,
-  AuthnFailureReason,
   Scenario
 }

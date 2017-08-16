@@ -47,6 +47,6 @@ export default class VerifyServiceProviderClient {
   translateResponse (samlResponse: string, requestId: string) {
     return this._request('POST', this.verifyServiceProviderHost + '/translate-response',
       { 'Content-Type': 'application/json' },
-      { 'samlResponse': samlResponse, 'requestId': requestId })
+      { 'samlResponse': samlResponse, 'requestId': requestId, levelOfAssurance: 'LEVEL_2' })
   }
 }

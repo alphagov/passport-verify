@@ -11,7 +11,7 @@
  */
 /** */
 
-import { TranslatedResponseBody, Scenario, AuthnFailureReason } from './passport-verify-strategy'
+import { TranslatedResponseBody, Scenario } from './passport-verify-strategy'
 
 /**
  * ResponseScenarios
@@ -42,27 +42,43 @@ export interface ResponseScenarios {
    */
   onCreateUser: (user: any) => any,
   /**
-   * Called when the user failed to authenticate in a non-erroneous way.
-   * For example if the user clicked cancel or got their password wrong.
+   * Called when the user failed to authenticate with Verify,
+   * for example if the user got their password wrong.
+   *
    * Your callback should redirect the user to a page offering them other ways
    * to use your service (e.g. using a non-verify way of proving their
    * identity or going somewhere in person).
-   *
-   * The callback will be provided with a `failure` string, which can be one of
-   *  - BAD_REQUEST
-   *  - INTERNAL_SERVER_ERROR
-   *  - AUTHENTICATION_FAILED
-   *  - NO_MATCH
-   *  - CANCELLATION
-   *  - USER_NOT_ACCEPTED_ERROR
    */
-  onAuthnFailed: (failure: AuthnFailureReason) => any,
+  onAuthnFailed: () => any,
+  /**
+   * Called when the user successfully authenticated with Verify, but
+   * was not matched by your matching service.
+   *
+   * Note that `onCreateUser` will be called instead if your service is
+   * configured to perform user account creation.
+   *
+   * Your callback should redirect the user to a page explaining what
+   * happened and offering them other ways to use your service (e.g. using
+   * a non-verify way of proving their identity or going somewhere in person).
+   */
+  onNoMatch: () => any,
+  /**
+   * Called when the user cancelled at the identity provider (e.g. because
+   * they don't have the required documentation with them).
+   *
+   * Your callback should redirect the user to a page offering them other ways
+   * to use your service (e.g. using a non-verify way of proving their
+   * identity or going somewhere in person).
+   */
+  onCancel: () => any,
   /**
    * Called when the response from verify can't be handled correctly
    * (for example if its signature is invalid or if its validUntil date
-   * is in the past). Your callback should make sure the error is logged
-   * appropriately and render an error page telling the user that there
-   * are technical problems with Verify.
+   * is in the past), or if the response from verify represents an error.
+   *
+   * Your callback should make sure the error is logged appropriately and
+   * render an error page telling the user that there are technical problems
+   * with Verify.
    *
    * The callback will be provided with an `error` object, which will provide
    * details of what went wrong.
@@ -78,7 +94,7 @@ export interface ResponseScenarios {
  * @param responseScenarios Callbacks to handle each type of response that Verify can return
  */
 export function createResponseHandler (responseScenarios: ResponseScenarios) {
-  return function (error: Error, user: any, infoOrError: TranslatedResponseBody|AuthnFailureReason, status: number) {
+  return function (error: Error, user: any, infoOrError: TranslatedResponseBody|Scenario, status: number) {
     if (error) {
       return responseScenarios.onError(error)
     }
@@ -89,6 +105,18 @@ export function createResponseHandler (responseScenarios: ResponseScenarios) {
       }
       return responseScenarios.onMatch(user)
     }
-    return responseScenarios.onAuthnFailed(infoOrError as AuthnFailureReason)
+
+    switch (infoOrError as Scenario) {
+      case Scenario.REQUEST_ERROR:
+        return responseScenarios.onError(new Error('SAML Response was an error'))
+      case Scenario.NO_MATCH:
+        return responseScenarios.onNoMatch()
+      case Scenario.CANCELLATION:
+        return responseScenarios.onCancel()
+      case Scenario.AUTHENTICATION_FAILED:
+        return responseScenarios.onAuthnFailed()
+      default:
+        return responseScenarios.onError(new Error(`Unrecognised Scenario ${infoOrError}`))
+    }
   }
 }

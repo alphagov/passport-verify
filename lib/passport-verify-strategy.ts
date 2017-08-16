@@ -52,17 +52,7 @@ export enum Scenario {
   NO_MATCH = 'NO_MATCH',
   CANCELLATION = 'CANCELLATION',
   AUTHENTICATION_FAILED = 'AUTHENTICATION_FAILED',
-  REQUEST_ERROR = 'REQUEST_ERROR',
-  INTERNAL_SERVER_ERROR = 'INTERNAL_SERVER_ERROR'
-}
-
-export enum AuthnFailureReason {
-  BAD_REQUEST = 'BAD_REQUEST',
-  INTERNAL_SERVER_ERROR = 'INTERNAL_SERVER_ERROR',
-  AUTHENTICATION_FAILED = 'AUTHENTICATION_FAILED',
-  NO_MATCH = 'NO_MATCH',
-  CANCELLATION = 'CANCELLATION',
-  USER_NOT_ACCEPTED_ERROR = 'USER_NOT_ACCEPTED_ERROR'
+  REQUEST_ERROR = 'REQUEST_ERROR'
 }
 
 /**
@@ -122,14 +112,12 @@ export class PassportVerifyStrategy extends Strategy {
         const responseBody = response.body as TranslatedResponseBody
         await this._handleSuccessResponse(responseBody)
         break
-      case 401:
-        this.fail((response.body as ErrorMessage).code, response.status)
-        break
       case 400:
+      case 422:
       case 500:
         throw new Error((response.body as ErrorMessage).message)
       default:
-        throw new Error(response.body as any)
+        throw new Error(`Unexpected status ${response.status}`)
     }
   }
 
@@ -141,11 +129,8 @@ export class PassportVerifyStrategy extends Strategy {
       case Scenario.SUCCESS_MATCH:
         await this._verifyUser(responseBody, this.verifyUser)
         break
-      case Scenario.NO_MATCH:
-        this.fail(AuthnFailureReason.NO_MATCH)
-        break
       default:
-        this.fail(AuthnFailureReason.USER_NOT_ACCEPTED_ERROR)
+        this.fail(responseBody.scenario)
     }
   }
 
@@ -154,7 +139,7 @@ export class PassportVerifyStrategy extends Strategy {
     if (user) {
       this.success(user, responseBody)
     } else {
-      this.fail(AuthnFailureReason.USER_NOT_ACCEPTED_ERROR)
+      this.fail(Scenario.REQUEST_ERROR)
     }
     return Promise.resolve()
   }

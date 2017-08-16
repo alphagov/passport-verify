@@ -1,5 +1,5 @@
 import * as assert from 'assert'
-import { PassportVerifyStrategy, AuthnFailureReason, Scenario } from '../lib/passport-verify-strategy'
+import { PassportVerifyStrategy, Scenario } from '../lib/passport-verify-strategy'
 import VerifyServiceProviderClient from '../lib/verify-service-provider-client'
 import * as td from 'testdouble'
 
@@ -144,7 +144,7 @@ describe('The passport-verify strategy', function () {
 
     td.when(mockClient.translateResponse(exampleSaml.body.SAMLResponse, 'some-request-id')).thenReturn(exampleNoMatchTranslatedResponse)
     return strategy.authenticate(exampleSaml).then(() => {
-      td.verify(strategy.fail(AuthnFailureReason.NO_MATCH))
+      td.verify(strategy.fail(Scenario.NO_MATCH))
     })
   })
 
@@ -163,7 +163,7 @@ describe('The passport-verify strategy', function () {
 
     td.when(mockClient.translateResponse(exampleSaml.body.SAMLResponse, 'some-request-id')).thenReturn(exampleAccountCreationTranslatedResponse)
     return strategy.authenticate(exampleSaml).then(() => {
-      td.verify(strategy.fail(AuthnFailureReason.USER_NOT_ACCEPTED_ERROR))
+      td.verify(strategy.fail(Scenario.REQUEST_ERROR))
     })
   })
 
@@ -182,19 +182,7 @@ describe('The passport-verify strategy', function () {
 
     td.when(mockClient.translateResponse(exampleSaml.body.SAMLResponse, 'some-request-id')).thenReturn(exampleTranslatedResponse)
     return strategy.authenticate(exampleSaml).then(() => {
-      td.verify(strategy.fail(AuthnFailureReason.USER_NOT_ACCEPTED_ERROR))
-    })
-  })
-
-  it('should fail if the response is 401 from verify-service-provider', () => {
-    const { mockClient, strategy } = createStrategy()
-
-    // Mimicking passport's attaching of its fail method to the Strategy instance
-    strategy.fail = td.function()
-
-    td.when(mockClient.translateResponse(exampleSaml.body.SAMLResponse, 'some-request-id')).thenReturn(exampleAuthenticationFailedResponse)
-    return strategy.authenticate(exampleSaml).then(() => {
-      td.verify(strategy.fail(exampleAuthenticationFailedResponse.body.code, exampleAuthenticationFailedResponse.status))
+      td.verify(strategy.fail(Scenario.REQUEST_ERROR))
     })
   })
 
