@@ -113,10 +113,11 @@ export class PassportVerifyStrategy extends Strategy {
         await this._handleSuccessResponse(responseBody)
         break
       case 400:
+      case 422:
       case 500:
         throw new Error((response.body as ErrorMessage).message)
       default:
-        throw new Error(response.body as any)
+        throw new Error(`Unexpected status ${response.status}`)
     }
   }
 
@@ -128,11 +129,8 @@ export class PassportVerifyStrategy extends Strategy {
       case Scenario.SUCCESS_MATCH:
         await this._verifyUser(responseBody, this.verifyUser)
         break
-      case Scenario.NO_MATCH:
-        this.fail(Scenario.NO_MATCH)
-        break
       default:
-        this.fail(Scenario.REQUEST_ERROR)
+        this.fail(responseBody.scenario)
     }
   }
 
