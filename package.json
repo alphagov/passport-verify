@@ -34,7 +34,7 @@
     "testdouble": "3.0.0",
     "tslint": "^5.6.0",
     "tslint-config-standard": "^5.0.2",
-    "typedoc": "^0.8.0",
+    "typedoc": "0.8.0",
     "typescript": "^2.4.2"
   },
   "files": [

@@ -95,9 +95,11 @@
 							<h3>Properties</h3>
 							<ul class="tsd-index-list">
 								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="_create_response_handler_.responsescenarios.html#onauthnfailed" class="tsd-kind-icon">on<wbr>Authn<wbr>Failed</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="_create_response_handler_.responsescenarios.html#oncancel" class="tsd-kind-icon">on<wbr>Cancel</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="_create_response_handler_.responsescenarios.html#oncreateuser" class="tsd-kind-icon">on<wbr>Create<wbr>User</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="_create_response_handler_.responsescenarios.html#onerror" class="tsd-kind-icon">on<wbr>Error</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="_create_response_handler_.responsescenarios.html#onmatch" class="tsd-kind-icon">on<wbr>Match</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="_create_response_handler_.responsescenarios.html#onnomatch" class="tsd-kind-icon">on<wbr>NoMatch</a></li>
 							</ul>
 						</section>
 					</div>
@@ -111,42 +113,61 @@
 					<div class="tsd-signature tsd-kind-icon">on<wbr>Authn<wbr>Failed<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">function</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/alphagov/passport-verify/blob/cfbd4b0/lib/create-response-handler.ts#L59">create-response-handler.ts:59</a></li>
+							<li>Defined in <a href="https://github.com/alphagov/passport-verify/blob/e8fca0b/lib/create-response-handler.ts#L52">create-response-handler.ts:52</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
 						<div class="lead">
-							<p>Called when the user failed to authenticate in a non-erroneous way.
-								For example if the user clicked cancel or got their password wrong.
-								Your callback should redirect the user to a page offering them other ways
-								to use your service (e.g. using a non-verify way of proving their
-							identity or going somewhere in person).</p>
+							<p>Called when the user failed to authenticate with Verify,
+							for example if the user got their password wrong.</p>
 						</div>
-						<p>The callback will be provided with a <code>failure</code> string, which can be one of</p>
-						<ul>
-							<li>BAD_REQUEST</li>
-							<li>INTERNAL_SERVER_ERROR</li>
-							<li>AUTHENTICATION_FAILED</li>
-							<li>NO_MATCH</li>
-							<li>CANCELLATION</li>
-							<li>USER_NOT_ACCEPTED_ERROR</li>
-						</ul>
+						<p>Your callback should redirect the user to a page offering them other ways
+							to use your service (e.g. using a non-verify way of proving their
+						identity or going somewhere in person).</p>
 					</div>
 					<div class="tsd-type-declaration">
 						<h4>Type declaration</h4>
 						<ul class="tsd-parameters">
 							<li class="tsd-parameter-siganture">
 								<ul class="tsd-signatures tsd-kind-type-literal tsd-parent-kind-property tsd-is-not-exported">
-									<li class="tsd-signature tsd-kind-icon"><span class="tsd-signature-symbol">(</span>failure<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">"BAD_REQUEST"</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">"INTERNAL_SERVER_ERROR"</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">"AUTHENTICATION_FAILED"</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">"NO_MATCH"</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">"CANCELLATION"</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">"USER_NOT_ACCEPTED_ERROR"</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span></li>
+									<li class="tsd-signature tsd-kind-icon"><span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span></li>
 								</ul>
 								<ul class="tsd-descriptions">
 									<li class="tsd-description">
-										<h4 class="tsd-parameters-title">Parameters</h4>
-										<ul class="tsd-parameters">
-											<li>
-												<h5>failure: <span class="tsd-signature-type">"BAD_REQUEST"</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">"INTERNAL_SERVER_ERROR"</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">"AUTHENTICATION_FAILED"</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">"NO_MATCH"</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">"CANCELLATION"</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">"USER_NOT_ACCEPTED_ERROR"</span></h5>
-											</li>
-										</ul>
+										<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">any</span></h4>
+									</li>
+								</ul>
+							</li>
+						</ul>
+					</div>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
+					<a name="oncancel" class="tsd-anchor"></a>
+					<h3>on<wbr>Cancel</h3>
+					<div class="tsd-signature tsd-kind-icon">on<wbr>Cancel<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">function</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in <a href="https://github.com/alphagov/passport-verify/blob/e8fca0b/lib/create-response-handler.ts#L73">create-response-handler.ts:73</a></li>
+						</ul>
+					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>Called when the user cancelled at the identity provider (e.g. because
+							they don&#39;t have the required documentation with them).</p>
+						</div>
+						<p>Your callback should redirect the user to a page offering them other ways
+							to use your service (e.g. using a non-verify way of proving their
+						identity or going somewhere in person).</p>
+					</div>
+					<div class="tsd-type-declaration">
+						<h4>Type declaration</h4>
+						<ul class="tsd-parameters">
+							<li class="tsd-parameter-siganture">
+								<ul class="tsd-signatures tsd-kind-type-literal tsd-parent-kind-property tsd-is-not-exported">
+									<li class="tsd-signature tsd-kind-icon"><span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span></li>
+								</ul>
+								<ul class="tsd-descriptions">
+									<li class="tsd-description">
 										<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">any</span></h4>
 									</li>
 								</ul>
@@ -160,7 +181,7 @@
 					<div class="tsd-signature tsd-kind-icon">on<wbr>Create<wbr>User<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">function</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/alphagov/passport-verify/blob/cfbd4b0/lib/create-response-handler.ts#L43">create-response-handler.ts:43</a></li>
+							<li>Defined in <a href="https://github.com/alphagov/passport-verify/blob/e8fca0b/lib/create-response-handler.ts#L43">create-response-handler.ts:43</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -201,17 +222,18 @@
 					<div class="tsd-signature tsd-kind-icon">on<wbr>Error<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">function</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/alphagov/passport-verify/blob/cfbd4b0/lib/create-response-handler.ts#L70">create-response-handler.ts:70</a></li>
+							<li>Defined in <a href="https://github.com/alphagov/passport-verify/blob/e8fca0b/lib/create-response-handler.ts#L86">create-response-handler.ts:86</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
 						<div class="lead">
 							<p>Called when the response from verify can&#39;t be handled correctly
 								(for example if its signature is invalid or if its validUntil date
-								is in the past). Your callback should make sure the error is logged
-								appropriately and render an error page telling the user that there
-							are technical problems with Verify.</p>
+							is in the past), or if the response from verify represents an error.</p>
 						</div>
+						<p>Your callback should make sure the error is logged appropriately and
+							render an error page telling the user that there are technical problems
+						with Verify.</p>
 						<p>The callback will be provided with an <code>error</code> object, which will provide
 						details of what went wrong.</p>
 					</div>
@@ -243,7 +265,7 @@
 					<div class="tsd-signature tsd-kind-icon">on<wbr>Match<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">function</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/alphagov/passport-verify/blob/cfbd4b0/lib/create-response-handler.ts#L33">create-response-handler.ts:33</a></li>
+							<li>Defined in <a href="https://github.com/alphagov/passport-verify/blob/e8fca0b/lib/create-response-handler.ts#L33">create-response-handler.ts:33</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -270,6 +292,42 @@
 												<h5>user: <span class="tsd-signature-type">any</span></h5>
 											</li>
 										</ul>
+										<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">any</span></h4>
+									</li>
+								</ul>
+							</li>
+						</ul>
+					</div>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
+					<a name="onnomatch" class="tsd-anchor"></a>
+					<h3>on<wbr>NoMatch</h3>
+					<div class="tsd-signature tsd-kind-icon">on<wbr>NoMatch<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">function</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in <a href="https://github.com/alphagov/passport-verify/blob/e8fca0b/lib/create-response-handler.ts#L64">create-response-handler.ts:64</a></li>
+						</ul>
+					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>Called when the user successfully authenticated with Verify, but
+							was not matched by your matching service.</p>
+						</div>
+						<p>Note that <code>onCreateUser</code> will be called instead if your service is
+						configured to perform user account creation.</p>
+						<p>Your callback should redirect the user to a page explaining what
+							happened and offering them other ways to use your service (e.g. using
+						a non-verify way of proving their identity or going somewhere in person).</p>
+					</div>
+					<div class="tsd-type-declaration">
+						<h4>Type declaration</h4>
+						<ul class="tsd-parameters">
+							<li class="tsd-parameter-siganture">
+								<ul class="tsd-signatures tsd-kind-type-literal tsd-parent-kind-property tsd-is-not-exported">
+									<li class="tsd-signature tsd-kind-icon"><span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span></li>
+								</ul>
+								<ul class="tsd-descriptions">
+									<li class="tsd-description">
 										<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">any</span></h4>
 									</li>
 								</ul>
@@ -310,6 +368,9 @@
 								<a href="_create_response_handler_.responsescenarios.html#onauthnfailed" class="tsd-kind-icon">on<wbr>Authn<wbr>Failed</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-interface">
+								<a href="_create_response_handler_.responsescenarios.html#oncancel" class="tsd-kind-icon">on<wbr>Cancel</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-interface">
 								<a href="_create_response_handler_.responsescenarios.html#oncreateuser" class="tsd-kind-icon">on<wbr>Create<wbr>User</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-interface">
@@ -317,6 +378,9 @@
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-interface">
 								<a href="_create_response_handler_.responsescenarios.html#onmatch" class="tsd-kind-icon">on<wbr>Match</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-interface">
+								<a href="_create_response_handler_.responsescenarios.html#onnomatch" class="tsd-kind-icon">on<wbr>NoMatch</a>
 							</li>
 						</ul>
 					</li>
