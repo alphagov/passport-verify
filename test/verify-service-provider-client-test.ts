@@ -20,13 +20,13 @@ describe('The passport-verify client', function () {
     attributes: {}
   }
 
-  const exampleAuthenticationFailedResponse = {
-    reason: 'AUTHENTICATION_FAILED',
-    message: 'Authentication failed'
+  const exampleErrorResponse = {
+    code: 422,
+    message: 'Unprocessable Entity'
   }
 
-  const AUTHENTICATION_FAILED_SCENARIO = 'authentication-failed'
   const SUCCESS_SCENARIO = 'success'
+  const ERROR_SCENARIO = 'unprocessable-entity'
 
   const mockVerifyServiceProviderUrl = 'http://localhost:3003'
 
@@ -44,12 +44,12 @@ describe('The passport-verify client', function () {
       req.on('data', (chunk) => data += chunk)
       req.on('end', () => {
         const json = JSON.parse(data)
-        if (json.samlResponse === AUTHENTICATION_FAILED_SCENARIO) {
-          res.statusCode = 401
-          res.end(JSON.stringify(exampleAuthenticationFailedResponse))
-        } else if (json.samlResponse === SUCCESS_SCENARIO) {
+        if (json.samlResponse === SUCCESS_SCENARIO) {
           res.statusCode = 200
           res.end(JSON.stringify(exampleTranslatedResponse))
+        } else if (json.samlResponse === ERROR_SCENARIO) {
+          res.statusCode = 422
+          res.end(JSON.stringify(exampleErrorResponse))
         } else {
           res.statusCode = 400
           res.end(JSON.stringify({
@@ -105,10 +105,10 @@ describe('The passport-verify client', function () {
   it('should resolve error responses', function () {
     const client = new VerifyServiceProviderClient(mockVerifyServiceProviderUrl, logger)
 
-    return client.translateResponse(AUTHENTICATION_FAILED_SCENARIO, 'some-request-id')
+    return client.translateResponse(ERROR_SCENARIO, 'some-request-id')
       .then(response => {
-        assert.equal(response.status, 401)
-        assert.deepEqual(response.body, exampleAuthenticationFailedResponse)
+        assert.equal(response.status, 422)
+        assert.deepEqual(response.body, exampleErrorResponse)
       })
   })
 
