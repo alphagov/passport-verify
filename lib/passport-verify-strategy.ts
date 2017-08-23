@@ -6,54 +6,9 @@ import { Strategy } from 'passport-strategy'
 import * as express from 'express'
 import { createSamlForm } from './saml-form'
 import { default as VerifyServiceProviderClient, Logger } from './verify-service-provider-client'
-
-export interface AuthnRequestResponse {
-  samlRequest: string,
-  requestId: string,
-  ssoLocation: string
-}
-
-export interface Address {
-  lines?: string[],
-  postCode?: string,
-  internationalPostCode?: string,
-  uprn?: string
-}
-
-export interface Attributes {
-  firstName?: VerifiableAttribute<String>,
-  middleName?: VerifiableAttribute<String>,
-  surname?: VerifiableAttribute<String>,
-  dateOfBirth?: VerifiableAttribute<String>,
-  address?: VerifiableAttribute<Address>,
-  cycle3?: string
-}
-
-export interface VerifiableAttribute<T> {
-  value: T,
-  verified: boolean
-}
-
-export interface TranslatedResponseBody {
-  scenario: Scenario,
-  pid: string,
-  levelOfAssurance: string,
-  attributes?: Attributes
-}
-
-export interface ErrorMessage {
-  code: number,
-  message: string
-}
-
-export enum Scenario {
-  SUCCESS_MATCH = 'SUCCESS_MATCH',
-  ACCOUNT_CREATION = 'ACCOUNT_CREATION',
-  NO_MATCH = 'NO_MATCH',
-  CANCELLATION = 'CANCELLATION',
-  AUTHENTICATION_FAILED = 'AUTHENTICATION_FAILED',
-  REQUEST_ERROR = 'REQUEST_ERROR'
-}
+import { AuthnRequestResponse } from './verify-service-provider-api/authn-request-response'
+import { TranslatedResponseBody, Scenario } from './verify-service-provider-api/translated-response-body'
+import { ErrorMessage } from './verify-service-provider-api/error-message'
 
 /**
  * Configuration options and callbacks for the `PassportVerifyStrategy`.
@@ -188,6 +143,9 @@ export function createStrategy (
   saveRequestId: (requestId: string, request: express.Request) => void,
   loadRequestId: (request: express.Request) => string
 ) {
-  const client = new VerifyServiceProviderClient(verifyServiceProviderHost, logger || { info: () => undefined })
+  const client = new VerifyServiceProviderClient(
+    verifyServiceProviderHost,
+    logger || { info: () => undefined, debug: () => undefined, error: () => undefined, warning: () => undefined }
+  )
   return new PassportVerifyStrategy(client, createUser, verifyUser, saveRequestId, loadRequestId)
 }
