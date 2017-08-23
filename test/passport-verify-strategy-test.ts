@@ -1,5 +1,6 @@
 import * as assert from 'assert'
-import { PassportVerifyStrategy, Scenario } from '../lib/passport-verify-strategy'
+import { PassportVerifyStrategy } from '../lib/passport-verify-strategy'
+import { Scenario } from '../lib/verify-service-provider-api/translated-response-body'
 import VerifyServiceProviderClient from '../lib/verify-service-provider-client'
 import * as td from 'testdouble'
 

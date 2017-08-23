@@ -34,14 +34,14 @@
  */
 /** */
 
+import { createStrategy } from './passport-verify-strategy'
 import {
-  createStrategy,
   TranslatedResponseBody,
   Attributes,
   VerifiableAttribute,
   Address,
   Scenario
-} from './passport-verify-strategy'
+} from './verify-service-provider-api/translated-response-body'
 
 import { createResponseHandler } from './create-response-handler'
 

@@ -6,6 +6,9 @@
  */
 /** */
 import * as request from 'request-promise-native'
+import { AuthnRequestResponse } from './verify-service-provider-api/authn-request-response'
+import { TranslatedResponseBody } from './verify-service-provider-api/translated-response-body'
+import { ErrorMessage } from './verify-service-provider-api/error-message'
 
 export interface Logger {
   info (message?: any, ...optionalParams: any[]): void
@@ -18,7 +21,41 @@ export default class VerifyServiceProviderClient {
 
   constructor (private verifyServiceProviderHost: string, private logger: Logger) {}
 
-  sendRequest (endpoint: string, requestBody?: Object): request.RequestPromise {
+  async generateAuthnRequest (): Promise<{ status: number, body: AuthnRequestResponse | ErrorMessage }> {
+    try {
+      const responseBody = await this.sendRequest<AuthnRequestResponse>('/generate-request', { levelOfAssurance: 'LEVEL_2' })
+      this.logger.info('passport-verify', 'authn request generated, request id: ', responseBody.requestId)
+      return {
+        status: 200,
+        body: responseBody
+      }
+    } catch (reason) {
+      this.logger.warning('passport-verify', 'error generating authn request: ', reason, 'Enable debug logging to see full request')
+      return {
+        status: reason.statusCode,
+        body: reason.error
+      }
+    }
+  }
+
+  async translateResponse (samlResponse: string, requestId: string): Promise<{ status: number, body: TranslatedResponseBody | ErrorMessage }> {
+    try {
+      const responseBody = await this.sendRequest<TranslatedResponseBody>('/translate-response', { samlResponse, requestId, levelOfAssurance: 'LEVEL_2' })
+      this.logger.info('passport-verify', 'response translated for request: ', requestId)
+      return {
+        status: 200,
+        body: responseBody
+      }
+    } catch (reason) {
+      this.logger.warning('passport-verify', 'error translating response for request id: ', requestId, reason, 'Enable debug logging to see full request')
+      return {
+        status: reason.statusCode,
+        body: reason.error
+      }
+    }
+  }
+
+  private async sendRequest<T extends AuthnRequestResponse | TranslatedResponseBody> (endpoint: string, requestBody?: Object): Promise<T> {
     const url = this.verifyServiceProviderHost + endpoint
     const headers = { 'Content-Type': 'application/json' }
     this.logger.debug('passport-verify', 'sending request: ', 'POST', url, headers, requestBody || '')
@@ -28,44 +65,6 @@ export default class VerifyServiceProviderClient {
       json: true,
       headers: headers,
       body: requestBody
-    })
-  }
-
-  generateAuthnRequest (): Promise<{ status: number, body: object }> {
-    return this.sendRequest(
-      '/generate-request',
-      { levelOfAssurance: 'LEVEL_2' }
-    ).then(responseBody => {
-      this.logger.info('passport-verify', 'authn request generated, request id: ', responseBody.requestId)
-      return {
-        status: 200,
-        body: responseBody
-      }
-    }).catch(reason => {
-      this.logger.warning('passport-verify', 'error generating authn request: ', reason, 'Enable debug logging to see full request')
-      return {
-        status: reason.statusCode,
-        body: reason.error
-      }
-    })
-  }
-
-  translateResponse (samlResponse: string, requestId: string): Promise<{ status: number, body: object }> {
-    return this.sendRequest(
-      '/translate-response',
-      { 'samlResponse': samlResponse, 'requestId': requestId, levelOfAssurance: 'LEVEL_2' }
-    ).then(responseBody => {
-      this.logger.info('passport-verify', 'response translated for request: ', requestId)
-      return {
-        status: 200,
-        body: responseBody
-      }
-    }).catch(reason => {
-      this.logger.warning('passport-verify', 'error translating response for request id: ', requestId, reason, 'Enable debug logging to see full request')
-      return {
-        status: reason.statusCode,
-        body: reason.error
-      }
     })
   }
 }

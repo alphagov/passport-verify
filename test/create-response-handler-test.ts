@@ -1,6 +1,6 @@
 import * as assert from 'assert'
 import { createResponseHandler, ResponseScenarios } from '../lib/create-response-handler'
-import { TranslatedResponseBody, Scenario } from '../lib/passport-verify-strategy'
+import { TranslatedResponseBody, Scenario } from '../lib/verify-service-provider-api/translated-response-body'
 import * as td from 'testdouble'
 
 function verifyNotCalled (fn: any) {
