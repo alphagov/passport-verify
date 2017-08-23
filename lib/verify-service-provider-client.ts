@@ -9,44 +9,63 @@ import * as request from 'request-promise-native'
 
 export interface Logger {
   info (message?: any, ...optionalParams: any[]): void
+  debug (message?: any, ...optionalParams: any[]): void
+  error (message?: any, ...optionalParams: any[]): void
+  warning (message?: any, ...optionalParams: any[]): void
 }
 
 export default class VerifyServiceProviderClient {
 
   constructor (private verifyServiceProviderHost: string, private logger: Logger) {}
 
-  async _request (method: string, url: string, headers?: any, requestBody?: Object): Promise<{ status: number, body: object }> {
-    this.logger.info('passport-verify', method, url, requestBody || '')
-    try {
-      const responseBody = await request({
-        uri: url,
-        method: method,
-        json: true,
-        headers: headers,
-        body: requestBody
-      })
-      this.logger.info('passport-verify', responseBody)
+  sendRequest (endpoint: string, requestBody?: Object): request.RequestPromise {
+    const url = this.verifyServiceProviderHost + endpoint
+    const headers = { 'Content-Type': 'application/json' }
+    this.logger.debug('passport-verify', 'sending request: ', 'POST', url, headers, requestBody || '')
+    return request({
+      uri: url,
+      method: 'POST',
+      json: true,
+      headers: headers,
+      body: requestBody
+    })
+  }
+
+  generateAuthnRequest (): Promise<{ status: number, body: object }> {
+    return this.sendRequest(
+      '/generate-request',
+      { levelOfAssurance: 'LEVEL_2' }
+    ).then(responseBody => {
+      this.logger.info('passport-verify', 'authn request generated, request id: ', responseBody.requestId)
       return {
         status: 200,
         body: responseBody
       }
-    } catch (reason) {
+    }).catch(reason => {
+      this.logger.warning('passport-verify', 'error generating authn request: ', reason, 'Enable debug logging to see full request')
       return {
         status: reason.statusCode,
         body: reason.error
       }
-    }
+    })
   }
 
-  generateAuthnRequest () {
-    return this._request('POST', this.verifyServiceProviderHost + '/generate-request',
-      { 'Content-Type': 'application/json' },
-      { levelOfAssurance: 'LEVEL_2' })
-  }
-
-  translateResponse (samlResponse: string, requestId: string) {
-    return this._request('POST', this.verifyServiceProviderHost + '/translate-response',
-      { 'Content-Type': 'application/json' },
-      { 'samlResponse': samlResponse, 'requestId': requestId, levelOfAssurance: 'LEVEL_2' })
+  translateResponse (samlResponse: string, requestId: string): Promise<{ status: number, body: object }> {
+    return this.sendRequest(
+      '/translate-response',
+      { 'samlResponse': samlResponse, 'requestId': requestId, levelOfAssurance: 'LEVEL_2' }
+    ).then(responseBody => {
+      this.logger.info('passport-verify', 'response translated for request: ', requestId)
+      return {
+        status: 200,
+        body: responseBody
+      }
+    }).catch(reason => {
+      this.logger.warning('passport-verify', 'error translating response for request id: ', requestId, reason, 'Enable debug logging to see full request')
+      return {
+        status: reason.statusCode,
+        body: reason.error
+      }
+    })
   }
 }

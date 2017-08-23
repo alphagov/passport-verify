@@ -4,8 +4,12 @@ import VerifyServiceProviderClient from '../lib/verify-service-provider-client'
 import * as td from 'testdouble'
 
 describe('The passport-verify client', function () {
-
-  const logger = { info: () => undefined }
+  const dummyLogger = {
+    info: () => undefined,
+    debug: () => undefined,
+    error: () => undefined,
+    warning: () => undefined
+  }
 
   const exampleAuthnRequest = {
     samlRequest: 'some-saml-req',
@@ -83,7 +87,7 @@ describe('The passport-verify client', function () {
   })
 
   it('should generate authnRequest', function () {
-    const client = new VerifyServiceProviderClient(mockVerifyServiceProviderUrl, logger)
+    const client = new VerifyServiceProviderClient(mockVerifyServiceProviderUrl, dummyLogger)
 
     return client.generateAuthnRequest()
       .then(response => {
@@ -93,7 +97,7 @@ describe('The passport-verify client', function () {
   })
 
   it('should translate response body', function () {
-    const client = new VerifyServiceProviderClient(mockVerifyServiceProviderUrl, logger)
+    const client = new VerifyServiceProviderClient(mockVerifyServiceProviderUrl, dummyLogger)
 
     return client.translateResponse(SUCCESS_SCENARIO, 'some-request-id')
       .then(response => {
@@ -103,7 +107,7 @@ describe('The passport-verify client', function () {
   })
 
   it('should resolve error responses', function () {
-    const client = new VerifyServiceProviderClient(mockVerifyServiceProviderUrl, logger)
+    const client = new VerifyServiceProviderClient(mockVerifyServiceProviderUrl, dummyLogger)
 
     return client.translateResponse(ERROR_SCENARIO, 'some-request-id')
       .then(response => {
@@ -112,15 +116,172 @@ describe('The passport-verify client', function () {
       })
   })
 
-  it('should log requests', function () {
-    const testLogger = { info: td.function() as (message?: any, ...optionalParams: any[]) => void }
+  it('should log generate-request requests at debug level', function () {
+    const testLogger = {
+      info: td.function() as (message?: any, ...optionalParams: any[]) => void,
+      debug: td.function() as (message?: any, ...optionalParams: any[]) => void,
+      error: td.function() as (message?: any, ...optionalParams: any[]) => void,
+      warning: td.function() as (message?: any, ...optionalParams: any[]) => void
+    }
     const client = new VerifyServiceProviderClient(mockVerifyServiceProviderUrl, testLogger)
 
     return client.generateAuthnRequest()
       .then(response => {
-        td.verify(testLogger.info('passport-verify', 'POST', 'http://localhost:3003/generate-request', { levelOfAssurance: 'LEVEL_2' }))
-        td.verify(testLogger.info('passport-verify', { samlRequest: 'some-saml-req', requestId: 'some-request-id', ssoLocation: 'http://hub-sso-uri' }))
+        td.verify(testLogger.debug(
+          'passport-verify',
+          'sending request: ',
+          'POST',
+          'http://localhost:3003/generate-request',
+          { 'Content-Type': 'application/json' },
+          { levelOfAssurance: 'LEVEL_2' }
+        ))
+        verifyNumberOfCalls(testLogger.debug, 1)
+        verifyNotCalled(testLogger.warning)
+        verifyNotCalled(testLogger.error)
       })
   })
 
+  it('should log generate-request success responses at info level', () => {
+    const testLogger = {
+      info: td.function() as (message?: any, ...optionalParams: any[]) => void,
+      debug: td.function() as (message?: any, ...optionalParams: any[]) => void,
+      error: td.function() as (message?: any, ...optionalParams: any[]) => void,
+      warning: td.function() as (message?: any, ...optionalParams: any[]) => void
+    }
+    const client = new VerifyServiceProviderClient(mockVerifyServiceProviderUrl, testLogger)
+
+    return client.generateAuthnRequest()
+      .then(response => {
+        td.verify(testLogger.info('passport-verify', 'authn request generated, request id: ', 'some-request-id'))
+        verifyNumberOfCalls(testLogger.info, 1)
+        verifyNotCalled(testLogger.warning)
+        verifyNotCalled(testLogger.error)
+      })
+  })
+
+  describe('with generate-request erroring', () => {
+    const erroringVerifyServiceProviderUrl = 'http://localhost:3004'
+    const erroringVerifyServiceProvider = http.createServer((req, res) => {
+      req.setEncoding('utf8')
+
+      function generateAuthnRequest (req: http.IncomingMessage, res: http.ServerResponse) {
+        res.statusCode = 500
+        res.end(JSON.stringify({ code: 500, message: 'Internal Server Error' }))
+      }
+
+      generateAuthnRequest(req, res)
+    })
+
+    beforeEach((done) => {
+      erroringVerifyServiceProvider.listen(3004, done)
+    })
+
+    afterEach((done) => {
+      erroringVerifyServiceProvider.close(done)
+    })
+
+    it('should log generate-request error responses at warning level', () => {
+      const testLogger = {
+        info: td.function() as (message?: any, ...optionalParams: any[]) => void,
+        debug: td.function() as (message?: any, ...optionalParams: any[]) => void,
+        error: td.function() as (message?: any, ...optionalParams: any[]) => void,
+        warning: td.function() as (message?: any, ...optionalParams: any[]) => void
+      }
+      const client = new VerifyServiceProviderClient(erroringVerifyServiceProviderUrl, testLogger)
+
+      return client.generateAuthnRequest()
+        .then(response => {
+          td.verify(testLogger.warning(
+            'passport-verify',
+            'error generating authn request: ',
+            errorThatMatches(500, 'Internal Server Error'),
+            'Enable debug logging to see full request'
+          ))
+          verifyNumberOfCalls(testLogger.warning, 1)
+          verifyNotCalled(testLogger.info)
+          verifyNotCalled(testLogger.error)
+        })
+    })
+  })
+
+  it('should log translate-response requests at debug level', function () {
+    const testLogger = {
+      info: td.function() as (message?: any, ...optionalParams: any[]) => void,
+      debug: td.function() as (message?: any, ...optionalParams: any[]) => void,
+      error: td.function() as (message?: any, ...optionalParams: any[]) => void,
+      warning: td.function() as (message?: any, ...optionalParams: any[]) => void
+    }
+    const client = new VerifyServiceProviderClient(mockVerifyServiceProviderUrl, testLogger)
+
+    return client.translateResponse(SUCCESS_SCENARIO, 'some-request-id')
+      .then(response => {
+        td.verify(testLogger.debug(
+          'passport-verify',
+          'sending request: ',
+          'POST',
+          'http://localhost:3003/translate-response',
+          { 'Content-Type': 'application/json' },
+          { samlResponse: 'success', requestId: 'some-request-id', levelOfAssurance: 'LEVEL_2' }
+        ))
+        verifyNumberOfCalls(testLogger.debug, 1)
+        verifyNotCalled(testLogger.warning)
+        verifyNotCalled(testLogger.error)
+      })
+  })
+
+  it('should log translate-response success responses at info level', () => {
+    const testLogger = {
+      info: td.function() as (message?: any, ...optionalParams: any[]) => void,
+      debug: td.function() as (message?: any, ...optionalParams: any[]) => void,
+      error: td.function() as (message?: any, ...optionalParams: any[]) => void,
+      warning: td.function() as (message?: any, ...optionalParams: any[]) => void
+    }
+    const client = new VerifyServiceProviderClient(mockVerifyServiceProviderUrl, testLogger)
+
+    return client.translateResponse(SUCCESS_SCENARIO, 'some-request-id')
+      .then(response => {
+        td.verify(testLogger.info('passport-verify', 'response translated for request: ', 'some-request-id'))
+        verifyNumberOfCalls(testLogger.info, 1)
+        verifyNotCalled(testLogger.warning)
+        verifyNotCalled(testLogger.error)
+      })
+  })
+
+  it('should log translate-response error responses at warning level', function () {
+    const testLogger = {
+      info: td.function() as (message?: any, ...optionalParams: any[]) => void,
+      debug: td.function() as (message?: any, ...optionalParams: any[]) => void,
+      error: td.function() as (message?: any, ...optionalParams: any[]) => void,
+      warning: td.function() as (message?: any, ...optionalParams: any[]) => void
+    }
+    const client = new VerifyServiceProviderClient(mockVerifyServiceProviderUrl, testLogger)
+
+    return client.translateResponse(ERROR_SCENARIO, 'some-request-id')
+      .then(response => {
+        td.verify(testLogger.warning(
+          'passport-verify',
+          'error translating response for request id: ',
+          'some-request-id',
+          errorThatMatches(422, 'Unprocessable Entity'),
+          'Enable debug logging to see full request'
+        ))
+        verifyNumberOfCalls(testLogger.warning, 1)
+        verifyNotCalled(testLogger.info)
+        verifyNotCalled(testLogger.error)
+      })
+  })
+
+  function verifyNotCalled (func: (...args: any[]) => any): void {
+    td.verify(func(), { times: 0, ignoreExtraArgs: true })
+  }
+
+  function verifyNumberOfCalls (func: (...args: any[]) => any, expectedCalls: number): void {
+    td.verify(func(), { times: expectedCalls, ignoreExtraArgs: true })
+  }
+
+  function errorThatMatches (code: number, message: string): any {
+    return td.matchers.argThat((actual: any) => {
+      return actual.statusCode === code && actual.error.message === message
+    })
+  }
 })

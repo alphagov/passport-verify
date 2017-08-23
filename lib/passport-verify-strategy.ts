@@ -188,6 +188,9 @@ export function createStrategy (
   saveRequestId: (requestId: string, request: express.Request) => void,
   loadRequestId: (request: express.Request) => string
 ) {
-  const client = new VerifyServiceProviderClient(verifyServiceProviderHost, logger || { info: () => undefined })
+  const client = new VerifyServiceProviderClient(
+    verifyServiceProviderHost,
+    logger || { info: () => undefined, debug: () => undefined, error: () => undefined, warning: () => undefined }
+  )
   return new PassportVerifyStrategy(client, createUser, verifyUser, saveRequestId, loadRequestId)
 }
