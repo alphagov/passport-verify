@@ -8,7 +8,7 @@ describe('The passport-verify client', function () {
     info: () => undefined,
     debug: () => undefined,
     error: () => undefined,
-    warning: () => undefined
+    warn: () => undefined
   }
 
   const exampleAuthnRequest = {
@@ -121,7 +121,7 @@ describe('The passport-verify client', function () {
       info: td.function() as (message?: any, ...optionalParams: any[]) => void,
       debug: td.function() as (message?: any, ...optionalParams: any[]) => void,
       error: td.function() as (message?: any, ...optionalParams: any[]) => void,
-      warning: td.function() as (message?: any, ...optionalParams: any[]) => void
+      warn: td.function() as (message?: any, ...optionalParams: any[]) => void
     }
     const client = new VerifyServiceProviderClient(mockVerifyServiceProviderUrl, testLogger)
 
@@ -136,7 +136,7 @@ describe('The passport-verify client', function () {
           { levelOfAssurance: 'LEVEL_2' }
         ))
         verifyNumberOfCalls(testLogger.debug, 1)
-        verifyNotCalled(testLogger.warning)
+        verifyNotCalled(testLogger.warn)
         verifyNotCalled(testLogger.error)
       })
   })
@@ -146,7 +146,7 @@ describe('The passport-verify client', function () {
       info: td.function() as (message?: any, ...optionalParams: any[]) => void,
       debug: td.function() as (message?: any, ...optionalParams: any[]) => void,
       error: td.function() as (message?: any, ...optionalParams: any[]) => void,
-      warning: td.function() as (message?: any, ...optionalParams: any[]) => void
+      warn: td.function() as (message?: any, ...optionalParams: any[]) => void
     }
     const client = new VerifyServiceProviderClient(mockVerifyServiceProviderUrl, testLogger)
 
@@ -154,7 +154,7 @@ describe('The passport-verify client', function () {
       .then(response => {
         td.verify(testLogger.info('passport-verify', 'authn request generated, request id: ', 'some-request-id'))
         verifyNumberOfCalls(testLogger.info, 1)
-        verifyNotCalled(testLogger.warning)
+        verifyNotCalled(testLogger.warn)
         verifyNotCalled(testLogger.error)
       })
   })
@@ -185,19 +185,19 @@ describe('The passport-verify client', function () {
         info: td.function() as (message?: any, ...optionalParams: any[]) => void,
         debug: td.function() as (message?: any, ...optionalParams: any[]) => void,
         error: td.function() as (message?: any, ...optionalParams: any[]) => void,
-        warning: td.function() as (message?: any, ...optionalParams: any[]) => void
+        warn: td.function() as (message?: any, ...optionalParams: any[]) => void
       }
       const client = new VerifyServiceProviderClient(erroringVerifyServiceProviderUrl, testLogger)
 
       return client.generateAuthnRequest()
         .then(response => {
-          td.verify(testLogger.warning(
+          td.verify(testLogger.warn(
             'passport-verify',
             'error generating authn request: ',
             errorThatMatches(500, 'Internal Server Error'),
             'Enable debug logging to see full request'
           ))
-          verifyNumberOfCalls(testLogger.warning, 1)
+          verifyNumberOfCalls(testLogger.warn, 1)
           verifyNotCalled(testLogger.info)
           verifyNotCalled(testLogger.error)
         })
@@ -209,7 +209,7 @@ describe('The passport-verify client', function () {
       info: td.function() as (message?: any, ...optionalParams: any[]) => void,
       debug: td.function() as (message?: any, ...optionalParams: any[]) => void,
       error: td.function() as (message?: any, ...optionalParams: any[]) => void,
-      warning: td.function() as (message?: any, ...optionalParams: any[]) => void
+      warn: td.function() as (message?: any, ...optionalParams: any[]) => void
     }
     const client = new VerifyServiceProviderClient(mockVerifyServiceProviderUrl, testLogger)
 
@@ -224,7 +224,7 @@ describe('The passport-verify client', function () {
           { samlResponse: 'success', requestId: 'some-request-id', levelOfAssurance: 'LEVEL_2' }
         ))
         verifyNumberOfCalls(testLogger.debug, 1)
-        verifyNotCalled(testLogger.warning)
+        verifyNotCalled(testLogger.warn)
         verifyNotCalled(testLogger.error)
       })
   })
@@ -234,7 +234,7 @@ describe('The passport-verify client', function () {
       info: td.function() as (message?: any, ...optionalParams: any[]) => void,
       debug: td.function() as (message?: any, ...optionalParams: any[]) => void,
       error: td.function() as (message?: any, ...optionalParams: any[]) => void,
-      warning: td.function() as (message?: any, ...optionalParams: any[]) => void
+      warn: td.function() as (message?: any, ...optionalParams: any[]) => void
     }
     const client = new VerifyServiceProviderClient(mockVerifyServiceProviderUrl, testLogger)
 
@@ -242,7 +242,7 @@ describe('The passport-verify client', function () {
       .then(response => {
         td.verify(testLogger.info('passport-verify', 'response translated for request: ', 'some-request-id'))
         verifyNumberOfCalls(testLogger.info, 1)
-        verifyNotCalled(testLogger.warning)
+        verifyNotCalled(testLogger.warn)
         verifyNotCalled(testLogger.error)
       })
   })
@@ -252,20 +252,20 @@ describe('The passport-verify client', function () {
       info: td.function() as (message?: any, ...optionalParams: any[]) => void,
       debug: td.function() as (message?: any, ...optionalParams: any[]) => void,
       error: td.function() as (message?: any, ...optionalParams: any[]) => void,
-      warning: td.function() as (message?: any, ...optionalParams: any[]) => void
+      warn: td.function() as (message?: any, ...optionalParams: any[]) => void
     }
     const client = new VerifyServiceProviderClient(mockVerifyServiceProviderUrl, testLogger)
 
     return client.translateResponse(ERROR_SCENARIO, 'some-request-id')
       .then(response => {
-        td.verify(testLogger.warning(
+        td.verify(testLogger.warn(
           'passport-verify',
           'error translating response for request id: ',
           'some-request-id',
           errorThatMatches(422, 'Unprocessable Entity'),
           'Enable debug logging to see full request'
         ))
-        verifyNumberOfCalls(testLogger.warning, 1)
+        verifyNumberOfCalls(testLogger.warn, 1)
         verifyNotCalled(testLogger.info)
         verifyNotCalled(testLogger.error)
       })

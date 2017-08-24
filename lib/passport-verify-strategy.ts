@@ -145,7 +145,7 @@ export function createStrategy (
 ) {
   const client = new VerifyServiceProviderClient(
     verifyServiceProviderHost,
-    logger || { info: () => undefined, debug: () => undefined, error: () => undefined, warning: () => undefined }
+    logger || { info: () => undefined, debug: () => undefined, error: () => undefined, warn: () => undefined }
   )
   return new PassportVerifyStrategy(client, createUser, verifyUser, saveRequestId, loadRequestId)
 }

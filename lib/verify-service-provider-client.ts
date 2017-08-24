@@ -14,7 +14,7 @@ export interface Logger {
   info (message?: any, ...optionalParams: any[]): void
   debug (message?: any, ...optionalParams: any[]): void
   error (message?: any, ...optionalParams: any[]): void
-  warning (message?: any, ...optionalParams: any[]): void
+  warn (message?: any, ...optionalParams: any[]): void
 }
 
 export default class VerifyServiceProviderClient {
@@ -30,7 +30,7 @@ export default class VerifyServiceProviderClient {
         body: responseBody
       }
     } catch (reason) {
-      this.logger.warning('passport-verify', 'error generating authn request: ', reason, 'Enable debug logging to see full request')
+      this.logger.warn('passport-verify', 'error generating authn request: ', reason, 'Enable debug logging to see full request')
       return {
         status: reason.statusCode,
         body: reason.error
@@ -47,7 +47,7 @@ export default class VerifyServiceProviderClient {
         body: responseBody
       }
     } catch (reason) {
-      this.logger.warning('passport-verify', 'error translating response for request id: ', requestId, reason, 'Enable debug logging to see full request')
+      this.logger.warn('passport-verify', 'error translating response for request id: ', requestId, reason, 'Enable debug logging to see full request')
       return {
         status: reason.statusCode,
         body: reason.error
