@@ -3,7 +3,7 @@
 <head>
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<title>AuthnRequestResponse | passport-verify</title>
+	<title>TranslatedResponseBody | passport-verify</title>
 	<meta name="description" content="">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link rel="stylesheet" href="../assets/css/main.css">
@@ -56,24 +56,32 @@
 					<a href="../index.html">Globals</a>
 				</li>
 				<li>
-					<a href="../modules/_passport_verify_strategy_.html">&quot;passport-verify-strategy&quot;</a>
+					<a href="../modules/_verify_service_provider_api_translated_response_body_.html">&quot;verify-service-provider-api/translated-response-body&quot;</a>
 				</li>
 				<li>
-					<a href="_passport_verify_strategy_.authnrequestresponse.html">AuthnRequestResponse</a>
+					<a href="_verify_service_provider_api_translated_response_body_.translatedresponsebody.html">TranslatedResponseBody</a>
 				</li>
 			</ul>
-			<h1>Interface AuthnRequestResponse</h1>
+			<h1>Interface TranslatedResponseBody</h1>
 		</div>
 	</div>
 </header>
 <div class="container container-main">
 	<div class="row">
 		<div class="col-8 col-content">
+			<section class="tsd-panel tsd-comment">
+				<div class="tsd-comment tsd-typography">
+					<div class="lead">
+						<p>Represents the JSON returned by a success response from the
+						<code>/translate-response</code> endpoint in the verify-service-provider</p>
+					</div>
+				</div>
+			</section>
 			<section class="tsd-panel tsd-hierarchy">
 				<h3>Hierarchy</h3>
 				<ul class="tsd-hierarchy">
 					<li>
-						<span class="target">AuthnRequestResponse</span>
+						<span class="target">TranslatedResponseBody</span>
 					</li>
 				</ul>
 			</section>
@@ -84,9 +92,10 @@
 						<section class="tsd-index-section ">
 							<h3>Properties</h3>
 							<ul class="tsd-index-list">
-								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="_passport_verify_strategy_.authnrequestresponse.html#requestid" class="tsd-kind-icon">request<wbr>Id</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="_passport_verify_strategy_.authnrequestresponse.html#samlrequest" class="tsd-kind-icon">saml<wbr>Request</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="_passport_verify_strategy_.authnrequestresponse.html#ssolocation" class="tsd-kind-icon">sso<wbr>Location</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="_verify_service_provider_api_translated_response_body_.translatedresponsebody.html#attributes" class="tsd-kind-icon">attributes</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="_verify_service_provider_api_translated_response_body_.translatedresponsebody.html#levelofassurance" class="tsd-kind-icon">level<wbr>OfAssurance</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="_verify_service_provider_api_translated_response_body_.translatedresponsebody.html#pid" class="tsd-kind-icon">pid</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="_verify_service_provider_api_translated_response_body_.translatedresponsebody.html#scenario" class="tsd-kind-icon">scenario</a></li>
 							</ul>
 						</section>
 					</div>
@@ -95,32 +104,42 @@
 			<section class="tsd-panel-group tsd-member-group ">
 				<h2>Properties</h2>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
-					<a name="requestid" class="tsd-anchor"></a>
-					<h3>request<wbr>Id</h3>
-					<div class="tsd-signature tsd-kind-icon">request<wbr>Id<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span></div>
+					<a name="attributes" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagOptional">Optional</span> attributes</h3>
+					<div class="tsd-signature tsd-kind-icon">attributes<span class="tsd-signature-symbol">:</span> <a href="_verify_service_provider_api_translated_response_body_.attributes.html" class="tsd-signature-type">Attributes</a></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/alphagov/passport-verify/blob/e8fca0b/lib/passport-verify-strategy.ts#L12">passport-verify-strategy.ts:12</a></li>
+							<li>Defined in <a href="https://github.com/alphagov/passport-verify/blob/71cc0a8/lib/verify-service-provider-api/translated-response-body.ts#L14">verify-service-provider-api/translated-response-body.ts:14</a></li>
 						</ul>
 					</aside>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
-					<a name="samlrequest" class="tsd-anchor"></a>
-					<h3>saml<wbr>Request</h3>
-					<div class="tsd-signature tsd-kind-icon">saml<wbr>Request<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span></div>
+					<a name="levelofassurance" class="tsd-anchor"></a>
+					<h3>level<wbr>OfAssurance</h3>
+					<div class="tsd-signature tsd-kind-icon">level<wbr>OfAssurance<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/alphagov/passport-verify/blob/e8fca0b/lib/passport-verify-strategy.ts#L11">passport-verify-strategy.ts:11</a></li>
+							<li>Defined in <a href="https://github.com/alphagov/passport-verify/blob/71cc0a8/lib/verify-service-provider-api/translated-response-body.ts#L13">verify-service-provider-api/translated-response-body.ts:13</a></li>
 						</ul>
 					</aside>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
-					<a name="ssolocation" class="tsd-anchor"></a>
-					<h3>sso<wbr>Location</h3>
-					<div class="tsd-signature tsd-kind-icon">sso<wbr>Location<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span></div>
+					<a name="pid" class="tsd-anchor"></a>
+					<h3>pid</h3>
+					<div class="tsd-signature tsd-kind-icon">pid<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/alphagov/passport-verify/blob/e8fca0b/lib/passport-verify-strategy.ts#L13">passport-verify-strategy.ts:13</a></li>
+							<li>Defined in <a href="https://github.com/alphagov/passport-verify/blob/71cc0a8/lib/verify-service-provider-api/translated-response-body.ts#L12">verify-service-provider-api/translated-response-body.ts:12</a></li>
+						</ul>
+					</aside>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
+					<a name="scenario" class="tsd-anchor"></a>
+					<h3>scenario</h3>
+					<div class="tsd-signature tsd-kind-icon">scenario<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">"SUCCESS_MATCH"</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">"ACCOUNT_CREATION"</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">"NO_MATCH"</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">"CANCELLATION"</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">"AUTHENTICATION_FAILED"</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">"REQUEST_ERROR"</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in <a href="https://github.com/alphagov/passport-verify/blob/71cc0a8/lib/verify-service-provider-api/translated-response-body.ts#L11">verify-service-provider-api/translated-response-body.ts:11</a></li>
 						</ul>
 					</aside>
 				</section>
@@ -138,8 +157,17 @@
 					<li class=" tsd-kind-external-module">
 						<a href="../modules/_passport_verify_.html">"passport-<wbr>verify"</a>
 					</li>
-					<li class="current tsd-kind-external-module">
+					<li class=" tsd-kind-external-module">
 						<a href="../modules/_passport_verify_strategy_.html">"passport-<wbr>verify-<wbr>strategy"</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="../modules/_verify_service_provider_api_authn_request_response_.html">"verify-<wbr>service-<wbr>provider-<wbr>api/authn-<wbr>request-<wbr>response"</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="../modules/_verify_service_provider_api_error_message_.html">"verify-<wbr>service-<wbr>provider-<wbr>api/error-<wbr>message"</a>
+					</li>
+					<li class="current tsd-kind-external-module">
+						<a href="../modules/_verify_service_provider_api_translated_response_body_.html">"verify-<wbr>service-<wbr>provider-<wbr>api/translated-<wbr>response-<wbr>body"</a>
 					</li>
 					<li class=" tsd-kind-external-module">
 						<a href="../modules/_verify_service_provider_client_.html">"verify-<wbr>service-<wbr>provider-<wbr>client"</a>
@@ -149,49 +177,37 @@
 			<nav class="tsd-navigation secondary menu-sticky">
 				<ul class="before-current">
 					<li class=" tsd-kind-enum tsd-parent-kind-external-module">
-						<a href="../enums/_passport_verify_strategy_.scenario.html" class="tsd-kind-icon">Scenario</a>
-					</li>
-					<li class=" tsd-kind-class tsd-parent-kind-external-module">
-						<a href="../classes/_passport_verify_strategy_.passportverifystrategy.html" class="tsd-kind-icon">Passport<wbr>Verify<wbr>Strategy</a>
+						<a href="../enums/_verify_service_provider_api_translated_response_body_.scenario.html" class="tsd-kind-icon">Scenario</a>
 					</li>
 					<li class=" tsd-kind-interface tsd-parent-kind-external-module">
-						<a href="_passport_verify_strategy_.address.html" class="tsd-kind-icon">Address</a>
+						<a href="_verify_service_provider_api_translated_response_body_.address.html" class="tsd-kind-icon">Address</a>
 					</li>
 					<li class=" tsd-kind-interface tsd-parent-kind-external-module">
-						<a href="_passport_verify_strategy_.attributes.html" class="tsd-kind-icon">Attributes</a>
+						<a href="_verify_service_provider_api_translated_response_body_.attributes.html" class="tsd-kind-icon">Attributes</a>
 					</li>
 				</ul>
 				<ul class="current">
 					<li class="current tsd-kind-interface tsd-parent-kind-external-module">
-						<a href="_passport_verify_strategy_.authnrequestresponse.html" class="tsd-kind-icon">Authn<wbr>Request<wbr>Response</a>
+						<a href="_verify_service_provider_api_translated_response_body_.translatedresponsebody.html" class="tsd-kind-icon">Translated<wbr>Response<wbr>Body</a>
 						<ul>
 							<li class=" tsd-kind-property tsd-parent-kind-interface">
-								<a href="_passport_verify_strategy_.authnrequestresponse.html#requestid" class="tsd-kind-icon">request<wbr>Id</a>
+								<a href="_verify_service_provider_api_translated_response_body_.translatedresponsebody.html#attributes" class="tsd-kind-icon">attributes</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-interface">
-								<a href="_passport_verify_strategy_.authnrequestresponse.html#samlrequest" class="tsd-kind-icon">saml<wbr>Request</a>
+								<a href="_verify_service_provider_api_translated_response_body_.translatedresponsebody.html#levelofassurance" class="tsd-kind-icon">level<wbr>OfAssurance</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-interface">
-								<a href="_passport_verify_strategy_.authnrequestresponse.html#ssolocation" class="tsd-kind-icon">sso<wbr>Location</a>
+								<a href="_verify_service_provider_api_translated_response_body_.translatedresponsebody.html#pid" class="tsd-kind-icon">pid</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-interface">
+								<a href="_verify_service_provider_api_translated_response_body_.translatedresponsebody.html#scenario" class="tsd-kind-icon">scenario</a>
 							</li>
 						</ul>
 					</li>
 				</ul>
 				<ul class="after-current">
-					<li class=" tsd-kind-interface tsd-parent-kind-external-module">
-						<a href="_passport_verify_strategy_.errormessage.html" class="tsd-kind-icon">Error<wbr>Message</a>
-					</li>
-					<li class=" tsd-kind-interface tsd-parent-kind-external-module">
-						<a href="_passport_verify_strategy_.passportverifyoptions.html" class="tsd-kind-icon">Passport<wbr>Verify<wbr>Options</a>
-					</li>
-					<li class=" tsd-kind-interface tsd-parent-kind-external-module">
-						<a href="_passport_verify_strategy_.translatedresponsebody.html" class="tsd-kind-icon">Translated<wbr>Response<wbr>Body</a>
-					</li>
 					<li class=" tsd-kind-interface tsd-parent-kind-external-module tsd-has-type-parameter">
-						<a href="_passport_verify_strategy_.verifiableattribute.html" class="tsd-kind-icon">Verifiable<wbr>Attribute</a>
-					</li>
-					<li class=" tsd-kind-function tsd-parent-kind-external-module">
-						<a href="../modules/_passport_verify_strategy_.html#createstrategy" class="tsd-kind-icon">create<wbr>Strategy</a>
+						<a href="_verify_service_provider_api_translated_response_body_.verifiableattribute.html" class="tsd-kind-icon">Verifiable<wbr>Attribute</a>
 					</li>
 				</ul>
 			</nav>
