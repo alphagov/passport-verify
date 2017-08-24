@@ -6,7 +6,7 @@ import * as td from 'testdouble'
 describe('The passport-verify client', function () {
   const dummyLogger = {
     info: () => undefined,
-    debug: () => undefined,
+    trace: () => undefined,
     error: () => undefined,
     warn: () => undefined
   }
@@ -116,10 +116,10 @@ describe('The passport-verify client', function () {
       })
   })
 
-  it('should log generate-request requests at debug level', function () {
+  it('should log generate-request requests at trace level', function () {
     const testLogger = {
       info: td.function() as (message?: any, ...optionalParams: any[]) => void,
-      debug: td.function() as (message?: any, ...optionalParams: any[]) => void,
+      trace: td.function() as (message?: any, ...optionalParams: any[]) => void,
       error: td.function() as (message?: any, ...optionalParams: any[]) => void,
       warn: td.function() as (message?: any, ...optionalParams: any[]) => void
     }
@@ -127,7 +127,7 @@ describe('The passport-verify client', function () {
 
     return client.generateAuthnRequest()
       .then(response => {
-        td.verify(testLogger.debug(
+        td.verify(testLogger.trace(
           'passport-verify',
           'sending request: ',
           'POST',
@@ -135,7 +135,7 @@ describe('The passport-verify client', function () {
           { 'Content-Type': 'application/json' },
           { levelOfAssurance: 'LEVEL_2' }
         ))
-        verifyNumberOfCalls(testLogger.debug, 1)
+        verifyNumberOfCalls(testLogger.trace, 1)
         verifyNotCalled(testLogger.warn)
         verifyNotCalled(testLogger.error)
       })
@@ -144,7 +144,7 @@ describe('The passport-verify client', function () {
   it('should log generate-request success responses at info level', () => {
     const testLogger = {
       info: td.function() as (message?: any, ...optionalParams: any[]) => void,
-      debug: td.function() as (message?: any, ...optionalParams: any[]) => void,
+      trace: td.function() as (message?: any, ...optionalParams: any[]) => void,
       error: td.function() as (message?: any, ...optionalParams: any[]) => void,
       warn: td.function() as (message?: any, ...optionalParams: any[]) => void
     }
@@ -183,7 +183,7 @@ describe('The passport-verify client', function () {
     it('should log generate-request error responses at warning level', () => {
       const testLogger = {
         info: td.function() as (message?: any, ...optionalParams: any[]) => void,
-        debug: td.function() as (message?: any, ...optionalParams: any[]) => void,
+        trace: td.function() as (message?: any, ...optionalParams: any[]) => void,
         error: td.function() as (message?: any, ...optionalParams: any[]) => void,
         warn: td.function() as (message?: any, ...optionalParams: any[]) => void
       }
@@ -195,7 +195,7 @@ describe('The passport-verify client', function () {
             'passport-verify',
             'error generating authn request: ',
             errorThatMatches(500, 'Internal Server Error'),
-            'Enable debug logging to see full request'
+            'Enable trace logging to see full request'
           ))
           verifyNumberOfCalls(testLogger.warn, 1)
           verifyNotCalled(testLogger.info)
@@ -204,10 +204,10 @@ describe('The passport-verify client', function () {
     })
   })
 
-  it('should log translate-response requests at debug level', function () {
+  it('should log translate-response requests at trace level', function () {
     const testLogger = {
       info: td.function() as (message?: any, ...optionalParams: any[]) => void,
-      debug: td.function() as (message?: any, ...optionalParams: any[]) => void,
+      trace: td.function() as (message?: any, ...optionalParams: any[]) => void,
       error: td.function() as (message?: any, ...optionalParams: any[]) => void,
       warn: td.function() as (message?: any, ...optionalParams: any[]) => void
     }
@@ -215,7 +215,7 @@ describe('The passport-verify client', function () {
 
     return client.translateResponse(SUCCESS_SCENARIO, 'some-request-id')
       .then(response => {
-        td.verify(testLogger.debug(
+        td.verify(testLogger.trace(
           'passport-verify',
           'sending request: ',
           'POST',
@@ -223,7 +223,7 @@ describe('The passport-verify client', function () {
           { 'Content-Type': 'application/json' },
           { samlResponse: 'success', requestId: 'some-request-id', levelOfAssurance: 'LEVEL_2' }
         ))
-        verifyNumberOfCalls(testLogger.debug, 1)
+        verifyNumberOfCalls(testLogger.trace, 1)
         verifyNotCalled(testLogger.warn)
         verifyNotCalled(testLogger.error)
       })
@@ -232,7 +232,7 @@ describe('The passport-verify client', function () {
   it('should log translate-response success responses at info level', () => {
     const testLogger = {
       info: td.function() as (message?: any, ...optionalParams: any[]) => void,
-      debug: td.function() as (message?: any, ...optionalParams: any[]) => void,
+      trace: td.function() as (message?: any, ...optionalParams: any[]) => void,
       error: td.function() as (message?: any, ...optionalParams: any[]) => void,
       warn: td.function() as (message?: any, ...optionalParams: any[]) => void
     }
@@ -250,7 +250,7 @@ describe('The passport-verify client', function () {
   it('should log translate-response error responses at warning level', function () {
     const testLogger = {
       info: td.function() as (message?: any, ...optionalParams: any[]) => void,
-      debug: td.function() as (message?: any, ...optionalParams: any[]) => void,
+      trace: td.function() as (message?: any, ...optionalParams: any[]) => void,
       error: td.function() as (message?: any, ...optionalParams: any[]) => void,
       warn: td.function() as (message?: any, ...optionalParams: any[]) => void
     }
@@ -263,7 +263,7 @@ describe('The passport-verify client', function () {
           'error translating response for request id: ',
           'some-request-id',
           errorThatMatches(422, 'Unprocessable Entity'),
-          'Enable debug logging to see full request'
+          'Enable trace logging to see full request'
         ))
         verifyNumberOfCalls(testLogger.warn, 1)
         verifyNotCalled(testLogger.info)

@@ -1,6 +1,6 @@
 {
   "name": "passport-verify",
-  "version": "0.6.0",
+  "version": "0.7.0",
   "description": "A passport.js strategy for authenticating with Verify and Verify Service Provider",
   "repository": "https://github.com/alphagov/passport-verify",
   "bugs": "https://github.com/alphagov/passport-verify/issues",

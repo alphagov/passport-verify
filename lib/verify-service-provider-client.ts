@@ -12,7 +12,7 @@ import { ErrorMessage } from './verify-service-provider-api/error-message'
 
 export interface Logger {
   info (message?: any, ...optionalParams: any[]): void
-  debug (message?: any, ...optionalParams: any[]): void
+  trace (message?: any, ...optionalParams: any[]): void
   error (message?: any, ...optionalParams: any[]): void
   warn (message?: any, ...optionalParams: any[]): void
 }
@@ -30,7 +30,7 @@ export default class VerifyServiceProviderClient {
         body: responseBody
       }
     } catch (reason) {
-      this.logger.warn('passport-verify', 'error generating authn request: ', reason, 'Enable debug logging to see full request')
+      this.logger.warn('passport-verify', 'error generating authn request: ', reason, 'Enable trace logging to see full request')
       return {
         status: reason.statusCode,
         body: reason.error
@@ -47,7 +47,7 @@ export default class VerifyServiceProviderClient {
         body: responseBody
       }
     } catch (reason) {
-      this.logger.warn('passport-verify', 'error translating response for request id: ', requestId, reason, 'Enable debug logging to see full request')
+      this.logger.warn('passport-verify', 'error translating response for request id: ', requestId, reason, 'Enable trace logging to see full request')
       return {
         status: reason.statusCode,
         body: reason.error
@@ -58,7 +58,7 @@ export default class VerifyServiceProviderClient {
   private async sendRequest<T extends AuthnRequestResponse | TranslatedResponseBody> (endpoint: string, requestBody?: Object): Promise<T> {
     const url = this.verifyServiceProviderHost + endpoint
     const headers = { 'Content-Type': 'application/json' }
-    this.logger.debug('passport-verify', 'sending request: ', 'POST', url, headers, requestBody || '')
+    this.logger.trace('passport-verify', 'sending request: ', 'POST', url, headers, requestBody || '')
     return request({
       uri: url,
       method: 'POST',
