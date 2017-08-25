@@ -5,7 +5,7 @@
 import { Strategy } from 'passport-strategy'
 import * as express from 'express'
 import { createSamlForm } from './saml-form'
-import { default as VerifyServiceProviderClient, Logger } from './verify-service-provider-client'
+import VerifyServiceProviderClient from './verify-service-provider-client'
 import { AuthnRequestResponse } from './verify-service-provider-api/authn-request-response'
 import { TranslatedResponseBody, Scenario } from './verify-service-provider-api/translated-response-body'
 import { ErrorMessage } from './verify-service-provider-api/error-message'
@@ -117,8 +117,6 @@ export class PassportVerifyStrategy extends Strategy {
  * Creates an instance of [[PassportVerifyStrategy]]
  *
  * @param verifyServiceProviderHost The URL that the Verify Service Provider is running on (e.g. http://localhost:50400)
- * @param logger A logger for the strategy. If you don't want the strategy
- * to log you can pass an object with no-operation methods.
  * @param createUser A callback that will be invoked when a response with a new user is received.
  * The `user` object will contain the users' attributes (i.e. firstName, surname etc.).
  * Your callback should store details of the user in your datastore and return an object representing the user.
@@ -137,15 +135,11 @@ export class PassportVerifyStrategy extends Strategy {
  */
 export function createStrategy (
   verifyServiceProviderHost: string,
-  logger: Logger,
   createUser: (user: TranslatedResponseBody) => object | false,
   verifyUser: (user: TranslatedResponseBody) => object | false,
   saveRequestId: (requestId: string, request: express.Request) => void,
   loadRequestId: (request: express.Request) => string
 ) {
-  const client = new VerifyServiceProviderClient(
-    verifyServiceProviderHost,
-    logger || { info: () => undefined, trace: () => undefined, error: () => undefined, warn: () => undefined }
-  )
+  const client = new VerifyServiceProviderClient(verifyServiceProviderHost)
   return new PassportVerifyStrategy(client, createUser, verifyUser, saveRequestId, loadRequestId)
 }

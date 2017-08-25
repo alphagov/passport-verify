@@ -7,7 +7,6 @@
  * const passportVerify = require('passport-verify')
  * passport.use(passportVerify.createStrategy(
  *   verifyServiceProviderHost,
- *   logger,
  *   function createUser (user) { },
  *   function verifyUser (user) { },
  *   function saveRequestId (requestId, request) { },
