@@ -117,8 +117,6 @@ export class PassportVerifyStrategy extends Strategy {
  * Creates an instance of [[PassportVerifyStrategy]]
  *
  * @param verifyServiceProviderHost The URL that the Verify Service Provider is running on (e.g. http://localhost:50400)
- * @param logger A logger for the strategy. If you don't want the strategy
- * to log you can pass an object with no-operation methods.
  * @param createUser A callback that will be invoked when a response with a new user is received.
  * The `user` object will contain the users' attributes (i.e. firstName, surname etc.).
  * Your callback should store details of the user in your datastore and return an object representing the user.

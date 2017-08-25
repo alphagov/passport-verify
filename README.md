@@ -39,9 +39,6 @@ Usage
      // verifyServiceProviderHost
      'http://localhost:50400',
 
-     // logger
-     console,
-
      // A callback for a new user authentication.
      // This function is called at the end of the authentication flow
      // with a user user object that contains details of the user in attributes.
