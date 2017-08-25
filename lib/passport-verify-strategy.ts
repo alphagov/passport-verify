@@ -5,7 +5,7 @@
 import { Strategy } from 'passport-strategy'
 import * as express from 'express'
 import { createSamlForm } from './saml-form'
-import { default as VerifyServiceProviderClient, Logger } from './verify-service-provider-client'
+import VerifyServiceProviderClient from './verify-service-provider-client'
 import { AuthnRequestResponse } from './verify-service-provider-api/authn-request-response'
 import { TranslatedResponseBody, Scenario } from './verify-service-provider-api/translated-response-body'
 import { ErrorMessage } from './verify-service-provider-api/error-message'
@@ -137,15 +137,11 @@ export class PassportVerifyStrategy extends Strategy {
  */
 export function createStrategy (
   verifyServiceProviderHost: string,
-  logger: Logger,
   createUser: (user: TranslatedResponseBody) => object | false,
   verifyUser: (user: TranslatedResponseBody) => object | false,
   saveRequestId: (requestId: string, request: express.Request) => void,
   loadRequestId: (request: express.Request) => string
 ) {
-  const client = new VerifyServiceProviderClient(
-    verifyServiceProviderHost,
-    logger || { info: () => undefined, trace: () => undefined, error: () => undefined, warn: () => undefined }
-  )
+  const client = new VerifyServiceProviderClient(verifyServiceProviderHost)
   return new PassportVerifyStrategy(client, createUser, verifyUser, saveRequestId, loadRequestId)
 }

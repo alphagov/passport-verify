@@ -154,6 +154,18 @@ Usage
    See [the example implementation](https://github.com/alphagov/passport-verify-stub-relying-party/blob/master/src/app.ts) for
    a more detailed example with session support.
 
+Logging
+-----------
+`passport-verify` uses the [_debug_](https://www.npmjs.com/package/debug) package for logging, using `passport-verify:log` for infomation and `passport-verify:requests` to log api requests sent.
+
+The package enables logging based on the environment variable `DEBUG`.
+To enable logs, set this variable;
+* For just information level logging, use `passport-verify:log`
+* For request logging, use `passport-verify:requests`
+* For both, use `passport-verify:*`
+
+If you are using this package for your application, note that the `DEBUG` variable will be read as a comma seperated list, so you can add or remove passport-verify logs as necessary without changing your own.
+
 API
 -----------
 

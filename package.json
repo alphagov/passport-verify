@@ -18,6 +18,7 @@
   },
   "license": "MIT",
   "dependencies": {
+    "@types/debug": "0.0.30",
     "@types/express-serve-static-core": "^4.0.48",
     "@types/mocha": "^2.2.41",
     "@types/node": "^7.0.41",
@@ -25,6 +26,7 @@
     "@types/request": "^2.0.1",
     "@types/request-promise-native": "^1.0.6",
     "@types/serve-static": "^1.7.31",
+    "debug": "^3.0.1",
     "passport-strategy": "^1.0.0",
     "request": "^2.81.0",
     "request-promise-native": "^1.0.4"
