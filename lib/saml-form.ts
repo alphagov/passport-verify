@@ -2,11 +2,13 @@
  * @hidden
  */
 /** */
+import * as escape from 'escape-html'
+
 export function createSamlForm (ssoLocation: string, samlRequest: string) {
   return `
-    <form method='post' action='${ssoLocation}'>
+    <form method='post' action='${escape(ssoLocation)}'>
       <h1>Send SAML Authn request to hub</h1>
-      <input type='hidden' name='SAMLRequest' value='${samlRequest}'/>
+      <input type='hidden' name='SAMLRequest' value='${escape(samlRequest)}'/>
       <input type='hidden' name='relayState' value=''/>
       <button>Submit</button>
     </form>
