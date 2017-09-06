@@ -75,7 +75,6 @@
 					<pre><code><span class="hljs-keyword">const</span> passportVerify = <span class="hljs-keyword">require</span>(<span class="hljs-string">'passport-verify'</span>)
 passport.<span class="hljs-keyword">use</span>(passportVerify.createStrategy(
   verifyServiceProviderHost,
-  logger,
   <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">createUser</span> <span class="hljs-params">(user)</span> </span>{ },
   <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">verifyUser</span> <span class="hljs-params">(user)</span> </span>{ },
   <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">saveRequestId</span> <span class="hljs-params">(requestId, request)</span> </span>{ },
