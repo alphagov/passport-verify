@@ -1,6 +1,6 @@
 {
   "name": "passport-verify",
-  "version": "0.8.0",
+  "version": "0.8.1",
   "description": "A passport.js strategy for authenticating with Verify and Verify Service Provider",
   "repository": "https://github.com/alphagov/passport-verify",
   "bugs": "https://github.com/alphagov/passport-verify/issues",
@@ -19,6 +19,7 @@
   "license": "MIT",
   "dependencies": {
     "@types/debug": "0.0.30",
+    "@types/escape-html": "^0.0.20",
     "@types/express-serve-static-core": "^4.0.48",
     "@types/mocha": "^2.2.41",
     "@types/node": "^7.0.41",
@@ -27,6 +28,7 @@
     "@types/request-promise-native": "^1.0.6",
     "@types/serve-static": "^1.7.31",
     "debug": "^3.0.1",
+    "escape-html": "^1.0.3",
     "passport-strategy": "^1.0.0",
     "request": "^2.81.0",
     "request-promise-native": "^1.0.4"
