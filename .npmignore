@@ -6,5 +6,6 @@ tslint.json
 .travis.yml
 .gitignore
 .DS_Store
+.vscode
 *.log
 *.sh
