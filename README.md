@@ -1,9 +1,10 @@
 passport-verify
 ===============
 
+[![Build Status](https://travis-ci.org/alphagov/passport-verify.svg?branch=master)](https://travis-ci.org/alphagov/passport-verify)
+[![Known Vulnerabilities](https://snyk.io/test/github/alphagov/passport-verify/badge.svg)](https://snyk.io/test/github/alphagov/passport-verify)
 [![Greenkeeper badge](https://badges.greenkeeper.io/alphagov/passport-verify.svg)](https://greenkeeper.io/)
 
-[![Build Status](https://travis-ci.org/alphagov/passport-verify.svg?branch=master)](https://travis-ci.org/alphagov/passport-verify) [![Known Vulnerabilities](https://snyk.io/test/github/alphagov/passport-verify/badge.svg)](https://snyk.io/test/github/alphagov/passport-verify)
 
 `passport-verify` is the best way to integrate with GOV.UK Verify if you are using node and [passport.js](http://passportjs.org/).
 

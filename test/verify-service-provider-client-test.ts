@@ -1,6 +1,5 @@
 import * as assert from 'assert'
 import * as http from 'http'
-import * as debug from 'debug'
 import VerifyServiceProviderClient from '../lib/verify-service-provider-client'
 import * as td from 'testdouble'
 
