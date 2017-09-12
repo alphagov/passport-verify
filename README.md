@@ -193,5 +193,10 @@ npm install
 
 __Compile and test the code__
 ```
-./pre-commit.sh
+npm test
+```
+
+__Install dependencies, compile and test the code - run this before commiting__
+```
+npm run pre-commit
 ```
