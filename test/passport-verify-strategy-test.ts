@@ -1,4 +1,3 @@
-import * as assert from 'assert'
 import { PassportVerifyStrategy } from '../lib/passport-verify-strategy'
 import { Scenario } from '../lib/verify-service-provider-api/translated-response-body'
 import VerifyServiceProviderClient from '../lib/verify-service-provider-client'
@@ -51,14 +50,6 @@ describe('The passport-verify strategy', function () {
       pid: 'some-pid',
       levelOfAssurance: 'LEVEL_2',
       attributes: {}
-    }
-  }
-
-  const exampleAuthenticationFailedResponse = {
-    status: 401,
-    body: {
-      code: 401,
-      message: 'Authentication failed'
     }
   }
 

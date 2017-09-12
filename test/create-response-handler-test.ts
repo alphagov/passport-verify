@@ -1,6 +1,6 @@
 import * as assert from 'assert'
 import { createResponseHandler, ResponseScenarios } from '../lib/create-response-handler'
-import { TranslatedResponseBody, Scenario } from '../lib/verify-service-provider-api/translated-response-body'
+import { Scenario } from '../lib/verify-service-provider-api/translated-response-body'
 import * as td from 'testdouble'
 
 function verifyNotCalled (fn: any) {
@@ -46,7 +46,7 @@ describe('The createResponseHandler function', () => {
     const info = { scenario: Scenario.SUCCESS_MATCH, pid: '', levelOfAssurance: '' }
     const status = null as any
 
-    const result = createResponseHandler(scenarios)(error, user, info, status)
+    createResponseHandler(scenarios)(error, user, info, status)
 
     td.verify(onMatch(user))
 
@@ -63,7 +63,7 @@ describe('The createResponseHandler function', () => {
     const info = { scenario: Scenario.ACCOUNT_CREATION, pid: '', levelOfAssurance: '', attributes: {} }
     const status = null as any
 
-    const result = createResponseHandler(scenarios)(error, user, info, status)
+    createResponseHandler(scenarios)(error, user, info, status)
 
     td.verify(onCreateUser(user))
 
@@ -80,7 +80,7 @@ describe('The createResponseHandler function', () => {
     const info = Scenario.AUTHENTICATION_FAILED
     const status = null as any
 
-    const result = createResponseHandler(scenarios)(error, user, info, status)
+    createResponseHandler(scenarios)(error, user, info, status)
 
     td.verify(onAuthnFailed())
 
@@ -97,7 +97,7 @@ describe('The createResponseHandler function', () => {
     const info = Scenario.NO_MATCH
     const status = null as any
 
-    const result = createResponseHandler(scenarios)(error, user, info, status)
+    createResponseHandler(scenarios)(error, user, info, status)
 
     td.verify(onNoMatch())
 
@@ -114,7 +114,7 @@ describe('The createResponseHandler function', () => {
     const info = Scenario.CANCELLATION
     const status = null as any
 
-    const result = createResponseHandler(scenarios)(error, user, info, status)
+    createResponseHandler(scenarios)(error, user, info, status)
 
     td.verify(onCancel())
 
@@ -131,7 +131,7 @@ describe('The createResponseHandler function', () => {
     const info = Scenario.SUCCESS_MATCH
     const status = null as any
 
-    const result = createResponseHandler(scenarios)(error, user, info, status)
+    createResponseHandler(scenarios)(error, user, info, status)
 
     td.verify(onError(new Error('Unrecognised Scenario SUCCESS_MATCH')))
 
@@ -148,7 +148,7 @@ describe('The createResponseHandler function', () => {
     const info = Scenario.REQUEST_ERROR
     const status = null as any
 
-    const result = createResponseHandler(scenarios)(error, user, info, status)
+    createResponseHandler(scenarios)(error, user, info, status)
 
     td.verify(onError(new Error('SAML Response was an error')))
 
@@ -165,7 +165,7 @@ describe('The createResponseHandler function', () => {
     const info = null as any
     const status = null as any
 
-    const result = createResponseHandler(scenarios)(error, user, info, status)
+    createResponseHandler(scenarios)(error, user, info, status)
 
     td.verify(onError(error))
 
