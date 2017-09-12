@@ -22,7 +22,7 @@
     "@types/escape-html": "^0.0.20",
     "@types/express-serve-static-core": "^4.0.48",
     "@types/mocha": "^2.2.41",
-    "@types/node": "^7.0.41",
+    "@types/node": "^8.0.27",
     "@types/passport-strategy": "^0.2.30",
     "@types/request": "^2.0.1",
     "@types/request-promise-native": "^1.0.6",
@@ -35,9 +35,9 @@
   },
   "devDependencies": {
     "mocha": "^3.5.0",
-    "testdouble": "3.0.0",
+    "testdouble": "3.2.5",
     "tslint": "^5.6.0",
-    "tslint-config-standard": "^5.0.2",
+    "tslint-config-standard": "^6.0.1",
     "typedoc": "0.8.0",
     "typescript": "^2.4.2"
   },
