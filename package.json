@@ -11,6 +11,7 @@
     "test": "npm run build && mocha ./build/test/* && npm run lint",
     "build": "tsc -d",
     "lint": "tslint -c tslint.json -p .",
+    "pre-commit": "npm install && npm test",
     "docs": "mv {,.}test && typedoc --readme none --out docs --excludePrivate && touch docs/.nojekyll; mv {.,}test"
   },
   "author": {
