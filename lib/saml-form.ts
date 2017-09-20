@@ -19,18 +19,5 @@ export function createSamlForm (ssoLocation: string, samlRequest: string) {
       window.setTimeout(function () { form.removeAttribute('style') }, 5000)
       form.submit()
     </script>
-    <style type='text/css'>
-      .passport-verify-saml-form {
-        font-family: Arial, sans-serif;
-      }
-      .passport-verify-button {
-        background-color: #00692f;
-        color: #fff;
-        padding: 10px;
-        font-size: 1em;
-        border: none;
-        box-shadow: 0 2px 0 #003618;
-      }
-    </style>
   `
 }
