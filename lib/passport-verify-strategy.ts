@@ -34,7 +34,8 @@ export class PassportVerifyStrategy extends Strategy {
                private createUser: (user: TranslatedResponseBody) => any,
                private verifyUser: (user: TranslatedResponseBody) => any,
                private saveRequestId: (requestId: string, request: express.Request) => any,
-               private loadRequestId: (request: express.Request) => string) {
+               private loadRequestId: (request: express.Request) => string,
+               private wrapSamlForm: (formHtml: string) => string = defaultStyleFormWrap) {
     super()
   }
 
@@ -105,12 +106,31 @@ export class PassportVerifyStrategy extends Strategy {
       const authnRequestResponseBody = authnRequestResponse.body as AuthnRequestResponse
       this.saveRequestId(authnRequestResponseBody.requestId, request)
       const response = (request as any).res
-      return response.send(createSamlForm(authnRequestResponseBody.ssoLocation, authnRequestResponseBody.samlRequest))
+      return response.send(this.wrapSamlForm(createSamlForm(authnRequestResponseBody.ssoLocation, authnRequestResponseBody.samlRequest)))
     } else {
       const errorBody = authnRequestResponse.body as ErrorMessage
       throw new Error(errorBody.message)
     }
   }
+}
+
+function defaultStyleFormWrap (formContent: string): string {
+  return `
+    <style type='text/css'>
+      .passport-verify-saml-form {
+        font-family: Arial, sans-serif;
+      }
+      .passport-verify-button {
+        background-color: #00692f;
+        color: #fff;
+        padding: 10px;
+        font-size: 1em;
+        border: none;
+        box-shadow: 0 2px 0 #003618;
+      }
+    </style>
+    ${formContent}
+  `
 }
 
 /**
@@ -128,6 +148,10 @@ export class PassportVerifyStrategy extends Strategy {
  * can be matched against the corresponding SAML response.
  * @param loadRequestId A callback that will be invoked to load the requestId that has been securely saved
  * for the user's session.
+ * @param wrapSamlForm (optional) A function that will be invoked on the html of the autoposting form to send an authn request.
+ * This should wrap the form with any page headers or stylesheets you would like to be seen should a user have
+ * javascript disabled. The html passed to this function will be a form with class 'passport-verify-saml-form', containing
+ * text, hidden input fields, and a button with class 'passport-verify-button', along with javascript to autopost the form.
  * @returns A strategy to be registered in passport with
  * ```
  * passport.use(passportVerifyStrategy)
@@ -138,8 +162,9 @@ export function createStrategy (
   createUser: (user: TranslatedResponseBody) => object | false,
   verifyUser: (user: TranslatedResponseBody) => object | false,
   saveRequestId: (requestId: string, request: express.Request) => void,
-  loadRequestId: (request: express.Request) => string
+  loadRequestId: (request: express.Request) => string,
+  wrapSamlForm?: (formHtml: string) => string
 ) {
   const client = new VerifyServiceProviderClient(verifyServiceProviderHost)
-  return new PassportVerifyStrategy(client, createUser, verifyUser, saveRequestId, loadRequestId)
+  return new PassportVerifyStrategy(client, createUser, verifyUser, saveRequestId, loadRequestId, wrapSamlForm)
 }
