@@ -20,16 +20,25 @@ export function createSamlForm (ssoLocation: string, samlRequest: string) {
       form.submit()
     </script>
     <style type='text/css'>
+      body {
+        padding-top: 2em;
+        padding-left: 2em;
+      }
       .passport-verify-saml-form {
         font-family: Arial, sans-serif;
       }
       .passport-verify-button {
-        background-color: #00692f;
+        background-color: #00823b;
         color: #fff;
         padding: 10px;
         font-size: 1em;
+        line-height: 1.25;
         border: none;
         box-shadow: 0 2px 0 #003618;
+        cursor: pointer;
+      }
+      .passport-verify-button:hover, .passport-verify-button:focus {
+        background-color: #00692f;
       }
     </style>
   `
