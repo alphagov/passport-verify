@@ -17,9 +17,14 @@ export default class VerifyServiceProviderClient {
 
   constructor (private verifyServiceProviderHost: string) {}
 
-  async generateAuthnRequest (): Promise<{ status: number, body: AuthnRequestResponse | ErrorMessage }> {
+  async generateAuthnRequest (entityId?: string): Promise<{ status: number, body: AuthnRequestResponse | ErrorMessage }> {
     try {
-      const responseBody = await this.sendRequest<AuthnRequestResponse>('/generate-request', { levelOfAssurance: 'LEVEL_2' })
+      let requestBody: any = { levelOfAssurance: 'LEVEL_2' }
+      if (entityId) {
+        requestBody.entityId = entityId
+      }
+
+      const responseBody = await this.sendRequest<AuthnRequestResponse>('/generate-request', requestBody)
       this.infoLog('authn request generated, request id: ', responseBody.requestId)
       return {
         status: 200,
@@ -34,9 +39,14 @@ export default class VerifyServiceProviderClient {
     }
   }
 
-  async translateResponse (samlResponse: string, requestId: string): Promise<{ status: number, body: TranslatedResponseBody | ErrorMessage }> {
+  async translateResponse (samlResponse: string, requestId: string, entityId?: string): Promise<{ status: number, body: TranslatedResponseBody | ErrorMessage }> {
     try {
-      const responseBody = await this.sendRequest<TranslatedResponseBody>('/translate-response', { samlResponse, requestId, levelOfAssurance: 'LEVEL_2' })
+      let requestBody: any = { samlResponse, requestId, levelOfAssurance: 'LEVEL_2' }
+      if (entityId) {
+        requestBody.entityId = entityId
+      }
+
+      const responseBody = await this.sendRequest<TranslatedResponseBody>('/translate-response', requestBody)
       this.infoLog('response translated for request: ', requestId, 'Scenario: ', responseBody.scenario)
       return {
         status: 200,

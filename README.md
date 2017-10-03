@@ -114,13 +114,18 @@ Usage
       // The following is an example that retrieves the request ID from the aforementioned 
       // express-session object.
       return request.session.requestId
-    }
+    },
+    // Service Entity Id
+    'http://your-service-entity-id'
+    // This is only required when your Verify Service Provider is set up to be multi tenanted.
+    // If it is provided, it is passed to the Verify Service Provider with each request, and
+    // used to identify this service.
    ))
    ```
 
 1. Configure routes for the authentication flow
 
-   See [createResponseHandler](https://alphagov.github.io/passport-verify/modules/_create_response_handler_.html#createresponsehandler) 
+   See [createResponseHandler](https://alphagov.github.io/passport-verify/modules/_create_response_handler_.html#createresponsehandler)
    and its [callbacks](https://alphagov.github.io/passport-verify/interfaces/_create_response_handler_.responsescenarios.html#onauthnfailed) in the API documentation.
 
    ```javascript
