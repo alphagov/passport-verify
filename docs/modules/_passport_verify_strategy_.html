@@ -104,13 +104,13 @@
 					<a name="createstrategy" class="tsd-anchor"></a>
 					<h3>create<wbr>Strategy</h3>
 					<ul class="tsd-signatures tsd-kind-function tsd-parent-kind-external-module">
-						<li class="tsd-signature tsd-kind-icon">create<wbr>Strategy<span class="tsd-signature-symbol">(</span>verifyServiceProviderHost<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span>, createUser<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">function</span>, verifyUser<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">function</span>, saveRequestId<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">function</span>, loadRequestId<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">function</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="../classes/_passport_verify_strategy_.passportverifystrategy.html" class="tsd-signature-type">PassportVerifyStrategy</a></li>
+						<li class="tsd-signature tsd-kind-icon">create<wbr>Strategy<span class="tsd-signature-symbol">(</span>verifyServiceProviderHost<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span>, createUser<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">function</span>, verifyUser<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">function</span>, saveRequestId<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">function</span>, loadRequestId<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">function</span>, serviceEntityId<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="../classes/_passport_verify_strategy_.passportverifystrategy.html" class="tsd-signature-type">PassportVerifyStrategy</a></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/alphagov/passport-verify/blob/b2010ae/lib/passport-verify-strategy.ts#L136">passport-verify-strategy.ts:136</a></li>
+									<li>Defined in <a href="https://github.com/alphagov/passport-verify/blob/75d7ff2/lib/passport-verify-strategy.ts#L139">passport-verify-strategy.ts:139</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -237,6 +237,13 @@
 											</ul>
 										</li>
 									</ul>
+								</li>
+								<li>
+									<h5><span class="tsd-flag ts-flagOptional">Optional</span> serviceEntityId: <span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">string</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>(Optional) The entityId that will be passed to the Verify Service Provider. This is
+										only required if the service provider is configured to be multi tenanted.</p>
+									</div>
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <a href="../classes/_passport_verify_strategy_.passportverifystrategy.html" class="tsd-signature-type">PassportVerifyStrategy</a></h4>
