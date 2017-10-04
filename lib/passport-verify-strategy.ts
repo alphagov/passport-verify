@@ -34,7 +34,8 @@ export class PassportVerifyStrategy extends Strategy {
                private createUser: (user: TranslatedResponseBody) => any,
                private verifyUser: (user: TranslatedResponseBody) => any,
                private saveRequestId: (requestId: string, request: express.Request) => any,
-               private loadRequestId: (request: express.Request) => string) {
+               private loadRequestId: (request: express.Request) => string,
+               private serviceEntityId?: string) {
     super()
   }
 
@@ -61,7 +62,7 @@ export class PassportVerifyStrategy extends Strategy {
   private async _translateResponse (req: express.Request) {
     const requestId = this.loadRequestId(req)
     const samlResponse = (req as any).body.SAMLResponse
-    const response = await this.client.translateResponse(samlResponse, requestId)
+    const response = await this.client.translateResponse(samlResponse, requestId, this.serviceEntityId)
     switch (response.status) {
       case 200:
         const responseBody = response.body as TranslatedResponseBody
@@ -100,7 +101,7 @@ export class PassportVerifyStrategy extends Strategy {
   }
 
   private async _renderAuthnRequest (request: express.Request): Promise<express.Response> {
-    const authnRequestResponse = await this.client.generateAuthnRequest()
+    const authnRequestResponse = await this.client.generateAuthnRequest(this.serviceEntityId)
     if (authnRequestResponse.status === 200) {
       const authnRequestResponseBody = authnRequestResponse.body as AuthnRequestResponse
       this.saveRequestId(authnRequestResponseBody.requestId, request)
@@ -128,6 +129,8 @@ export class PassportVerifyStrategy extends Strategy {
  * can be matched against the corresponding SAML response.
  * @param loadRequestId A callback that will be invoked to load the requestId that has been securely saved
  * for the user's session.
+ * @param serviceEntityId (Optional) The entityId that will be passed to the Verify Service Provider. This is
+ * only required if the service provider is configured to be multi tenanted.
  * @returns A strategy to be registered in passport with
  * ```
  * passport.use(passportVerifyStrategy)
@@ -138,8 +141,9 @@ export function createStrategy (
   createUser: (user: TranslatedResponseBody) => object | false,
   verifyUser: (user: TranslatedResponseBody) => object | false,
   saveRequestId: (requestId: string, request: express.Request) => void,
-  loadRequestId: (request: express.Request) => string
+  loadRequestId: (request: express.Request) => string,
+  serviceEntityId?: string
 ) {
   const client = new VerifyServiceProviderClient(verifyServiceProviderHost)
-  return new PassportVerifyStrategy(client, createUser, verifyUser, saveRequestId, loadRequestId)
+  return new PassportVerifyStrategy(client, createUser, verifyUser, saveRequestId, loadRequestId, serviceEntityId)
 }

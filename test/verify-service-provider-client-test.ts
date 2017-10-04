@@ -79,7 +79,7 @@ describe('The passport-verify client', function () {
     mockVerifyServiceProvider.close(done)
   })
 
-  it('should generate authnRequest', function () {
+  it('should generate authnRequest when not passed an entityId', function () {
     const client = new VerifyServiceProviderClient(mockVerifyServiceProviderUrl)
 
     return client.generateAuthnRequest()
@@ -89,10 +89,32 @@ describe('The passport-verify client', function () {
       })
   })
 
-  it('should translate response body', function () {
+  it('should generate authnRequest when passed an entityId', function () {
+    const client = new VerifyServiceProviderClient(mockVerifyServiceProviderUrl)
+    const entityId = 'http://service-entity-id'
+
+    return client.generateAuthnRequest(entityId)
+      .then(response => {
+        assert.equal(response.status, 200)
+        assert.deepEqual(response.body, exampleAuthnRequest)
+      })
+  })
+
+  it('should translate response body when not passed an entityId', function () {
     const client = new VerifyServiceProviderClient(mockVerifyServiceProviderUrl)
 
     return client.translateResponse(SUCCESS_SCENARIO, 'some-request-id')
+      .then(response => {
+        assert.equal(response.status, 200)
+        assert.deepEqual(response.body, exampleTranslatedResponse)
+      })
+  })
+
+  it('should translate response body when passed an entityId', function () {
+    const client = new VerifyServiceProviderClient(mockVerifyServiceProviderUrl)
+    const entityId = 'http://service-entity-id'
+
+    return client.translateResponse(SUCCESS_SCENARIO, 'some-request-id', entityId)
       .then(response => {
         assert.equal(response.status, 200)
         assert.deepEqual(response.body, exampleTranslatedResponse)
@@ -115,14 +137,14 @@ describe('The passport-verify client', function () {
     const testLogger = td.function() as (message?: any, ...optionalParams: any[]) => void
     client.requestLog = testLogger as any
 
-    return client.generateAuthnRequest()
+    return client.generateAuthnRequest('http://service-entity-id')
       .then(response => {
         td.verify(testLogger(
           'sending request: ',
           'POST',
           'http://localhost:3003/generate-request',
           { 'Content-Type': 'application/json' },
-          { levelOfAssurance: 'LEVEL_2' }
+          { entityId: 'http://service-entity-id', levelOfAssurance: 'LEVEL_2' }
         ))
       })
   })
