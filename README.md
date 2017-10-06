@@ -205,3 +205,10 @@ __Install dependencies, compile and test the code - run this before commiting__
 ```
 npm run pre-commit
 ```
+
+## Responsible Disclosure
+
+If you think you have discovered a security issue in this code please email disclosure@digital.cabinet-office.gov.uk with details.
+
+For non-security related bugs and feature requests please [raise an issue](https://github.com/alphagov/passport-verify/issues/new) in the github issue tracker.
+
