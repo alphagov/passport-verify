@@ -5,13 +5,7 @@ passport-verify
 [![Known Vulnerabilities](https://snyk.io/test/github/alphagov/passport-verify/badge.svg)](https://snyk.io/test/github/alphagov/passport-verify)
 [![Greenkeeper badge](https://badges.greenkeeper.io/alphagov/passport-verify.svg)](https://greenkeeper.io/)
 
-
 `passport-verify` is the best way to integrate with GOV.UK Verify if you are using node and [passport.js](http://passportjs.org/).
-
-Status
----------------
-
-**This project is in the discovery phase and is not ready for use in production.**
 
 Usage
 -----
