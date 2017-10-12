@@ -54,7 +54,7 @@ Usage
        }
 
        fakeUserDatabase[user.pid] = Object.assign({id: user.pid}, user.attributes)
-       return Object.assign({ levelOfAssurence: user.levelOfAssurance }, fakeUserDatabase[user.pid])
+       return Object.assign({ levelOfAssurance: user.levelOfAssurance }, fakeUserDatabase[user.pid])
      },
 
      // A callback for an existing user authentication.
@@ -74,7 +74,7 @@ Usage
            'not be found in the database.')
        }
 
-       return Object.assign({ levelOfAssurence: user.levelOfAssurance }, fakeUserDatabase[user.pid])
+       return Object.assign({ levelOfAssurance: user.levelOfAssurance }, fakeUserDatabase[user.pid])
      },
 
     // A callback that saves the unique request ID associated with the SAML messages
