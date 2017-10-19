@@ -119,7 +119,7 @@ describe('The passport-verify strategy', function () {
     })
   })
 
-  it('should render a SAML AuthnRequest form', function () {
+  it('should render a SAML AuthnRequest form if no template is provided', function () {
     const mockClient = new MockClient()
     const strategy = new PassportVerifyStrategy(
       mockClient,
@@ -132,6 +132,24 @@ describe('The passport-verify strategy', function () {
     return strategy.authenticate(request).then(() => {
       td.verify(request.res.send(td.matchers.contains(/some-saml-req/)))
       td.verify(request.res.send(td.matchers.contains(/http:\/\/hub-sso-uri/)))
+    })
+  })
+
+  it('should render the provided template with ssoLocation and samlResponse if one has been provided', function () {
+    const mockClient = new MockClient()
+    const strategy = new PassportVerifyStrategy(
+      mockClient,
+      () => undefined,
+      () => undefined,
+      () => undefined,
+      () => '',
+      undefined,
+      'formTemplate'
+    )
+    const request: any = { res: { render: td.function() } }
+    td.when(mockClient.generateAuthnRequest(td.matchers.anything())).thenReturn(exampleAuthnRequestResponse)
+    return strategy.authenticate(request).then(() => {
+      td.verify(request.res.render('formTemplate', { ssoLocation: exampleAuthnRequestResponse.body.ssoLocation, samlRequest: exampleAuthnRequestResponse.body.samlRequest }))
     })
   })
 
