@@ -49,6 +49,7 @@ export interface Attributes {
   surname?: VerifiableAttribute<String>,
   dateOfBirth?: VerifiableAttribute<String>,
   address?: VerifiableAttribute<Address>,
+  addressHistory?: VerifiableAttribute<Address>[],
   cycle3?: string
 }
 
@@ -59,5 +60,7 @@ export interface Address {
   lines?: string[],
   postCode?: string,
   internationalPostCode?: string,
-  uprn?: string
+  uprn?: string,
+  fromDate?: String,
+  toDate?: String
 }
