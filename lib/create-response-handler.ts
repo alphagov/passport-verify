@@ -94,7 +94,7 @@ export interface ResponseScenarios {
  * @param responseScenarios Callbacks to handle each type of response that Verify can return
  */
 export function createResponseHandler (responseScenarios: ResponseScenarios) {
-  return function (error: Error, user: any, infoOrError: TranslatedResponseBody|Scenario, status: number) {
+  return function (error: Error, user: any, infoOrError: TranslatedResponseBody | Scenario, status: number) {
     if (error) {
       return responseScenarios.onError(error)
     }
