@@ -35,7 +35,8 @@ export class PassportVerifyStrategy extends Strategy {
                private verifyUser: (user: TranslatedResponseBody) => any,
                private saveRequestId: (requestId: string, request: express.Request) => any,
                private loadRequestId: (request: express.Request) => string,
-               private serviceEntityId?: string) {
+               private serviceEntityId?: string,
+               private samlFormTemplateName?: string) {
     super()
   }
 
@@ -106,7 +107,11 @@ export class PassportVerifyStrategy extends Strategy {
       const authnRequestResponseBody = authnRequestResponse.body as AuthnRequestResponse
       this.saveRequestId(authnRequestResponseBody.requestId, request)
       const response = (request as any).res
-      return response.send(createSamlForm(authnRequestResponseBody.ssoLocation, authnRequestResponseBody.samlRequest))
+      if (this.samlFormTemplateName) {
+        return response.render(this.samlFormTemplateName, { ssoLocation: authnRequestResponseBody.ssoLocation, samlRequest: authnRequestResponseBody.samlRequest })
+      } else {
+        return response.send(createSamlForm(authnRequestResponseBody.ssoLocation, authnRequestResponseBody.samlRequest))
+      }
     } else {
       const errorBody = authnRequestResponse.body as ErrorMessage
       throw new Error(errorBody.message)
@@ -131,6 +136,10 @@ export class PassportVerifyStrategy extends Strategy {
  * for the user's session.
  * @param serviceEntityId (Optional) The entityId that will be passed to the Verify Service Provider. This is
  * only required if the service provider is configured to be multi tenanted.
+ * @param samlFormTemplateName (Optional) The name of a template in your service which will provide the form
+ * used to post an authn request. If present, this will be rendered with the ssoLocation and samlRequest passed
+ * in. Otherwise, a default form will be used. You should use this option if you wish to style the form, which
+ * should be autoposting so only seen if the user has javascript disabled, to match the rest of your service.
  * @returns A strategy to be registered in passport with
  * ```
  * passport.use(passportVerifyStrategy)
@@ -142,8 +151,9 @@ export function createStrategy (
   verifyUser: (user: TranslatedResponseBody) => object | false,
   saveRequestId: (requestId: string, request: express.Request) => void,
   loadRequestId: (request: express.Request) => string,
-  serviceEntityId?: string
+  serviceEntityId?: string,
+  samlFormTemplateName?: string
 ) {
   const client = new VerifyServiceProviderClient(verifyServiceProviderHost)
-  return new PassportVerifyStrategy(client, createUser, verifyUser, saveRequestId, loadRequestId, serviceEntityId)
+  return new PassportVerifyStrategy(client, createUser, verifyUser, saveRequestId, loadRequestId, serviceEntityId, samlFormTemplateName)
 }
