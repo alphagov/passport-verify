@@ -114,6 +114,16 @@ Usage
     // This is only required when your Verify Service Provider is set up to be multi tenanted.
     // If it is provided, it is passed to the Verify Service Provider with each request, and
     // used to identify this service.
+    ,
+    // Saml Form Template Location
+    'saml-form-template.njk'
+    // This is an optional parameter which can be used to style the saml form
+    // used to send the authn request to Verify.
+    // This template should only be rendered if Javascript has been disabled in the user's browser.
+    // If provided, the ssoLocation and samlRequest recieved from the Verify Service Provider
+    // will be provided to the named template for rendering.
+    // If this is not provided, passport-verify will render a default auto posting form
+    // with the correct attributes.
    ))
    ```
 
