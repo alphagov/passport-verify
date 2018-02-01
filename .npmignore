@@ -9,3 +9,4 @@ tslint.json
 .vscode
 *.log
 *.sh
+PUBLISHING_TO_NPM.md
