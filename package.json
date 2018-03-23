@@ -8,7 +8,7 @@
   "types": "./build/lib/passport-verify.d.ts",
   "scripts": {
     "prepublishOnly": "npm test && npm run docs && echo 'Make sure you remember to push the latest docs'",
-    "test": "npm run build && mocha ./build/test/* && npm run lint",
+    "test": "npm run build && mocha ./build/test/*.js && npm run lint",
     "build": "tsc -d",
     "lint": "tslint -c tslint.json -p .",
     "pre-commit": "npm install && npm test",
