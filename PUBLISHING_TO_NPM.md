@@ -16,6 +16,15 @@ npm adduser
 ```
 
 This account should then be added to the @verify organisation by an admin.
-This will automatically give that account read and write access to the passport-verify package.
+This will automatically add that user to the 'developers' team and give that account read and write access
+to the passport-verify package.
 
-If a member of the development team leaves, they should be removed from the @verify organisation's membership list.
+### Removing publishing privileges
+
+If a member of this developers team leaves, they should be removed from the @verify organisation's membership list.
+
+This can be done by an admin through the npm portal
+
+a list of members can be seen using:
+
+```npm team ls verify:developers```
