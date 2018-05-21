@@ -15,8 +15,8 @@ export function createSamlForm (ssoLocation: string, samlRequest: string) {
     </form>
     <script>
       var form = document.forms[0]
-      form.setAttribute('style', 'display: none;')
-      window.setTimeout(function () { form.removeAttribute('style') }, 5000)
+      form.style.display = 'none'
+      window.setTimeout(function () { form.style.display = 'block' }, 5000)
       form.submit()
     </script>
     <style type='text/css'>
