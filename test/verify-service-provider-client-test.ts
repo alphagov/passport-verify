@@ -82,7 +82,7 @@ describe('The passport-verify client', function () {
   it('should generate authnRequest when not passed an entityId', function () {
     const client = new VerifyServiceProviderClient(mockVerifyServiceProviderUrl)
 
-    return client.generateAuthnRequest()
+    return client.generateAuthnRequest('LEVEL_2')
       .then(response => {
         assert.equal(response.status, 200)
         assert.deepEqual(response.body, exampleAuthnRequest)
@@ -93,7 +93,7 @@ describe('The passport-verify client', function () {
     const client = new VerifyServiceProviderClient(mockVerifyServiceProviderUrl)
     const entityId = 'http://service-entity-id'
 
-    return client.generateAuthnRequest(entityId)
+    return client.generateAuthnRequest('LEVEL_2', entityId)
       .then(response => {
         assert.equal(response.status, 200)
         assert.deepEqual(response.body, exampleAuthnRequest)
@@ -103,7 +103,7 @@ describe('The passport-verify client', function () {
   it('should translate response body when not passed an entityId', function () {
     const client = new VerifyServiceProviderClient(mockVerifyServiceProviderUrl)
 
-    return client.translateResponse(SUCCESS_SCENARIO, 'some-request-id')
+    return client.translateResponse(SUCCESS_SCENARIO, 'some-request-id', 'LEVEL_2')
       .then(response => {
         assert.equal(response.status, 200)
         assert.deepEqual(response.body, exampleTranslatedResponse)
@@ -114,7 +114,7 @@ describe('The passport-verify client', function () {
     const client = new VerifyServiceProviderClient(mockVerifyServiceProviderUrl)
     const entityId = 'http://service-entity-id'
 
-    return client.translateResponse(SUCCESS_SCENARIO, 'some-request-id', entityId)
+    return client.translateResponse(SUCCESS_SCENARIO, 'some-request-id', 'LEVEL_2', entityId)
       .then(response => {
         assert.equal(response.status, 200)
         assert.deepEqual(response.body, exampleTranslatedResponse)
@@ -124,7 +124,7 @@ describe('The passport-verify client', function () {
   it('should resolve error responses', function () {
     const client = new VerifyServiceProviderClient(mockVerifyServiceProviderUrl)
 
-    return client.translateResponse(ERROR_SCENARIO, 'some-request-id')
+    return client.translateResponse(ERROR_SCENARIO, 'some-request-id', 'LEVEL_2')
       .then(response => {
         assert.equal(response.status, 422)
         assert.deepEqual(response.body, exampleErrorResponse)
@@ -137,7 +137,7 @@ describe('The passport-verify client', function () {
     const testLogger = td.function() as (message?: any, ...optionalParams: any[]) => void
     client.requestLog = testLogger as any
 
-    return client.generateAuthnRequest('http://service-entity-id')
+    return client.generateAuthnRequest('LEVEL_2', 'http://service-entity-id')
       .then(response => {
         td.verify(testLogger(
           'sending request: ',
@@ -155,7 +155,7 @@ describe('The passport-verify client', function () {
     const testLogger = td.function() as (message?: any, ...optionalParams: any[]) => void
     client.infoLog = testLogger as any
 
-    return client.generateAuthnRequest()
+    return client.generateAuthnRequest('LEVEL_2')
       .then(response => {
         td.verify(testLogger('authn request generated, request id: ', 'some-request-id'))
       })
@@ -188,7 +188,7 @@ describe('The passport-verify client', function () {
       const testLogger = td.function() as (message?: any, ...optionalParams: any[]) => void
       client.infoLog = testLogger as any
 
-      return client.generateAuthnRequest()
+      return client.generateAuthnRequest('LEVEL_2')
         .then(response => {
           td.verify(testLogger(
             'error generating authn request: ',
@@ -205,7 +205,7 @@ describe('The passport-verify client', function () {
     const testLogger = td.function() as (message?: any, ...optionalParams: any[]) => void
     client.requestLog = testLogger as any
 
-    return client.translateResponse(SUCCESS_SCENARIO, 'some-request-id')
+    return client.translateResponse(SUCCESS_SCENARIO, 'some-request-id', 'LEVEL_2')
       .then(response => {
         td.verify(testLogger(
           'sending request: ',
@@ -223,7 +223,7 @@ describe('The passport-verify client', function () {
     const testLogger = td.function() as (message?: any, ...optionalParams: any[]) => void
     client.infoLog = testLogger as any
 
-    return client.translateResponse(SUCCESS_SCENARIO, 'some-request-id')
+    return client.translateResponse(SUCCESS_SCENARIO, 'some-request-id', 'LEVEL_2')
       .then(response => {
         td.verify(testLogger('response translated for request: ', 'some-request-id', 'Scenario: ', 'SUCCESS'))
       })
@@ -235,7 +235,7 @@ describe('The passport-verify client', function () {
     const testLogger = td.function() as (message?: any, ...optionalParams: any[]) => void
     client.infoLog = testLogger as any
 
-    return client.translateResponse(ERROR_SCENARIO, 'some-request-id')
+    return client.translateResponse(ERROR_SCENARIO, 'some-request-id', 'LEVEL_2')
       .then(response => {
         td.verify(testLogger(
           'error translating response for request id: ',
