@@ -104,13 +104,13 @@
 					<a name="createstrategy" class="tsd-anchor"></a>
 					<h3>create<wbr>Strategy</h3>
 					<ul class="tsd-signatures tsd-kind-function tsd-parent-kind-external-module">
-						<li class="tsd-signature tsd-kind-icon">create<wbr>Strategy<span class="tsd-signature-symbol">(</span>verifyServiceProviderHost<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span>, createUser<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">function</span>, verifyUser<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">function</span>, saveRequestId<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">function</span>, loadRequestId<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">function</span>, serviceEntityId<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="../classes/_passport_verify_strategy_.passportverifystrategy.html" class="tsd-signature-type">PassportVerifyStrategy</a></li>
+						<li class="tsd-signature tsd-kind-icon">create<wbr>Strategy<span class="tsd-signature-symbol">(</span>verifyServiceProviderHost<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span>, createUser<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">function</span>, verifyUser<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">function</span>, saveRequestId<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">function</span>, loadRequestId<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">function</span>, serviceEntityId<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">string</span>, samlFormTemplateName<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">string</span>, levelOfAssurance<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">"LEVEL_1"</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">"LEVEL_2"</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="../classes/_passport_verify_strategy_.passportverifystrategy.html" class="tsd-signature-type">PassportVerifyStrategy</a></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/alphagov/passport-verify/blob/a15685e/lib/passport-verify-strategy.ts#L139">passport-verify-strategy.ts:139</a></li>
+									<li>Defined in <a href="https://github.com/alphagov/passport-verify/blob/7d321bc/lib/passport-verify-strategy.ts#L152">passport-verify-strategy.ts:152</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -243,6 +243,23 @@
 									<div class="tsd-comment tsd-typography">
 										<p>(Optional) The entityId that will be passed to the Verify Service Provider. This is
 										only required if the service provider is configured to be multi tenanted.</p>
+									</div>
+								</li>
+								<li>
+									<h5><span class="tsd-flag ts-flagOptional">Optional</span> samlFormTemplateName: <span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">string</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>(Optional) The name of a template in your service which will provide the form
+											used to post an authn request. If present, this will be rendered with the ssoLocation and samlRequest passed
+											in. Otherwise, a default form will be used. You should use this option if you wish to style the form, which
+										should be autoposting so only seen if the user has javascript disabled, to match the rest of your service.</p>
+									</div>
+								</li>
+								<li>
+									<h5><span class="tsd-flag ts-flagOptional">Optional</span> levelOfAssurance: <span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">"LEVEL_1"</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">"LEVEL_2"</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>(Optional) LEVEL_1 or LEVEL_2 - defaults to LEVEL_2. The Level of Assurance to
+											request from the Verify Service Provider and the minimum level to expect in the Response (e.g. if you
+										specify LEVEL_1 a LEVEL_2 Response would also be permissible).</p>
 									</div>
 								</li>
 							</ul>

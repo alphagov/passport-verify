@@ -134,13 +134,13 @@
 					<a name="constructor" class="tsd-anchor"></a>
 					<h3>constructor</h3>
 					<ul class="tsd-signatures tsd-kind-constructor tsd-parent-kind-class">
-						<li class="tsd-signature tsd-kind-icon">new <wbr>Passport<wbr>Verify<wbr>Strategy<span class="tsd-signature-symbol">(</span>client<span class="tsd-signature-symbol">: </span><a href="_verify_service_provider_client_.verifyserviceproviderclient.html" class="tsd-signature-type">VerifyServiceProviderClient</a>, createUser<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">function</span>, verifyUser<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">function</span>, saveRequestId<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">function</span>, loadRequestId<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">function</span>, serviceEntityId<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="_passport_verify_strategy_.passportverifystrategy.html" class="tsd-signature-type">PassportVerifyStrategy</a></li>
+						<li class="tsd-signature tsd-kind-icon">new <wbr>Passport<wbr>Verify<wbr>Strategy<span class="tsd-signature-symbol">(</span>client<span class="tsd-signature-symbol">: </span><a href="_verify_service_provider_client_.verifyserviceproviderclient.html" class="tsd-signature-type">VerifyServiceProviderClient</a>, createUser<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">function</span>, verifyUser<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">function</span>, saveRequestId<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">function</span>, loadRequestId<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">function</span>, serviceEntityId<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">string</span>, samlFormTemplateName<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">string</span>, levelOfAssurance<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">"LEVEL_1"</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">"LEVEL_2"</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="_passport_verify_strategy_.passportverifystrategy.html" class="tsd-signature-type">PassportVerifyStrategy</a></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/alphagov/passport-verify/blob/a15685e/lib/passport-verify-strategy.ts#L31">passport-verify-strategy.ts:31</a></li>
+									<li>Defined in <a href="https://github.com/alphagov/passport-verify/blob/7d321bc/lib/passport-verify-strategy.ts#L31">passport-verify-strategy.ts:31</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -238,6 +238,12 @@
 								<li>
 									<h5><span class="tsd-flag ts-flagOptional">Optional</span> serviceEntityId: <span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">string</span></h5>
 								</li>
+								<li>
+									<h5><span class="tsd-flag ts-flagOptional">Optional</span> samlFormTemplateName: <span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">string</span></h5>
+								</li>
+								<li>
+									<h5><span class="tsd-flag ts-flagDefault value">Default value</span> levelOfAssurance: <span class="tsd-signature-type">"LEVEL_1"</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">"LEVEL_2"</span><span class="tsd-signature-symbol"> =&nbsp;&quot;LEVEL_2&quot;</span></h5>
+								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <a href="_passport_verify_strategy_.passportverifystrategy.html" class="tsd-signature-type">PassportVerifyStrategy</a></h4>
 						</li>
@@ -252,7 +258,7 @@
 					<div class="tsd-signature tsd-kind-icon">name<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> =&nbsp;&quot;verify&quot;</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/alphagov/passport-verify/blob/a15685e/lib/passport-verify-strategy.ts#L31">passport-verify-strategy.ts:31</a></li>
+							<li>Defined in <a href="https://github.com/alphagov/passport-verify/blob/7d321bc/lib/passport-verify-strategy.ts#L31">passport-verify-strategy.ts:31</a></li>
 						</ul>
 					</aside>
 				</section>
@@ -270,7 +276,7 @@
 							<aside class="tsd-sources">
 								<p>Overrides Strategy.authenticate</p>
 								<ul>
-									<li>Defined in <a href="https://github.com/alphagov/passport-verify/blob/a15685e/lib/passport-verify-strategy.ts#L42">passport-verify-strategy.ts:42</a></li>
+									<li>Defined in <a href="https://github.com/alphagov/passport-verify/blob/7d321bc/lib/passport-verify-strategy.ts#L44">passport-verify-strategy.ts:44</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -297,7 +303,7 @@
 							<aside class="tsd-sources">
 								<p>Overrides Strategy.error</p>
 								<ul>
-									<li>Defined in <a href="https://github.com/alphagov/passport-verify/blob/a15685e/lib/passport-verify-strategy.ts#L52">passport-verify-strategy.ts:52</a></li>
+									<li>Defined in <a href="https://github.com/alphagov/passport-verify/blob/7d321bc/lib/passport-verify-strategy.ts#L54">passport-verify-strategy.ts:54</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -321,7 +327,7 @@
 							<aside class="tsd-sources">
 								<p>Overrides Strategy.fail</p>
 								<ul>
-									<li>Defined in <a href="https://github.com/alphagov/passport-verify/blob/a15685e/lib/passport-verify-strategy.ts#L51">passport-verify-strategy.ts:51</a></li>
+									<li>Defined in <a href="https://github.com/alphagov/passport-verify/blob/7d321bc/lib/passport-verify-strategy.ts#L53">passport-verify-strategy.ts:53</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -348,7 +354,7 @@
 							<aside class="tsd-sources">
 								<p>Inherited from Strategy.pass</p>
 								<ul>
-									<li>Defined in /Users/rsb/Documents/Verify/passport-verify/node_modules/@types/passport-strategy/index.d.ts:83</li>
+									<li>Defined in /Users/richardtowers/Projects/passport-verify/node_modules/@types/passport-strategy/index.d.ts:84</li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -379,7 +385,7 @@
 							<aside class="tsd-sources">
 								<p>Inherited from Strategy.redirect</p>
 								<ul>
-									<li>Defined in /Users/rsb/Documents/Verify/passport-verify/node_modules/@types/passport-strategy/index.d.ts:72</li>
+									<li>Defined in /Users/richardtowers/Projects/passport-verify/node_modules/@types/passport-strategy/index.d.ts:73</li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -418,7 +424,7 @@
 							<aside class="tsd-sources">
 								<p>Overrides Strategy.success</p>
 								<ul>
-									<li>Defined in <a href="https://github.com/alphagov/passport-verify/blob/a15685e/lib/passport-verify-strategy.ts#L50">passport-verify-strategy.ts:50</a></li>
+									<li>Defined in <a href="https://github.com/alphagov/passport-verify/blob/7d321bc/lib/passport-verify-strategy.ts#L52">passport-verify-strategy.ts:52</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
