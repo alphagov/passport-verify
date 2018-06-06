@@ -36,7 +36,8 @@ export class PassportVerifyStrategy extends Strategy {
                private saveRequestId: (requestId: string, request: express.Request) => any,
                private loadRequestId: (request: express.Request) => string,
                private serviceEntityId?: string,
-               private samlFormTemplateName?: string) {
+               private samlFormTemplateName?: string,
+               private levelOfAssurance: ('LEVEL_1' | 'LEVEL_2') = 'LEVEL_2') {
     super()
   }
 
@@ -63,7 +64,7 @@ export class PassportVerifyStrategy extends Strategy {
   private async _translateResponse (req: express.Request) {
     const requestId = this.loadRequestId(req)
     const samlResponse = (req as any).body.SAMLResponse
-    const response = await this.client.translateResponse(samlResponse, requestId, this.serviceEntityId)
+    const response = await this.client.translateResponse(samlResponse, requestId, this.levelOfAssurance, this.serviceEntityId)
     switch (response.status) {
       case 200:
         const responseBody = response.body as TranslatedResponseBody
@@ -102,7 +103,7 @@ export class PassportVerifyStrategy extends Strategy {
   }
 
   private async _renderAuthnRequest (request: express.Request): Promise<express.Response> {
-    const authnRequestResponse = await this.client.generateAuthnRequest(this.serviceEntityId)
+    const authnRequestResponse = await this.client.generateAuthnRequest(this.levelOfAssurance, this.serviceEntityId)
     if (authnRequestResponse.status === 200) {
       const authnRequestResponseBody = authnRequestResponse.body as AuthnRequestResponse
       this.saveRequestId(authnRequestResponseBody.requestId, request)
@@ -140,6 +141,9 @@ export class PassportVerifyStrategy extends Strategy {
  * used to post an authn request. If present, this will be rendered with the ssoLocation and samlRequest passed
  * in. Otherwise, a default form will be used. You should use this option if you wish to style the form, which
  * should be autoposting so only seen if the user has javascript disabled, to match the rest of your service.
+ * @param levelOfAssurance (Optional) LEVEL_1 or LEVEL_2 - defaults to LEVEL_2. The Level of Assurance to
+ * request from the Verify Service Provider and the minimum level to expect in the Response (e.g. if you
+ * specify LEVEL_1 a LEVEL_2 Response would also be permissible).
  * @returns A strategy to be registered in passport with
  * ```
  * passport.use(passportVerifyStrategy)
@@ -152,8 +156,9 @@ export function createStrategy (
   saveRequestId: (requestId: string, request: express.Request) => void,
   loadRequestId: (request: express.Request) => string,
   serviceEntityId?: string,
-  samlFormTemplateName?: string
+  samlFormTemplateName?: string,
+  levelOfAssurance?: ('LEVEL_1' | 'LEVEL_2')
 ) {
   const client = new VerifyServiceProviderClient(verifyServiceProviderHost)
-  return new PassportVerifyStrategy(client, createUser, verifyUser, saveRequestId, loadRequestId, serviceEntityId, samlFormTemplateName)
+  return new PassportVerifyStrategy(client, createUser, verifyUser, saveRequestId, loadRequestId, serviceEntityId, samlFormTemplateName, levelOfAssurance)
 }

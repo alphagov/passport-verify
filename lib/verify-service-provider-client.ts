@@ -17,9 +17,9 @@ export default class VerifyServiceProviderClient {
 
   constructor (private verifyServiceProviderHost: string) {}
 
-  async generateAuthnRequest (entityId?: string): Promise<{ status: number, body: AuthnRequestResponse | ErrorMessage }> {
+  async generateAuthnRequest (levelOfAssurance: ('LEVEL_1' | 'LEVEL_2'), entityId?: string): Promise<{ status: number, body: AuthnRequestResponse | ErrorMessage }> {
     try {
-      let requestBody: any = { levelOfAssurance: 'LEVEL_2' }
+      let requestBody: any = { levelOfAssurance }
       if (entityId) {
         requestBody.entityId = entityId
       }
@@ -39,9 +39,9 @@ export default class VerifyServiceProviderClient {
     }
   }
 
-  async translateResponse (samlResponse: string, requestId: string, entityId?: string): Promise<{ status: number, body: TranslatedResponseBody | ErrorMessage }> {
+  async translateResponse (samlResponse: string, requestId: string, levelOfAssurance: ('LEVEL_1' | 'LEVEL_2'), entityId?: string): Promise<{ status: number, body: TranslatedResponseBody | ErrorMessage }> {
     try {
-      let requestBody: any = { samlResponse, requestId, levelOfAssurance: 'LEVEL_2' }
+      let requestBody: any = { samlResponse, requestId, levelOfAssurance: levelOfAssurance }
       if (entityId) {
         requestBody.entityId = entityId
       }
