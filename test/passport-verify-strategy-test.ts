@@ -3,6 +3,8 @@ import { Scenario } from '../lib/verify-service-provider-api/translated-response
 import VerifyServiceProviderClient from '../lib/verify-service-provider-client'
 import * as td from 'testdouble'
 
+const anything = td.matchers.anything
+
 describe('The passport-verify strategy', function () {
 
   const MockClient = td.constructor(VerifyServiceProviderClient)
@@ -97,10 +99,8 @@ describe('The passport-verify strategy', function () {
       entityId
     )
     const request: any = { res: { send: td.function() } }
-    td.when(mockClient.generateAuthnRequest(td.matchers.anything(), td.matchers.anything())).thenReturn(exampleAuthnRequestResponse)
-    return strategy.authenticate(request).then(() => {
-      td.verify(mockClient.generateAuthnRequest('LEVEL_2', entityId))
-    })
+    td.when(mockClient.generateAuthnRequest('LEVEL_2', entityId)).thenReturn(exampleAuthnRequestResponse)
+    return strategy.authenticate(request)
   })
 
   it('should call generateAuthnRequest without an entityId if none has ben set up', function () {
@@ -113,10 +113,8 @@ describe('The passport-verify strategy', function () {
       () => ''
     )
     const request: any = { res: { send: td.function() } }
-    td.when(mockClient.generateAuthnRequest(td.matchers.anything(), td.matchers.anything())).thenReturn(exampleAuthnRequestResponse)
-    return strategy.authenticate(request).then(() => {
-      td.verify(mockClient.generateAuthnRequest('LEVEL_2', undefined))
-    })
+    td.when(mockClient.generateAuthnRequest('LEVEL_2', undefined)).thenReturn(exampleAuthnRequestResponse)
+    return strategy.authenticate(request)
   })
 
   it('should call generateAuthnRequest with LoA1 if requested', function () {
@@ -133,10 +131,8 @@ describe('The passport-verify strategy', function () {
       'LEVEL_1'
     )
     const request: any = { res: { send: td.function() } }
-    td.when(mockClient.generateAuthnRequest(td.matchers.anything(), td.matchers.anything())).thenReturn(exampleAuthnRequestResponse)
-    return strategy.authenticate(request).then(() => {
-      td.verify(mockClient.generateAuthnRequest('LEVEL_1', entityId))
-    })
+    td.when(mockClient.generateAuthnRequest('LEVEL_1', entityId)).thenReturn(exampleAuthnRequestResponse)
+    return strategy.authenticate(request)
   })
 
   it('should render a SAML AuthnRequest form if no template is provided', function () {
@@ -148,7 +144,7 @@ describe('The passport-verify strategy', function () {
       () => undefined,
       () => '')
     const request: any = { res: { send: td.function() } }
-    td.when(mockClient.generateAuthnRequest(td.matchers.anything(), td.matchers.anything())).thenReturn(exampleAuthnRequestResponse)
+    td.when(mockClient.generateAuthnRequest(anything(), anything())).thenReturn(exampleAuthnRequestResponse)
     return strategy.authenticate(request).then(() => {
       td.verify(request.res.send(td.matchers.contains(/some-saml-req/)))
       td.verify(request.res.send(td.matchers.contains(/http:\/\/hub-sso-uri/)))
@@ -167,7 +163,7 @@ describe('The passport-verify strategy', function () {
       'formTemplate'
     )
     const request: any = { res: { render: td.function() } }
-    td.when(mockClient.generateAuthnRequest(td.matchers.anything())).thenReturn(exampleAuthnRequestResponse)
+    td.when(mockClient.generateAuthnRequest(anything())).thenReturn(exampleAuthnRequestResponse)
     return strategy.authenticate(request).then(() => {
       td.verify(request.res.render('formTemplate', { ssoLocation: exampleAuthnRequestResponse.body.ssoLocation, samlRequest: exampleAuthnRequestResponse.body.samlRequest }))
     })
@@ -177,7 +173,7 @@ describe('The passport-verify strategy', function () {
     const { mockClient, strategy } = createStrategy()
     strategy.saveRequestId = td.function()
     const request: any = { res: { send: td.function() } }
-    td.when(mockClient.generateAuthnRequest(td.matchers.anything())).thenReturn(exampleAuthnRequestResponse)
+    td.when(mockClient.generateAuthnRequest(anything())).thenReturn(exampleAuthnRequestResponse)
     return strategy.authenticate(request).then(() => {
       td.verify(strategy.saveRequestId(exampleAuthnRequestResponse.body.requestId, request))
     })
@@ -196,10 +192,8 @@ describe('The passport-verify strategy', function () {
     ) as any
 
     strategy.success = td.function()
-    td.when(mockClient.translateResponse(exampleSaml.body.SAMLResponse, 'some-request-id', td.matchers.anything(), td.matchers.anything())).thenReturn(exampleTranslatedResponse)
-    return strategy.authenticate(exampleSaml).then(() => {
-      td.verify(mockClient.translateResponse(td.matchers.anything(), td.matchers.anything(), 'LEVEL_2', entityId))
-    })
+    td.when(mockClient.translateResponse(exampleSaml.body.SAMLResponse, 'some-request-id', 'LEVEL_2', entityId)).thenReturn(exampleTranslatedResponse)
+    return strategy.authenticate(exampleSaml)
   })
 
   it('should call translateResponse without an entityId if none is set up', function () {
@@ -213,10 +207,8 @@ describe('The passport-verify strategy', function () {
     ) as any
 
     strategy.success = td.function()
-    td.when(mockClient.translateResponse(exampleSaml.body.SAMLResponse, 'some-request-id', td.matchers.anything(), td.matchers.anything())).thenReturn(exampleTranslatedResponse)
-    return strategy.authenticate(exampleSaml).then(() => {
-      td.verify(mockClient.translateResponse(td.matchers.anything(), td.matchers.anything(), 'LEVEL_2', undefined))
-    })
+    td.when(mockClient.translateResponse(exampleSaml.body.SAMLResponse, 'some-request-id', 'LEVEL_2', undefined)).thenReturn(exampleTranslatedResponse)
+    return strategy.authenticate(exampleSaml)
   })
 
   it('should call translateResponse with LoA1 if required', function () {
@@ -233,10 +225,8 @@ describe('The passport-verify strategy', function () {
     ) as any
 
     strategy.success = td.function()
-    td.when(mockClient.translateResponse(exampleSaml.body.SAMLResponse, 'some-request-id', td.matchers.anything(), td.matchers.anything())).thenReturn(exampleTranslatedResponse)
-    return strategy.authenticate(exampleSaml).then(() => {
-      td.verify(mockClient.translateResponse(td.matchers.anything(), td.matchers.anything(), 'LEVEL_1', undefined))
-    })
+    td.when(mockClient.translateResponse(exampleSaml.body.SAMLResponse, 'some-request-id', 'LEVEL_1', undefined)).thenReturn(exampleTranslatedResponse)
+    return strategy.authenticate(exampleSaml)
   })
 
   it('should convert a successful SAML Response to the application user object', function () {
@@ -244,7 +234,7 @@ describe('The passport-verify strategy', function () {
 
     // Mimicking passport's attaching of its success method to the Strategy instance
     strategy.success = td.function()
-    td.when(mockClient.translateResponse(exampleSaml.body.SAMLResponse, 'some-request-id', td.matchers.anything(), td.matchers.anything())).thenReturn(exampleTranslatedResponse)
+    td.when(mockClient.translateResponse(exampleSaml.body.SAMLResponse, 'some-request-id', anything(), anything())).thenReturn(exampleTranslatedResponse)
     return strategy.authenticate(exampleSaml).then(() => {
       td.verify(strategy.success(td.matchers.contains(exampleUser), td.matchers.contains({ levelOfAssurance: 'LEVEL_2' })))
     })
@@ -263,7 +253,7 @@ describe('The passport-verify strategy', function () {
     // Mimicking passport's attaching of its fail method to the Strategy instance
     strategy.fail = td.function()
 
-    td.when(mockClient.translateResponse(exampleSaml.body.SAMLResponse, 'some-request-id', td.matchers.anything(), td.matchers.anything())).thenReturn(exampleNoMatchTranslatedResponse)
+    td.when(mockClient.translateResponse(exampleSaml.body.SAMLResponse, 'some-request-id', anything(), anything())).thenReturn(exampleNoMatchTranslatedResponse)
     return strategy.authenticate(exampleSaml).then(() => {
       td.verify(strategy.fail(Scenario.NO_MATCH))
     })
@@ -282,7 +272,7 @@ describe('The passport-verify strategy', function () {
     // Mimicking passport's attaching of its fail method to the Strategy instance
     strategy.fail = td.function()
 
-    td.when(mockClient.translateResponse(exampleSaml.body.SAMLResponse, 'some-request-id', td.matchers.anything(), td.matchers.anything())).thenReturn(exampleAccountCreationTranslatedResponse)
+    td.when(mockClient.translateResponse(exampleSaml.body.SAMLResponse, 'some-request-id', anything(), anything())).thenReturn(exampleAccountCreationTranslatedResponse)
     return strategy.authenticate(exampleSaml).then(() => {
       td.verify(strategy.fail(Scenario.REQUEST_ERROR))
     })
@@ -301,7 +291,7 @@ describe('The passport-verify strategy', function () {
     // Mimicking passport's attaching of its fail method to the Strategy instance
     strategy.fail = td.function()
 
-    td.when(mockClient.translateResponse(exampleSaml.body.SAMLResponse, 'some-request-id', td.matchers.anything(), td.matchers.anything())).thenReturn(exampleTranslatedResponse)
+    td.when(mockClient.translateResponse(exampleSaml.body.SAMLResponse, 'some-request-id', anything(), anything())).thenReturn(exampleTranslatedResponse)
     return strategy.authenticate(exampleSaml).then(() => {
       td.verify(strategy.fail(Scenario.REQUEST_ERROR))
     })
@@ -313,7 +303,7 @@ describe('The passport-verify strategy', function () {
     // Mimicking passport's attaching of its fail method to the Strategy instance
     strategy.error = td.function()
 
-    td.when(mockClient.translateResponse(exampleSaml.body.SAMLResponse, 'some-request-id', td.matchers.anything(), td.matchers.anything())).thenReturn(exampleBadRequestResponse)
+    td.when(mockClient.translateResponse(exampleSaml.body.SAMLResponse, 'some-request-id', anything(), anything())).thenReturn(exampleBadRequestResponse)
     return strategy.authenticate(exampleSaml).then(() => {
       td.verify(strategy.error(new Error(exampleBadRequestResponse.body.message)))
     })
@@ -325,7 +315,7 @@ describe('The passport-verify strategy', function () {
     // Mimicking passport's attaching of its fail method to the Strategy instance
     strategy.error = td.function()
 
-    td.when(mockClient.translateResponse(exampleSaml.body.SAMLResponse, 'some-request-id', td.matchers.anything(), td.matchers.anything())).thenReturn(exampleServiceErrorResponse)
+    td.when(mockClient.translateResponse(exampleSaml.body.SAMLResponse, 'some-request-id', anything(), anything())).thenReturn(exampleServiceErrorResponse)
     return strategy.authenticate(exampleSaml).then(() => {
       td.verify(strategy.error(new Error(exampleServiceErrorResponse.body.message)))
     })
