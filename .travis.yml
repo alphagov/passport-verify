@@ -1,9 +1,8 @@
 language: node_js
 node_js:
   - "6.14.1" # Current version on PaaS
-  - "6.14.2" # Latest 6.x release
-  - "8.11.2" # LTS release
-  - "10.3.0" # Current release
+  - "lts/*"  # LTS release
+  - "node"   # Current release
 cache:
   directories:
     - "node_modules"
