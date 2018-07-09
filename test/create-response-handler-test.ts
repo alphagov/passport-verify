@@ -36,8 +36,8 @@ describe('The createResponseHandler function', () => {
 
   it('should return a passport authenticate callback function', () => {
     const result = createResponseHandler(scenarios)
-    assert.equal(typeof result, 'function')
-    assert.equal(result.length, 4)
+    assert.strictEqual(typeof result, 'function')
+    assert.strictEqual(result.length, 4)
   })
 
   it('callback should call onMatch when called with an existing user', () => {
