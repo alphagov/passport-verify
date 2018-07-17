@@ -84,8 +84,8 @@ describe('The passport-verify client', function () {
 
     return client.generateAuthnRequest('LEVEL_2')
       .then(response => {
-        assert.equal(response.status, 200)
-        assert.deepEqual(response.body, exampleAuthnRequest)
+        assert.strictEqual(response.status, 200)
+        assert.deepStrictEqual(response.body, exampleAuthnRequest)
       })
   })
 
@@ -95,8 +95,8 @@ describe('The passport-verify client', function () {
 
     return client.generateAuthnRequest('LEVEL_2', entityId)
       .then(response => {
-        assert.equal(response.status, 200)
-        assert.deepEqual(response.body, exampleAuthnRequest)
+        assert.strictEqual(response.status, 200)
+        assert.deepStrictEqual(response.body, exampleAuthnRequest)
       })
   })
 
@@ -105,8 +105,8 @@ describe('The passport-verify client', function () {
 
     return client.translateResponse(SUCCESS_SCENARIO, 'some-request-id', 'LEVEL_2')
       .then(response => {
-        assert.equal(response.status, 200)
-        assert.deepEqual(response.body, exampleTranslatedResponse)
+        assert.strictEqual(response.status, 200)
+        assert.deepStrictEqual(response.body, exampleTranslatedResponse)
       })
   })
 
@@ -116,8 +116,8 @@ describe('The passport-verify client', function () {
 
     return client.translateResponse(SUCCESS_SCENARIO, 'some-request-id', 'LEVEL_2', entityId)
       .then(response => {
-        assert.equal(response.status, 200)
-        assert.deepEqual(response.body, exampleTranslatedResponse)
+        assert.strictEqual(response.status, 200)
+        assert.deepStrictEqual(response.body, exampleTranslatedResponse)
       })
   })
 
@@ -126,8 +126,8 @@ describe('The passport-verify client', function () {
 
     return client.translateResponse(ERROR_SCENARIO, 'some-request-id', 'LEVEL_2')
       .then(response => {
-        assert.equal(response.status, 422)
-        assert.deepEqual(response.body, exampleErrorResponse)
+        assert.strictEqual(response.status, 422)
+        assert.deepStrictEqual(response.body, exampleErrorResponse)
       })
   })
 
