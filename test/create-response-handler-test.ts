@@ -9,6 +9,7 @@ function verifyNotCalled (fn: any) {
 
 describe('The createResponseHandler function', () => {
   let scenarios: ResponseScenarios
+  let onIdentityVerified: any
   let onMatch: any
   let onCreateUser: any
   let onAuthnFailed: any
@@ -17,6 +18,7 @@ describe('The createResponseHandler function', () => {
   let onError: any
 
   beforeEach(() => {
+    onIdentityVerified = td.function()
     onMatch = td.function()
     onCreateUser = td.function()
     onAuthnFailed = td.function()
@@ -25,6 +27,7 @@ describe('The createResponseHandler function', () => {
     onError = td.function()
 
     scenarios = {
+      onIdentityVerified,
       onMatch,
       onCreateUser,
       onAuthnFailed,
@@ -34,10 +37,37 @@ describe('The createResponseHandler function', () => {
     }
   })
 
-  it('should return a passport authenticate callback function', () => {
+  it('should return a passport authenticate callback function for matching journey (Verify 1.0)', () => {
+    scenarios.onIdentityVerified = () => false
     const result = createResponseHandler(scenarios)
     assert.strictEqual(typeof result, 'function')
     assert.strictEqual(result.length, 4)
+  })
+
+  it('should return a passport authenticate callback function for non-matching journey (Verify 2.0)', () => {
+    scenarios.onMatch = () => false
+    scenarios.onCreateUser = () => false
+    const result = createResponseHandler(scenarios)
+    assert.strictEqual(typeof result, 'function')
+    assert.strictEqual(result.length, 4)
+  })
+
+  it('callback should call onIdentityVerified when called with an Verify 2.0 identity', () => {
+    const error = null as any
+    const user = {}
+    const info = { scenario: Scenario.IDENTITY_VERIFIED, pid: '', levelOfAssurance: '' }
+    const status = null as any
+
+    createResponseHandler(scenarios)(error, user, info, status)
+
+    td.verify(onIdentityVerified(user))
+
+    verifyNotCalled(onMatch)
+    verifyNotCalled(onCreateUser)
+    verifyNotCalled(onAuthnFailed)
+    verifyNotCalled(onNoMatch)
+    verifyNotCalled(onCancel)
+    verifyNotCalled(onError)
   })
 
   it('callback should call onMatch when called with an existing user', () => {
@@ -50,6 +80,7 @@ describe('The createResponseHandler function', () => {
 
     td.verify(onMatch(user))
 
+    verifyNotCalled(onIdentityVerified)
     verifyNotCalled(onCreateUser)
     verifyNotCalled(onAuthnFailed)
     verifyNotCalled(onNoMatch)
@@ -67,6 +98,7 @@ describe('The createResponseHandler function', () => {
 
     td.verify(onCreateUser(user))
 
+    verifyNotCalled(onIdentityVerified)
     verifyNotCalled(onMatch)
     verifyNotCalled(onAuthnFailed)
     verifyNotCalled(onNoMatch)
@@ -84,6 +116,7 @@ describe('The createResponseHandler function', () => {
 
     td.verify(onAuthnFailed())
 
+    verifyNotCalled(onIdentityVerified)
     verifyNotCalled(onMatch)
     verifyNotCalled(onCreateUser)
     verifyNotCalled(onNoMatch)
@@ -101,6 +134,7 @@ describe('The createResponseHandler function', () => {
 
     td.verify(onNoMatch())
 
+    verifyNotCalled(onIdentityVerified)
     verifyNotCalled(onMatch)
     verifyNotCalled(onCreateUser)
     verifyNotCalled(onAuthnFailed)
@@ -118,6 +152,7 @@ describe('The createResponseHandler function', () => {
 
     td.verify(onCancel())
 
+    verifyNotCalled(onIdentityVerified)
     verifyNotCalled(onMatch)
     verifyNotCalled(onCreateUser)
     verifyNotCalled(onAuthnFailed)
@@ -135,6 +170,7 @@ describe('The createResponseHandler function', () => {
 
     td.verify(onError(new Error('Unrecognised Scenario SUCCESS_MATCH')))
 
+    verifyNotCalled(onIdentityVerified)
     verifyNotCalled(onMatch)
     verifyNotCalled(onCreateUser)
     verifyNotCalled(onAuthnFailed)
@@ -152,6 +188,7 @@ describe('The createResponseHandler function', () => {
 
     td.verify(onError(new Error('SAML Response was an error')))
 
+    verifyNotCalled(onIdentityVerified)
     verifyNotCalled(onMatch)
     verifyNotCalled(onCreateUser)
     verifyNotCalled(onAuthnFailed)
@@ -169,6 +206,7 @@ describe('The createResponseHandler function', () => {
 
     td.verify(onError(error))
 
+    verifyNotCalled(onIdentityVerified)
     verifyNotCalled(onMatch)
     verifyNotCalled(onCreateUser)
     verifyNotCalled(onAuthnFailed)

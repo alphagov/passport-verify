@@ -19,6 +19,7 @@ export interface TranslatedResponseBody {
  * a response from verify could mean.
  */
 export enum Scenario {
+  IDENTITY_VERIFIED = 'IDENTITY_VERIFIED',
   SUCCESS_MATCH = 'SUCCESS_MATCH',
   ACCOUNT_CREATION = 'ACCOUNT_CREATION',
   NO_MATCH = 'NO_MATCH',

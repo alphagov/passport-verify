@@ -31,6 +31,7 @@ export class PassportVerifyStrategy extends Strategy {
   public name: string = 'verify'
 
   constructor (private client: VerifyServiceProviderClient,
+               private identifyUser: (user: TranslatedResponseBody) => any,
                private createUser: (user: TranslatedResponseBody) => any,
                private verifyUser: (user: TranslatedResponseBody) => any,
                private saveRequestId: (requestId: string, request: express.Request) => any,
@@ -54,6 +55,7 @@ export class PassportVerifyStrategy extends Strategy {
   error (reason: Error) { throw reason }
 
   private _handleRequest (req: express.Request) {
+    console.log('==== passport-verify handling a request')
     if (req.body && req.body.SAMLResponse) {
       return this._translateResponse(req as any)
     } else {
@@ -80,6 +82,7 @@ export class PassportVerifyStrategy extends Strategy {
   }
 
   private async _handleSuccessResponse (responseBody: TranslatedResponseBody) {
+    console.log('==== valid response recognised with scenario: ' + responseBody.scenario + ', choosing appropriate \'strategy\'...')
     switch (responseBody.scenario) {
       case Scenario.ACCOUNT_CREATION:
         await this._verifyUser(responseBody, this.createUser)
@@ -87,14 +90,19 @@ export class PassportVerifyStrategy extends Strategy {
       case Scenario.SUCCESS_MATCH:
         await this._verifyUser(responseBody, this.verifyUser)
         break
+      case Scenario.IDENTITY_VERIFIED:
+        await this._verifyUser(responseBody, this.identifyUser)
+        break
       default:
         this.fail(responseBody.scenario)
     }
   }
 
-  private async _verifyUser (responseBody: TranslatedResponseBody, fetchUser: (user: TranslatedResponseBody) => any) {
-    const user = await fetchUser(responseBody)
+  private async _verifyUser (responseBody: TranslatedResponseBody, processUser: (user: TranslatedResponseBody) => any) {
+    console.log('==== passport-verify calling \'strategy\' function for processing the identity (as defined by the RP Service)')
+    const user = await processUser(responseBody)
     if (user) {
+      console.log('==== passport-verify calling the Success scenario with a user object')
       this.success(user, responseBody)
     } else {
       this.fail(Scenario.REQUEST_ERROR)
@@ -124,6 +132,8 @@ export class PassportVerifyStrategy extends Strategy {
  * Creates an instance of [[PassportVerifyStrategy]]
  *
  * @param verifyServiceProviderHost The URL that the Verify Service Provider is running on (e.g. http://localhost:50400)
+ * @param identifyUser A callback that will be invoked when a user's identity has been successfully verified.  Not prior
+ * matching has been done in this scenario and the raw identity assertions are available.
  * @param createUser A callback that will be invoked when a response with a new user is received.
  * The `user` object will contain the users' attributes (i.e. firstName, surname etc.).
  * Your callback should store details of the user in your datastore and return an object representing the user.
@@ -151,6 +161,7 @@ export class PassportVerifyStrategy extends Strategy {
  */
 export function createStrategy (
   verifyServiceProviderHost: string,
+  identifyUser: (user: TranslatedResponseBody) => object | false,
   createUser: (user: TranslatedResponseBody) => object | false,
   verifyUser: (user: TranslatedResponseBody) => object | false,
   saveRequestId: (requestId: string, request: express.Request) => void,
@@ -158,7 +169,7 @@ export function createStrategy (
   serviceEntityId?: string,
   samlFormTemplateName?: string,
   levelOfAssurance?: ('LEVEL_1' | 'LEVEL_2')
-) {
+): Strategy {
   const client = new VerifyServiceProviderClient(verifyServiceProviderHost)
-  return new PassportVerifyStrategy(client, createUser, verifyUser, saveRequestId, loadRequestId, serviceEntityId, samlFormTemplateName, levelOfAssurance)
+  return new PassportVerifyStrategy(client, identifyUser, createUser, verifyUser, saveRequestId, loadRequestId, serviceEntityId, samlFormTemplateName, levelOfAssurance)
 }

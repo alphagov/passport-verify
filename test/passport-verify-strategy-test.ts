@@ -81,6 +81,7 @@ describe('The passport-verify strategy', function () {
       mockClient,
       () => exampleUser,
       () => exampleUser,
+      () => exampleUser,
       () => undefined,
       () => 'some-request-id'
     ) as any
@@ -92,6 +93,7 @@ describe('The passport-verify strategy', function () {
     const mockClient = { generateAuthnRequest: td.function() }
     const strategy = new PassportVerifyStrategy(
       mockClient as any,
+      () => undefined,
       () => undefined,
       () => undefined,
       () => undefined,
@@ -110,6 +112,7 @@ describe('The passport-verify strategy', function () {
       () => undefined,
       () => undefined,
       () => undefined,
+      () => undefined,
       () => ''
     )
     const request: any = { res: { send: td.function() } }
@@ -122,6 +125,7 @@ describe('The passport-verify strategy', function () {
     const mockClient = { generateAuthnRequest: td.function() }
     const strategy = new PassportVerifyStrategy(
       mockClient as any,
+      () => undefined,
       () => undefined,
       () => undefined,
       () => undefined,
@@ -142,6 +146,7 @@ describe('The passport-verify strategy', function () {
       () => undefined,
       () => undefined,
       () => undefined,
+      () => undefined,
       () => '')
     const request: any = { res: { send: td.function() } }
     td.when(mockClient.generateAuthnRequest(anything(), anything())).thenReturn(exampleAuthnRequestResponse)
@@ -155,6 +160,7 @@ describe('The passport-verify strategy', function () {
     const mockClient = new MockClient()
     const strategy = new PassportVerifyStrategy(
       mockClient,
+      () => undefined,
       () => undefined,
       () => undefined,
       () => undefined,
@@ -186,6 +192,7 @@ describe('The passport-verify strategy', function () {
       mockClient as any,
       () => exampleUser,
       () => exampleUser,
+      () => exampleUser,
       () => undefined,
       () => 'some-request-id',
       entityId
@@ -202,6 +209,7 @@ describe('The passport-verify strategy', function () {
       mockClient as any,
       () => exampleUser,
       () => exampleUser,
+      () => exampleUser,
       () => undefined,
       () => 'some-request-id'
     ) as any
@@ -215,6 +223,7 @@ describe('The passport-verify strategy', function () {
     const mockClient = { translateResponse: td.function() }
     const strategy = new PassportVerifyStrategy(
       mockClient as any,
+      () => exampleUser,
       () => exampleUser,
       () => exampleUser,
       () => undefined,
@@ -244,6 +253,7 @@ describe('The passport-verify strategy', function () {
     const mockClient = new MockClient()
     const strategy = new PassportVerifyStrategy(
       mockClient,
+      () => exampleUser,
       () => false,
       () => undefined,
       () => undefined,
@@ -263,6 +273,7 @@ describe('The passport-verify strategy', function () {
     const mockClient = new MockClient()
     const strategy = new PassportVerifyStrategy(
       mockClient,
+      () => exampleUser,
       () => false,
       () => undefined,
       () => undefined,
@@ -282,6 +293,7 @@ describe('The passport-verify strategy', function () {
     const mockClient = new MockClient()
     const strategy = new PassportVerifyStrategy(
       mockClient,
+      () => exampleUser,
       () => undefined,
       () => false,
       () => undefined,

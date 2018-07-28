@@ -7,6 +7,7 @@
  * const passportVerify = require('passport-verify')
  * passport.use(passportVerify.createStrategy(
  *   verifyServiceProviderHost,
+ *   function identifyUser (user) { },
  *   function createUser (user) { },
  *   function verifyUser (user) { },
  *   function saveRequestId (requestId, request) { },
@@ -22,6 +23,7 @@
  * app.post('/verify/response', (req, res, next) => (
  *   passport.authenticate('verify',
  *     passportVerify.createResponseHandler({
+ *       onIdentifyVerified => {},
  *       onMatch: user => {},
  *       onCreateUser: user => {},
  *       onAuthnFailed: failure => {},

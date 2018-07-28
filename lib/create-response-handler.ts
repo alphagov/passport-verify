@@ -23,6 +23,15 @@ import { TranslatedResponseBody, Scenario } from './verify-service-provider-api/
  */
 export interface ResponseScenarios {
   /**
+   * Called when handling a success response from a user that was verified using
+   * Verify 2.0 journey (i.e. all data from the IDP has been returned) Your callback
+   * should redirect the user to the appropriate page so they can begin using your service.
+   *
+   * The callback will be provided with a `user` object, which will be whatever
+   * was returned from your `verifyUser` callback.
+   */
+  onIdentityVerified: (user: any) => any,
+  /**
    * Called when handling a success response from a user that was matched by your
    * matching service. Your callback should redirect the user to the appropriate
    * page so they can begin using your service.
@@ -94,16 +103,26 @@ export interface ResponseScenarios {
  * @param responseScenarios Callbacks to handle each type of response that Verify can return
  */
 export function createResponseHandler (responseScenarios: ResponseScenarios) {
+  console.log('====================== passport-verify Response Handler created')
   return function (error: Error, user: any, infoOrError: TranslatedResponseBody | Scenario, status: number) {
+    console.log('===================== passport-verify Response Handler called')
+    console.dir(user)
     if (error) {
       return responseScenarios.onError(error)
     }
     if (user) {
       const responseBody = infoOrError as TranslatedResponseBody
-      if (responseBody.scenario === Scenario.ACCOUNT_CREATION) {
-        return responseScenarios.onCreateUser(user)
+      switch (responseBody.scenario) {
+        case Scenario.ACCOUNT_CREATION:
+          return responseScenarios.onCreateUser(user)
+        case Scenario.SUCCESS_MATCH:
+          return responseScenarios.onMatch(user)
+        case Scenario.IDENTITY_VERIFIED:
+          console.log('>>>>>>>>>> onIdentityVerified \'success\' response called')
+          return responseScenarios.onIdentityVerified(user)
+        default:
+          return responseScenarios.onError(new Error(`Identity detected but with unrecognised Scenario ${infoOrError}`))
       }
-      return responseScenarios.onMatch(user)
     }
 
     switch (infoOrError as Scenario) {
