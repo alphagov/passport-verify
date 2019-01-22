@@ -46,7 +46,7 @@ export default class VerifyServiceProviderClient {
         requestBody.entityId = entityId
       }
 
-      const responseBody = await this.sendRequest<TranslatedResponseBody>('/translate-response', requestBody)
+      const responseBody = await this.sendRequest<TranslatedResponseBody>('/translate-non-matching-response', requestBody)
       this.infoLog('response translated for request: ', requestId, 'Scenario: ', responseBody.scenario)
       return {
         status: 200,

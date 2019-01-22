@@ -81,10 +81,7 @@ export class PassportVerifyStrategy extends Strategy {
 
   private async _handleSuccessResponse (responseBody: TranslatedResponseBody) {
     switch (responseBody.scenario) {
-      case Scenario.ACCOUNT_CREATION:
-        await this._verifyUser(responseBody, this.createUser)
-        break
-      case Scenario.SUCCESS_MATCH:
+      case Scenario.IDENTITY_VERIFIED:
         await this._verifyUser(responseBody, this.verifyUser)
         break
       default:

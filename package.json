@@ -1,5 +1,5 @@
 {
-  "name": "passport-verify",
+  "name": "passport-verify-non-matching",
   "version": "1.1.0",
   "description": "A passport.js strategy for authenticating with Verify and Verify Service Provider",
   "repository": "https://github.com/alphagov/passport-verify",
@@ -15,33 +15,33 @@
     "docs": "mv {,.}test && typedoc --readme none --out docs --excludePrivate && touch docs/.nojekyll; mv {.,}test"
   },
   "author": {
-    "name": "Government Digital Service developers"
+    "name": "Show and tell demo"
   },
   "license": "MIT",
   "dependencies": {
     "@types/debug": "0.0.30",
-    "@types/escape-html": "^0.0.20",
-    "@types/express-serve-static-core": "^4.0.48",
-    "@types/form-data": "^2.2.0",
-    "@types/mocha": "^5.2.1",
-    "@types/node": "^10.3.1",
-    "@types/passport-strategy": "^0.2.30",
-    "@types/request": "^2.0.1",
-    "@types/request-promise-native": "^1.0.6",
-    "@types/serve-static": "^1.7.31",
-    "debug": "^3.0.1",
-    "escape-html": "^1.0.3",
-    "passport-strategy": "^1.0.0",
-    "request": "^2.81.0",
-    "request-promise-native": "^1.0.4"
+    "@types/escape-html": "0.0.20",
+    "@types/express-serve-static-core": "4.0.48",
+    "@types/form-data": "2.2.0",
+    "@types/mocha": "5.2.1",
+    "@types/node": "10.3.1",
+    "@types/passport-strategy": "0.2.30",
+    "@types/request": "2.0.1",
+    "@types/request-promise-native": "1.0.6",
+    "@types/serve-static": "1.7.31",
+    "debug": "3.0.1",
+    "escape-html": "1.0.3",
+    "passport-strategy": "1.0.0",
+    "request": "2.81.0",
+    "request-promise-native": "1.0.4"
   },
   "devDependencies": {
-    "mocha": "^5.2.0",
-    "testdouble": "^3.3.1",
+    "mocha": "5.2.0",
+    "testdouble": "3.3.1",
     "tslint": "5.10.0",
-    "tslint-config-standard": "^7.0.0",
+    "tslint-config-standard": "7.0.0",
     "typedoc": "0.11.1",
-    "typescript": "^2.4.2"
+    "typescript": "2.4.2"
   },
   "files": [
     "build"

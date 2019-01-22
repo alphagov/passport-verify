@@ -100,17 +100,12 @@ export function createResponseHandler (responseScenarios: ResponseScenarios) {
     }
     if (user) {
       const responseBody = infoOrError as TranslatedResponseBody
-      if (responseBody.scenario === Scenario.ACCOUNT_CREATION) {
-        return responseScenarios.onCreateUser(user)
-      }
       return responseScenarios.onMatch(user)
     }
 
     switch (infoOrError as Scenario) {
       case Scenario.REQUEST_ERROR:
         return responseScenarios.onError(new Error('SAML Response was an error'))
-      case Scenario.NO_MATCH:
-        return responseScenarios.onNoMatch()
       case Scenario.CANCELLATION:
         return responseScenarios.onCancel()
       case Scenario.AUTHENTICATION_FAILED:
