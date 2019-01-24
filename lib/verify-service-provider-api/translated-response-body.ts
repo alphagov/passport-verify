@@ -7,6 +7,7 @@
  * Represents the JSON returned by a success response from the
  * `/translate-response` endpoint in the verify-service-provider
  */
+
 export interface TranslatedResponseBody {
   scenario: Scenario,
   pid: string,
@@ -14,11 +15,19 @@ export interface TranslatedResponseBody {
   attributes?: Attributes
 }
 
+export interface TranslatedNonMatchingResponseBody {
+  scenario: Scenario,
+  pid: string,
+  levelOfAssurance: string,
+  attributes?: NonMatchingAttributes
+}
+
 /**
  * An enumeration of response "Scenarios" - these represent all the things
  * a response from verify could mean.
  */
 export enum Scenario {
+  IDENTITY_VERIFIED = 'IDENTITY_VERIFIED',
   SUCCESS_MATCH = 'SUCCESS_MATCH',
   ACCOUNT_CREATION = 'ACCOUNT_CREATION',
   NO_MATCH = 'NO_MATCH',
@@ -38,6 +47,13 @@ export interface VerifiableAttribute<T> {
   verified: boolean
 }
 
+export interface NonMatchingVerifiableAttribute<T> {
+  value: T,
+  verified: boolean
+  from?: String
+  to?: String
+}
+
 /**
  * User account creation attributes - these will be present
  * on the response if the matching service returned "NO_MATCH"
@@ -53,6 +69,15 @@ export interface Attributes {
   cycle3?: string
 }
 
+export interface NonMatchingAttributes {
+  firstName?: NonMatchingVerifiableAttribute<String>,
+  middleNames?: NonMatchingVerifiableAttribute<String>[],
+  surnames?: NonMatchingVerifiableAttribute<String>[],
+  dateOfBirth?: NonMatchingVerifiableAttribute<String>,
+  gender?: String,
+  addresses?: NonMatchingVerifiableAttribute<NonMatchingAddress>[]
+}
+
 /**
  * An `Address` user account creation attribute.
  */
@@ -63,4 +88,10 @@ export interface Address {
   uprn?: string,
   fromDate?: String,
   toDate?: String
+}
+
+export interface NonMatchingAddress {
+  lines?: string[],
+  postCode?: string,
+  internationalPostCode?: string,
 }

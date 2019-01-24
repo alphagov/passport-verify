@@ -55,6 +55,16 @@ describe('The passport-verify strategy', function () {
     }
   }
 
+  const exampleNonMatchingTranslatedResponse = {
+    status: 200,
+    body: {
+      scenario: Scenario.IDENTITY_VERIFIED,
+      pid: 'some-pid',
+      levelOfAssurance: 'LEVEL_2',
+      attributes: {}
+    }
+  }
+
   const exampleBadRequestResponse = {
     status: 400,
     body: {
@@ -75,12 +85,17 @@ describe('The passport-verify strategy', function () {
     id: 1
   }
 
+  const exampleIdentity = {
+    firstName: 'Bob'
+  }
+
   function createStrategy () {
     const mockClient = new MockClient()
     const strategy = new PassportVerifyStrategy(
       mockClient,
       () => exampleUser,
       () => exampleUser,
+      () => undefined,
       () => undefined,
       () => 'some-request-id'
     ) as any
@@ -92,6 +107,7 @@ describe('The passport-verify strategy', function () {
     const mockClient = { generateAuthnRequest: td.function() }
     const strategy = new PassportVerifyStrategy(
       mockClient as any,
+      () => undefined,
       () => undefined,
       () => undefined,
       () => undefined,
@@ -110,6 +126,7 @@ describe('The passport-verify strategy', function () {
       () => undefined,
       () => undefined,
       () => undefined,
+      () => undefined,
       () => ''
     )
     const request: any = { res: { send: td.function() } }
@@ -122,6 +139,7 @@ describe('The passport-verify strategy', function () {
     const mockClient = { generateAuthnRequest: td.function() }
     const strategy = new PassportVerifyStrategy(
       mockClient as any,
+      () => undefined,
       () => undefined,
       () => undefined,
       () => undefined,
@@ -142,6 +160,7 @@ describe('The passport-verify strategy', function () {
       () => undefined,
       () => undefined,
       () => undefined,
+      () => undefined,
       () => '')
     const request: any = { res: { send: td.function() } }
     td.when(mockClient.generateAuthnRequest(anything(), anything())).thenReturn(exampleAuthnRequestResponse)
@@ -155,6 +174,7 @@ describe('The passport-verify strategy', function () {
     const mockClient = new MockClient()
     const strategy = new PassportVerifyStrategy(
       mockClient,
+      () => undefined,
       () => undefined,
       () => undefined,
       () => undefined,
@@ -179,13 +199,14 @@ describe('The passport-verify strategy', function () {
     })
   })
 
-  it('should call translateResponse with the specified entityId if one is set up', function () {
+  it('should call translateResponse with the specified entityId if one is set up, for a matching set-up', function () {
     const entityId = 'http://service-entity-id'
     const mockClient = { translateResponse: td.function() }
     const strategy = new PassportVerifyStrategy(
       mockClient as any,
       () => exampleUser,
       () => exampleUser,
+      () => undefined,
       () => undefined,
       () => 'some-request-id',
       entityId
@@ -196,12 +217,13 @@ describe('The passport-verify strategy', function () {
     return strategy.authenticate(exampleSaml)
   })
 
-  it('should call translateResponse without an entityId if none is set up', function () {
+  it('should call translateResponse without an entityId if none is set up, for a matching set-up', function () {
     const mockClient = { translateResponse: td.function() }
     const strategy = new PassportVerifyStrategy(
       mockClient as any,
       () => exampleUser,
       () => exampleUser,
+      () => undefined,
       () => undefined,
       () => 'some-request-id'
     ) as any
@@ -211,12 +233,13 @@ describe('The passport-verify strategy', function () {
     return strategy.authenticate(exampleSaml)
   })
 
-  it('should call translateResponse with LoA1 if required', function () {
+  it('should call translateResponse with LoA1 if required, for a matching set-up', function () {
     const mockClient = { translateResponse: td.function() }
     const strategy = new PassportVerifyStrategy(
       mockClient as any,
       () => exampleUser,
       () => exampleUser,
+      () => undefined,
       () => undefined,
       () => 'some-request-id',
       undefined,
@@ -226,6 +249,59 @@ describe('The passport-verify strategy', function () {
 
     strategy.success = td.function()
     td.when(mockClient.translateResponse(exampleSaml.body.SAMLResponse, 'some-request-id', 'LEVEL_1', undefined)).thenReturn(exampleTranslatedResponse)
+    return strategy.authenticate(exampleSaml)
+  })
+
+  it('should call translateResponse with the specified entityId if one is set up, for a non-matching set-up', function () {
+    const entityId = 'http://service-entity-id'
+    const mockClient = { translateResponse: td.function() }
+    const strategy = new PassportVerifyStrategy(
+      mockClient as any,
+      () => undefined,
+      () => undefined,
+      () => exampleIdentity,
+      () => undefined,
+      () => 'some-request-id',
+      entityId
+    ) as any
+
+    strategy.success = td.function()
+    td.when(mockClient.translateResponse(exampleSaml.body.SAMLResponse, 'some-request-id', 'LEVEL_2', entityId)).thenReturn(exampleNonMatchingTranslatedResponse)
+    return strategy.authenticate(exampleSaml)
+  })
+
+  it('should call translateResponse without an entityId if none is set up, for a non-matching set-up', function () {
+    const mockClient = { translateResponse: td.function() }
+    const strategy = new PassportVerifyStrategy(
+      mockClient as any,
+      () => undefined,
+      () => undefined,
+      () => exampleIdentity,
+      () => undefined,
+      () => 'some-request-id'
+    ) as any
+
+    strategy.success = td.function()
+    td.when(mockClient.translateResponse(exampleSaml.body.SAMLResponse, 'some-request-id', 'LEVEL_2', undefined)).thenReturn(exampleNonMatchingTranslatedResponse)
+    return strategy.authenticate(exampleSaml)
+  })
+
+  it('should call translateResponse with LoA1 if required, for a non-matching set-up', function () {
+    const mockClient = { translateResponse: td.function() }
+    const strategy = new PassportVerifyStrategy(
+      mockClient as any,
+      () => undefined,
+      () => undefined,
+      () => exampleIdentity,
+      () => undefined,
+      () => 'some-request-id',
+      undefined,
+      undefined,
+      'LEVEL_1'
+    ) as any
+
+    strategy.success = td.function()
+    td.when(mockClient.translateResponse(exampleSaml.body.SAMLResponse, 'some-request-id', 'LEVEL_1', undefined)).thenReturn(exampleNonMatchingTranslatedResponse)
     return strategy.authenticate(exampleSaml)
   })
 
@@ -247,6 +323,7 @@ describe('The passport-verify strategy', function () {
       () => false,
       () => undefined,
       () => undefined,
+      () => undefined,
       () => 'some-request-id'
     ) as any
 
@@ -264,6 +341,7 @@ describe('The passport-verify strategy', function () {
     const strategy = new PassportVerifyStrategy(
       mockClient,
       () => false,
+      () => undefined,
       () => undefined,
       () => undefined,
       () => 'some-request-id'
@@ -285,6 +363,7 @@ describe('The passport-verify strategy', function () {
       () => undefined,
       () => false,
       () => undefined,
+      () => undefined,
       () => 'some-request-id'
     ) as any
 
@@ -292,6 +371,26 @@ describe('The passport-verify strategy', function () {
     strategy.fail = td.function()
 
     td.when(mockClient.translateResponse(exampleSaml.body.SAMLResponse, 'some-request-id', anything(), anything())).thenReturn(exampleTranslatedResponse)
+    return strategy.authenticate(exampleSaml).then(() => {
+      td.verify(strategy.fail(Scenario.REQUEST_ERROR))
+    })
+  })
+
+  it('should fail if the application does not handle an identity', function () {
+    const mockClient = new MockClient()
+    const strategy = new PassportVerifyStrategy(
+      mockClient,
+      () => undefined,
+      () => undefined,
+      () => false,
+      () => undefined,
+      () => 'some-request-id'
+    ) as any
+
+    // Mimicking passport's attaching of its fail method to the Strategy instance
+    strategy.fail = td.function()
+
+    td.when(mockClient.translateResponse(exampleSaml.body.SAMLResponse, 'some-request-id', anything(), anything())).thenReturn(exampleNonMatchingTranslatedResponse)
     return strategy.authenticate(exampleSaml).then(() => {
       td.verify(strategy.fail(Scenario.REQUEST_ERROR))
     })

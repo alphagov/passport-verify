@@ -7,7 +7,8 @@ import * as express from 'express'
 import { createSamlForm } from './saml-form'
 import VerifyServiceProviderClient from './verify-service-provider-client'
 import { AuthnRequestResponse } from './verify-service-provider-api/authn-request-response'
-import { TranslatedResponseBody, Scenario } from './verify-service-provider-api/translated-response-body'
+import { TranslatedResponseBody, TranslatedNonMatchingResponseBody, Scenario } from './verify-service-provider-api/translated-response-body'
+import { ResponseBody } from './verify-service-provider-api/response-body'
 import { ErrorMessage } from './verify-service-provider-api/error-message'
 
 /**
@@ -33,6 +34,7 @@ export class PassportVerifyStrategy extends Strategy {
   constructor (private client: VerifyServiceProviderClient,
                private createUser: (user: TranslatedResponseBody) => any,
                private verifyUser: (user: TranslatedResponseBody) => any,
+               private handleIdentity: (identity: TranslatedNonMatchingResponseBody) => any,
                private saveRequestId: (requestId: string, request: express.Request) => any,
                private loadRequestId: (request: express.Request) => string,
                private serviceEntityId?: string,
@@ -67,8 +69,11 @@ export class PassportVerifyStrategy extends Strategy {
     const response = await this.client.translateResponse(samlResponse, requestId, this.levelOfAssurance, this.serviceEntityId)
     switch (response.status) {
       case 200:
-        const responseBody = response.body as TranslatedResponseBody
-        await this._handleSuccessResponse(responseBody)
+        if ((response.body as ResponseBody).scenario === Scenario.IDENTITY_VERIFIED) {
+          await this._handleSuccessResponse(response.body as TranslatedNonMatchingResponseBody)
+        } else {
+          await this._handleSuccessMatchingResponse(response.body as TranslatedResponseBody)
+        }
         break
       case 400:
       case 422:
@@ -79,7 +84,17 @@ export class PassportVerifyStrategy extends Strategy {
     }
   }
 
-  private async _handleSuccessResponse (responseBody: TranslatedResponseBody) {
+  private async _handleSuccessResponse (responseBody: TranslatedNonMatchingResponseBody) {
+    switch (responseBody.scenario) {
+      case Scenario.IDENTITY_VERIFIED:
+        await this._verifyUser(responseBody, this.handleIdentity)
+        break
+      default:
+        this.fail(responseBody.scenario)
+    }
+  }
+
+  private async _handleSuccessMatchingResponse (responseBody: TranslatedResponseBody) {
     switch (responseBody.scenario) {
       case Scenario.ACCOUNT_CREATION:
         await this._verifyUser(responseBody, this.createUser)
@@ -160,5 +175,18 @@ export function createStrategy (
   levelOfAssurance?: ('LEVEL_1' | 'LEVEL_2')
 ) {
   const client = new VerifyServiceProviderClient(verifyServiceProviderHost)
-  return new PassportVerifyStrategy(client, createUser, verifyUser, saveRequestId, loadRequestId, serviceEntityId, samlFormTemplateName, levelOfAssurance)
+  return new PassportVerifyStrategy(client, createUser, verifyUser, () => undefined, saveRequestId, loadRequestId, serviceEntityId, samlFormTemplateName, levelOfAssurance)
+}
+
+export function createNonMatchingStrategy (
+  verifyServiceProviderHost: string,
+  handleIdentity: (identity: TranslatedNonMatchingResponseBody) => object | false,
+  saveRequestId: (requestId: string, request: express.Request) => void,
+  loadRequestId: (request: express.Request) => string,
+  serviceEntityId?: string,
+  samlFormTemplateName?: string,
+  levelOfAssurance?: ('LEVEL_1' | 'LEVEL_2')
+) {
+  const client = new VerifyServiceProviderClient(verifyServiceProviderHost)
+  return new PassportVerifyStrategy(client, () => undefined, () => undefined, handleIdentity, saveRequestId, loadRequestId, serviceEntityId, samlFormTemplateName, levelOfAssurance)
 }

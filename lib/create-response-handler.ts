@@ -11,7 +11,7 @@
  */
 /** */
 
-import { TranslatedResponseBody, Scenario } from './verify-service-provider-api/translated-response-body'
+import { TranslatedResponseBody, TranslatedNonMatchingResponseBody, Scenario } from './verify-service-provider-api/translated-response-body'
 
 /**
  * ResponseScenarios

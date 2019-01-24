@@ -8,7 +8,9 @@
 import * as request from 'request-promise-native'
 import * as debug from 'debug'
 import { AuthnRequestResponse } from './verify-service-provider-api/authn-request-response'
-import { TranslatedResponseBody } from './verify-service-provider-api/translated-response-body'
+import { TranslatedResponseBody, TranslatedNonMatchingResponseBody, Scenario } from './verify-service-provider-api/translated-response-body'
+import { ResponseBody } from './verify-service-provider-api/response-body'
+
 import { ErrorMessage } from './verify-service-provider-api/error-message'
 
 export default class VerifyServiceProviderClient {
@@ -39,18 +41,20 @@ export default class VerifyServiceProviderClient {
     }
   }
 
-  async translateResponse (samlResponse: string, requestId: string, levelOfAssurance: ('LEVEL_1' | 'LEVEL_2'), entityId?: string): Promise<{ status: number, body: TranslatedResponseBody | ErrorMessage }> {
+  async translateResponse (samlResponse: string, requestId: string, levelOfAssurance: ('LEVEL_1' | 'LEVEL_2'), entityId?: string): Promise<{ status: number, body: TranslatedResponseBody | TranslatedNonMatchingResponseBody | ErrorMessage }> {
     try {
       let requestBody: any = { samlResponse, requestId, levelOfAssurance: levelOfAssurance }
       if (entityId) {
         requestBody.entityId = entityId
       }
 
-      const responseBody = await this.sendRequest<TranslatedResponseBody>('/translate-response', requestBody)
+      const responseBody = await this.sendRequest<ResponseBody>('/translate-response', requestBody)
+      const translatedResponseBody = responseBody.scenario === Scenario.IDENTITY_VERIFIED ? responseBody as TranslatedNonMatchingResponseBody : responseBody as TranslatedResponseBody
+
       this.infoLog('response translated for request: ', requestId, 'Scenario: ', responseBody.scenario)
       return {
         status: 200,
-        body: responseBody
+        body: translatedResponseBody
       }
     } catch (reason) {
       this.infoLog('error translating response for request id: ', requestId, reason, 'Use "passport-verify:requests" log to see full request')
