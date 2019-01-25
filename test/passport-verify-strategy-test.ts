@@ -55,7 +55,7 @@ describe('The passport-verify strategy', function () {
     }
   }
 
-  const exampleNonMatchingTranslatedResponse = {
+  const exampleIdentityTranslatedResponse = {
     status: 200,
     body: {
       scenario: Scenario.IDENTITY_VERIFIED,
@@ -266,7 +266,7 @@ describe('The passport-verify strategy', function () {
     ) as any
 
     strategy.success = td.function()
-    td.when(mockClient.translateResponse(exampleSaml.body.SAMLResponse, 'some-request-id', 'LEVEL_2', entityId)).thenReturn(exampleNonMatchingTranslatedResponse)
+    td.when(mockClient.translateResponse(exampleSaml.body.SAMLResponse, 'some-request-id', 'LEVEL_2', entityId)).thenReturn(exampleIdentityTranslatedResponse)
     return strategy.authenticate(exampleSaml)
   })
 
@@ -282,7 +282,7 @@ describe('The passport-verify strategy', function () {
     ) as any
 
     strategy.success = td.function()
-    td.when(mockClient.translateResponse(exampleSaml.body.SAMLResponse, 'some-request-id', 'LEVEL_2', undefined)).thenReturn(exampleNonMatchingTranslatedResponse)
+    td.when(mockClient.translateResponse(exampleSaml.body.SAMLResponse, 'some-request-id', 'LEVEL_2', undefined)).thenReturn(exampleIdentityTranslatedResponse)
     return strategy.authenticate(exampleSaml)
   })
 
@@ -301,7 +301,7 @@ describe('The passport-verify strategy', function () {
     ) as any
 
     strategy.success = td.function()
-    td.when(mockClient.translateResponse(exampleSaml.body.SAMLResponse, 'some-request-id', 'LEVEL_1', undefined)).thenReturn(exampleNonMatchingTranslatedResponse)
+    td.when(mockClient.translateResponse(exampleSaml.body.SAMLResponse, 'some-request-id', 'LEVEL_1', undefined)).thenReturn(exampleIdentityTranslatedResponse)
     return strategy.authenticate(exampleSaml)
   })
 
@@ -390,7 +390,7 @@ describe('The passport-verify strategy', function () {
     // Mimicking passport's attaching of its fail method to the Strategy instance
     strategy.fail = td.function()
 
-    td.when(mockClient.translateResponse(exampleSaml.body.SAMLResponse, 'some-request-id', anything(), anything())).thenReturn(exampleNonMatchingTranslatedResponse)
+    td.when(mockClient.translateResponse(exampleSaml.body.SAMLResponse, 'some-request-id', anything(), anything())).thenReturn(exampleIdentityTranslatedResponse)
     return strategy.authenticate(exampleSaml).then(() => {
       td.verify(strategy.fail(Scenario.REQUEST_ERROR))
     })
