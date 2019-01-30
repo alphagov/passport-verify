@@ -9,7 +9,7 @@
  * when configured for a matching type of journey.
  */
 
-export interface TranslatedResponseBody {
+export interface TranslatedMatchingResponseBody {
   scenario: Scenario,
   pid: string,
   levelOfAssurance: string,
