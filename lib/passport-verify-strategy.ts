@@ -7,7 +7,8 @@ import * as express from 'express'
 import { createSamlForm } from './saml-form'
 import VerifyServiceProviderClient from './verify-service-provider-client'
 import { AuthnRequestResponse } from './verify-service-provider-api/authn-request-response'
-import { TranslatedResponseBody, Scenario } from './verify-service-provider-api/translated-response-body'
+import { TranslatedMatchingResponseBody, TranslatedIdentityResponseBody, Scenario } from './verify-service-provider-api/translated-response-body'
+import { ResponseBody } from './verify-service-provider-api/response-body'
 import { ErrorMessage } from './verify-service-provider-api/error-message'
 
 /**
@@ -31,8 +32,9 @@ export class PassportVerifyStrategy extends Strategy {
   public name: string = 'verify'
 
   constructor (private client: VerifyServiceProviderClient,
-               private createUser: (user: TranslatedResponseBody) => any,
-               private verifyUser: (user: TranslatedResponseBody) => any,
+               private createUser: (user: TranslatedMatchingResponseBody) => any,
+               private verifyUser: (user: TranslatedMatchingResponseBody) => any,
+               private handleIdentity: (identity: TranslatedIdentityResponseBody) => any,
                private saveRequestId: (requestId: string, request: express.Request) => any,
                private loadRequestId: (request: express.Request) => string,
                private serviceEntityId?: string,
@@ -49,7 +51,7 @@ export class PassportVerifyStrategy extends Strategy {
     }
   }
 
-  success (user: any, info: TranslatedResponseBody) { throw new Error('`success` should be overridden by passport') }
+  success (user: any, info: TranslatedMatchingResponseBody) { throw new Error('`success` should be overridden by passport') }
   fail (challenge: any, status?: number) { throw new Error('`fail` should be overridden by passport') }
   error (reason: Error) { throw reason }
 
@@ -67,8 +69,11 @@ export class PassportVerifyStrategy extends Strategy {
     const response = await this.client.translateResponse(samlResponse, requestId, this.levelOfAssurance, this.serviceEntityId)
     switch (response.status) {
       case 200:
-        const responseBody = response.body as TranslatedResponseBody
-        await this._handleSuccessResponse(responseBody)
+        if ((response.body as ResponseBody).scenario === Scenario.IDENTITY_VERIFIED) {
+          await this._handleSuccessResponse(response.body as TranslatedIdentityResponseBody)
+        } else {
+          await this._handleSuccessMatchingResponse(response.body as TranslatedMatchingResponseBody)
+        }
         break
       case 400:
       case 422:
@@ -79,7 +84,17 @@ export class PassportVerifyStrategy extends Strategy {
     }
   }
 
-  private async _handleSuccessResponse (responseBody: TranslatedResponseBody) {
+  private async _handleSuccessResponse (responseBody: TranslatedIdentityResponseBody) {
+    switch (responseBody.scenario) {
+      case Scenario.IDENTITY_VERIFIED:
+        await this._verifyUser(responseBody, this.handleIdentity)
+        break
+      default:
+        this.fail(responseBody.scenario)
+    }
+  }
+
+  private async _handleSuccessMatchingResponse (responseBody: TranslatedMatchingResponseBody) {
     switch (responseBody.scenario) {
       case Scenario.ACCOUNT_CREATION:
         await this._verifyUser(responseBody, this.createUser)
@@ -92,7 +107,7 @@ export class PassportVerifyStrategy extends Strategy {
     }
   }
 
-  private async _verifyUser (responseBody: TranslatedResponseBody, fetchUser: (user: TranslatedResponseBody) => any) {
+  private async _verifyUser (responseBody: TranslatedMatchingResponseBody, fetchUser: (user: TranslatedMatchingResponseBody) => any) {
     const user = await fetchUser(responseBody)
     if (user) {
       this.success(user, responseBody)
@@ -123,6 +138,8 @@ export class PassportVerifyStrategy extends Strategy {
 /**
  * Creates an instance of [[PassportVerifyStrategy]]
  *
+ * NOTE: Should be only used by legacy services using a matching process via MSA
+ *
  * @param verifyServiceProviderHost The URL that the Verify Service Provider is running on (e.g. http://localhost:50400)
  * @param createUser A callback that will be invoked when a response with a new user is received.
  * The `user` object will contain the users' attributes (i.e. firstName, surname etc.).
@@ -151,8 +168,8 @@ export class PassportVerifyStrategy extends Strategy {
  */
 export function createStrategy (
   verifyServiceProviderHost: string,
-  createUser: (user: TranslatedResponseBody) => object | false,
-  verifyUser: (user: TranslatedResponseBody) => object | false,
+  createUser: (user: TranslatedMatchingResponseBody) => object | false,
+  verifyUser: (user: TranslatedMatchingResponseBody) => object | false,
   saveRequestId: (requestId: string, request: express.Request) => void,
   loadRequestId: (request: express.Request) => string,
   serviceEntityId?: string,
@@ -160,5 +177,47 @@ export function createStrategy (
   levelOfAssurance?: ('LEVEL_1' | 'LEVEL_2')
 ) {
   const client = new VerifyServiceProviderClient(verifyServiceProviderHost)
-  return new PassportVerifyStrategy(client, createUser, verifyUser, saveRequestId, loadRequestId, serviceEntityId, samlFormTemplateName, levelOfAssurance)
+  return new PassportVerifyStrategy(client, createUser, verifyUser, () => undefined, saveRequestId, loadRequestId, serviceEntityId, samlFormTemplateName, levelOfAssurance)
+}
+
+/**
+ * Creates an instance of [[PassportVerifyStrategy]]
+ *
+ * NOTE: Should be used by all new services (not using MSA)
+ *
+ * @param verifyServiceProviderHost The URL that the Verify Service Provider is running on (e.g. http://localhost:50400)
+ * @param handleIdentity A callback that will be invoked when a response with an identity is received.
+ * The `identity` object will contain the users' attributes (i.e. firstName, surname etc.).
+ * Your callback should store details of the user in your datastore and return an object representing the user.
+ * @param saveRequestId A callback that will be invoked to save the requestId that has been generated by
+ * the verify service provider. Your callback should save the request Id in a secure manner so that it
+ * can be matched against the corresponding SAML response.
+ * @param loadRequestId A callback that will be invoked to load the requestId that has been securely saved
+ * for the user's session.
+ * @param serviceEntityId (Optional) The entityId that will be passed to the Verify Service Provider. This is
+ * only required if the service provider is configured to be multi tenanted.
+ * @param samlFormTemplateName (Optional) The name of a template in your service which will provide the form
+ * used to post an authn request. If present, this will be rendered with the ssoLocation and samlRequest passed
+ * in. Otherwise, a default form will be used. You should use this option if you wish to style the form, which
+ * should be autoposting so only seen if the user has javascript disabled, to match the rest of your service.
+ * @param levelOfAssurance (Optional) LEVEL_1 or LEVEL_2 - defaults to LEVEL_2. The Level of Assurance to
+ * request from the Verify Service Provider and the minimum level to expect in the Response (e.g. if you
+ * specify LEVEL_1 a LEVEL_2 Response would also be permissible).
+ * @returns A strategy to be registered in passport with
+ * ```
+ * passport.use(passportVerifyStrategy)
+ * ```
+ */
+
+export function createIdentityStrategy (
+  verifyServiceProviderHost: string,
+  handleIdentity: (identity: TranslatedIdentityResponseBody) => object | false,
+  saveRequestId: (requestId: string, request: express.Request) => void,
+  loadRequestId: (request: express.Request) => string,
+  serviceEntityId?: string,
+  samlFormTemplateName?: string,
+  levelOfAssurance?: ('LEVEL_1' | 'LEVEL_2')
+) {
+  const client = new VerifyServiceProviderClient(verifyServiceProviderHost)
+  return new PassportVerifyStrategy(client, () => undefined, () => undefined, handleIdentity, saveRequestId, loadRequestId, serviceEntityId, samlFormTemplateName, levelOfAssurance)
 }

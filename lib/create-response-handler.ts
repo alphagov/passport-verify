@@ -11,7 +11,7 @@
  */
 /** */
 
-import { TranslatedResponseBody, Scenario } from './verify-service-provider-api/translated-response-body'
+import { TranslatedMatchingResponseBody, TranslatedIdentityResponseBody, Scenario } from './verify-service-provider-api/translated-response-body'
 
 /**
  * ResponseScenarios
@@ -94,12 +94,12 @@ export interface ResponseScenarios {
  * @param responseScenarios Callbacks to handle each type of response that Verify can return
  */
 export function createResponseHandler (responseScenarios: ResponseScenarios) {
-  return function (error: Error, user: any, infoOrError: TranslatedResponseBody | Scenario, status: number) {
+  return function (error: Error, user: any, infoOrError: TranslatedMatchingResponseBody | Scenario, status: number) {
     if (error) {
       return responseScenarios.onError(error)
     }
     if (user) {
-      const responseBody = infoOrError as TranslatedResponseBody
+      const responseBody = infoOrError as TranslatedMatchingResponseBody
       if (responseBody.scenario === Scenario.ACCOUNT_CREATION) {
         return responseScenarios.onCreateUser(user)
       }
