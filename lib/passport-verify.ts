@@ -35,7 +35,7 @@
 
 import { createStrategy } from './passport-verify-strategy'
 import {
-  TranslatedResponseBody,
+  TranslatedMatchingResponseBody,
   Attributes,
   VerifiableAttribute,
   Address,
@@ -47,7 +47,7 @@ import { createResponseHandler } from './create-response-handler'
 export {
   createStrategy,
   createResponseHandler,
-  TranslatedResponseBody,
+  TranslatedMatchingResponseBody,
   Attributes,
   VerifiableAttribute,
   Address,

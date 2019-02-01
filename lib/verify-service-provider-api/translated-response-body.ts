@@ -6,8 +6,10 @@
 /**
  * Represents the JSON returned by a success response from the
  * `/translate-response` endpoint in the verify-service-provider
+ * when configured for a matching type of journey.
  */
-export interface TranslatedResponseBody {
+
+export interface TranslatedMatchingResponseBody {
   scenario: Scenario,
   pid: string,
   levelOfAssurance: string,
@@ -15,10 +17,24 @@ export interface TranslatedResponseBody {
 }
 
 /**
+ * Represents the JSON returned by a success response from the
+ * `/translate-response` endpoint in the verify-service-provider
+ * when configured for a non-matching type of journey.
+ */
+
+export interface TranslatedIdentityResponseBody {
+  scenario: Scenario,
+  pid: string,
+  levelOfAssurance: string,
+  attributes?: IdentityAttributes
+}
+
+/**
  * An enumeration of response "Scenarios" - these represent all the things
  * a response from verify could mean.
  */
 export enum Scenario {
+  IDENTITY_VERIFIED = 'IDENTITY_VERIFIED',
   SUCCESS_MATCH = 'SUCCESS_MATCH',
   ACCOUNT_CREATION = 'ACCOUNT_CREATION',
   NO_MATCH = 'NO_MATCH',
@@ -36,6 +52,20 @@ export enum Scenario {
 export interface VerifiableAttribute<T> {
   value: T,
   verified: boolean
+}
+
+/**
+ * Identity attributes can be "verified" or "not verified".
+ * "Verified" attributes have been checked by the Identity Provider (for
+ * example on a driving licence or passport). "Not verified" attributes were
+ * entered by the user and have not been checked.
+ */
+
+export interface VerifiableIdentityAttribute<T> {
+  value: T,
+  verified: boolean
+  from?: String
+  to?: String
 }
 
 /**
@@ -63,4 +93,28 @@ export interface Address {
   uprn?: string,
   fromDate?: String,
   toDate?: String
+}
+
+/**
+ * Identity attributes - these will be present
+ * on the response.
+ */
+
+export interface IdentityAttributes {
+  firstName?: VerifiableIdentityAttribute<String>,
+  middleNames?: VerifiableIdentityAttribute<String>[],
+  surnames?: VerifiableIdentityAttribute<String>[],
+  dateOfBirth?: VerifiableIdentityAttribute<String>,
+  gender?: String,
+  addresses?: VerifiableIdentityAttribute<IdentityAddress>[]
+}
+
+/**
+ * An `IdentityAddress` identity attribute.
+ */
+
+export interface IdentityAddress {
+  lines?: string[],
+  postCode?: string,
+  internationalPostCode?: string,
 }

@@ -19,7 +19,101 @@ Usage
 
 1. Configure `passport-verify` [strategy](http://passportjs.org/docs/configure#strategies).
 
-   See [createStrategy](https://alphagov.github.io/passport-verify/modules/_passport_verify_strategy_.html#createstrategy) in the API documentation.
+   IMPORTANT: Any new services connecting to Verify (and not using MSA) should use the `createIdentityStrategy` method. Any legacy services using matching (MSA) should keep using the `createStrategy` method below.
+
+   See [createIdentityStrategy](https://alphagov.github.io/passport-verify/modules/_passport_verify_strategy_.html#createidentitystrategy) in the API documentation for new services not using MSA.
+   ```javascript
+   const passportVerify = require('passport-verify')
+   const bodyParser = require('body-parser')
+
+   // Real applications should have a real backend for storing users.
+   const fakeUserDatabase = {}
+
+   // Passport-Verify dependes on any bodyParser
+   // to be configured as a middleware.
+   app.use(bodyParser.urlencoded({extended: false}))
+
+   passport.use(passportVerify.createStrategy(
+
+     // verifyServiceProviderHost
+     'http://localhost:50400',
+
+     // A callback for an identity authentication.
+     // This function is called at the end of the authentication flow
+     // with a user object that contains details of the user in attributes.
+     // it should either return a user object or false if the user is not
+     // accepted by the application for whatever reason. It can also return a
+     // Promise in case it is asynchronous.
+     function handleIdentity (user) {
+
+       // This should be an error case if the local matching strategy is
+       // done correctly.
+       if (fakeUserDatabase[user.pid]) {
+         throw new Error(
+           'Local matching strategy has defined ' +
+           'the user to be new to the application, ' +
+           'but the User PID already exists.')
+       }
+
+       fakeUserDatabase[user.pid] = Object.assign({id: user.pid}, user.attributes)
+       return Object.assign({ levelOfAssurance: user.levelOfAssurance }, fakeUserDatabase[user.pid])
+     },
+
+    // A callback that saves the unique request ID associated with the SAML messages
+    // to the user's session.
+    // This function is called after the Verify Service Provider has generated and
+    // returned the AuthnRequest and associated RequestID.
+    // The requestID should be saved in a secure manner, and such that it
+    // corresponds to the user's current session and can be retrieved in order to validate
+    // that SAML response that is returned from the IDP corresponds to the original AuthnRequest.
+    function saveRequestId (requestId, request) {
+
+      // The following is an example that saves the requestId using the express-session middleware
+      // This would require express-session to be initialised with a secure secret e.g:
+
+      // const session = require('express-session')
+      //
+      // app.use(session({
+      //  secret: 'super secret secure token',
+      //  resave: true,
+      //  saveUninitialized: true
+      // }))
+
+      request.session.requestId = requestId
+    },
+
+    // A callback that returns the requestId that corresponds to the user's session.
+    // This is used by the Verify Service Provider to ensure SAMLResponses received from IDPS
+    // correspond to a the user's active session.
+    function loadRequestId (request) {
+
+      // The following is an example that retrieves the request ID from the aforementioned 
+      // express-session object.
+      return request.session.requestId
+    },
+    // Service Entity Id
+    'http://your-service-entity-id'
+    // This is only required when your Verify Service Provider is set up to be multi tenanted.
+    // If it is provided, it is passed to the Verify Service Provider with each request, and
+    // used to identify this service.
+
+    // Saml Form Template Location
+    'saml-form-template.njk',
+    // This is an optional parameter which can be used to style the saml form
+    // used to send the authn request to Verify.
+    // This template should only be rendered if Javascript has been disabled in the user's browser.
+    // If provided, the ssoLocation and samlRequest recieved from the Verify Service Provider
+    // will be provided to the named template for rendering.
+    // If this is not provided, passport-verify will render a default auto posting form
+    // with the correct attributes.
+
+    // Level of Assurance
+    // LEVEL_1 or LEVEL2 depending on your service's requirements. Defaults to LEVEL_2.
+    'LEVEL_2'
+   ))
+   ```
+  
+   See [createStrategy](https://alphagov.github.io/passport-verify/modules/_passport_verify_strategy_.html#createstrategy) in the API documentation for legacy services using MSA.
    ```javascript
    const passportVerify = require('passport-verify')
    const bodyParser = require('body-parser')
@@ -38,7 +132,7 @@ Usage
 
      // A callback for a new user authentication.
      // This function is called at the end of the authentication flow
-     // with a user user object that contains details of the user in attributes.
+     // with a user object that contains details of the user in attributes.
      // it should either return a user object or false if the user is not
      // accepted by the application for whatever reason. It can also return a
      // Promise in case it is asynchronous.
