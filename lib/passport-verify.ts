@@ -36,20 +36,29 @@
 import { createStrategy } from './passport-verify-strategy'
 import {
   TranslatedMatchingResponseBody,
+  TranslatedIdentityResponseBody,
   Attributes,
+  IdentityAttributes,
   VerifiableAttribute,
+  VerifiableIdentityAttribute,
   Address,
+  IdentityAddress,
   Scenario
 } from './verify-service-provider-api/translated-response-body'
 
-import { createResponseHandler } from './create-response-handler'
+import { createResponseHandler, createIdentityResponseHandler } from './create-response-handler'
 
 export {
   createStrategy,
   createResponseHandler,
+  createIdentityResponseHandler,
   TranslatedMatchingResponseBody,
+  TranslatedIdentityResponseBody,
   Attributes,
+  IdentityAttributes,
   VerifiableAttribute,
+  VerifiableIdentityAttribute,
   Address,
+  IdentityAddress,
   Scenario
 }
