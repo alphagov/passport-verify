@@ -24,7 +24,7 @@
     "@types/express-serve-static-core": "^4.0.48",
     "@types/form-data": "^2.2.0",
     "@types/mocha": "^5.2.1",
-    "@types/node": "^10.3.1",
+    "@types/node": "^10.12.21",
     "@types/passport-strategy": "^0.2.30",
     "@types/request": "^2.0.1",
     "@types/request-promise-native": "^1.0.6",
@@ -37,11 +37,11 @@
   },
   "devDependencies": {
     "mocha": "^5.2.0",
-    "testdouble": "^3.3.1",
+    "testdouble": "^3.9.3",
     "tslint": "5.10.0",
     "tslint-config-standard": "^8.0.1",
-    "typedoc": "0.11.1",
-    "typescript": "^2.4.2"
+    "typedoc": "0.14.2",
+    "typescript": "^2.9.2"
   },
   "files": [
     "build"
