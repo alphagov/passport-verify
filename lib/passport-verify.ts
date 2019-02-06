@@ -46,7 +46,8 @@ import {
   Scenario
 } from './verify-service-provider-api/translated-response-body'
 
-import { createResponseHandler, createIdentityResponseHandler } from './create-response-handler'
+import { createResponseHandler } from './create-response-handler'
+import { createIdentityResponseHandler } from './create-identity-response-handler'
 
 export {
   createStrategy,

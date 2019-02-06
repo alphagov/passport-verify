@@ -138,7 +138,8 @@ export class PassportVerifyStrategy extends Strategy {
 /**
  * Creates an instance of [[PassportVerifyStrategy]]
  *
- * NOTE: Should be only used by legacy services using a matching process via MSA
+ * This version of the function should only be used if your service uses the legacy setup. A legacy setup
+ * involves connecting to GOV.UK Verify with a Matching Service Adapter (MSA).
  *
  * @param verifyServiceProviderHost The URL that the Verify Service Provider is running on (e.g. http://localhost:50400)
  * @param createUser A callback that will be invoked when a response with a new user is received.
@@ -183,7 +184,8 @@ export function createStrategy (
 /**
  * Creates an instance of [[PassportVerifyStrategy]]
  *
- * NOTE: Should be used by all new services (not using MSA)
+ * This version of the function should only be used if your service connects to GOV.UK Verify using the
+ * Verify Service Provider (VSP) without a Matching Service Adapter (MSA).
  *
  * @param verifyServiceProviderHost The URL that the Verify Service Provider is running on (e.g. http://localhost:50400)
  * @param handleIdentity A callback that will be invoked when a response with an identity is received.
