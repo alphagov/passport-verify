@@ -3,7 +3,7 @@
 <head>
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<title>AuthnRequestResponse | passport-verify</title>
+	<title>Scenario | passport-verify</title>
 	<meta name="description" content="">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link rel="stylesheet" href="../assets/css/main.css">
@@ -56,13 +56,13 @@
 					<a href="../index.html">Globals</a>
 				</li>
 				<li>
-					<a href="../modules/_verify_service_provider_api_authn_request_response_.html">&quot;verify-service-provider-api/authn-request-response&quot;</a>
+					<a href="../modules/_verify_service_provider_api_response_body_.html">&quot;verify-service-provider-api/response-body&quot;</a>
 				</li>
 				<li>
-					<a href="_verify_service_provider_api_authn_request_response_.authnrequestresponse.html">AuthnRequestResponse</a>
+					<a href="_verify_service_provider_api_response_body_.scenario.html">Scenario</a>
 				</li>
 			</ul>
-			<h1>Interface AuthnRequestResponse</h1>
+			<h1>Enumeration Scenario</h1>
 		</div>
 	</div>
 </header>
@@ -72,63 +72,99 @@
 			<section class="tsd-panel tsd-comment">
 				<div class="tsd-comment tsd-typography">
 					<div class="lead">
-						<p>Represents the JSON returned by a success response from the
-						<code>/generate-request</code> endpoint in the verify-service-provider</p>
+						<p>An enumeration of response &quot;Scenarios&quot; - these represent all the things
+						a response from verify could mean.</p>
 					</div>
 				</div>
-			</section>
-			<section class="tsd-panel tsd-hierarchy">
-				<h3>Hierarchy</h3>
-				<ul class="tsd-hierarchy">
-					<li>
-						<span class="target">AuthnRequestResponse</span>
-					</li>
-				</ul>
 			</section>
 			<section class="tsd-panel-group tsd-index-group">
 				<h2>Index</h2>
 				<section class="tsd-panel tsd-index-panel">
 					<div class="tsd-index-content">
 						<section class="tsd-index-section ">
-							<h3>Properties</h3>
+							<h3>Enumeration members</h3>
 							<ul class="tsd-index-list">
-								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="_verify_service_provider_api_authn_request_response_.authnrequestresponse.html#requestid" class="tsd-kind-icon">request<wbr>Id</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="_verify_service_provider_api_authn_request_response_.authnrequestresponse.html#samlrequest" class="tsd-kind-icon">saml<wbr>Request</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="_verify_service_provider_api_authn_request_response_.authnrequestresponse.html#ssolocation" class="tsd-kind-icon">sso<wbr>Location</a></li>
+								<li class="tsd-kind-enum-member tsd-parent-kind-enum"><a href="_verify_service_provider_api_response_body_.scenario.html#account_creation" class="tsd-kind-icon">ACCOUNT_<wbr>CREATION</a></li>
+								<li class="tsd-kind-enum-member tsd-parent-kind-enum"><a href="_verify_service_provider_api_response_body_.scenario.html#authentication_failed" class="tsd-kind-icon">AUTHENTICATION_<wbr>FAILED</a></li>
+								<li class="tsd-kind-enum-member tsd-parent-kind-enum"><a href="_verify_service_provider_api_response_body_.scenario.html#cancellation" class="tsd-kind-icon">CANCELLATION</a></li>
+								<li class="tsd-kind-enum-member tsd-parent-kind-enum"><a href="_verify_service_provider_api_response_body_.scenario.html#identity_verified" class="tsd-kind-icon">IDENTITY_<wbr>VERIFIED</a></li>
+								<li class="tsd-kind-enum-member tsd-parent-kind-enum"><a href="_verify_service_provider_api_response_body_.scenario.html#no_match" class="tsd-kind-icon">NO_<wbr>MATCH</a></li>
+								<li class="tsd-kind-enum-member tsd-parent-kind-enum"><a href="_verify_service_provider_api_response_body_.scenario.html#request_error" class="tsd-kind-icon">REQUEST_<wbr>ERROR</a></li>
+								<li class="tsd-kind-enum-member tsd-parent-kind-enum"><a href="_verify_service_provider_api_response_body_.scenario.html#success_match" class="tsd-kind-icon">SUCCESS_<wbr>MATCH</a></li>
 							</ul>
 						</section>
 					</div>
 				</section>
 			</section>
 			<section class="tsd-panel-group tsd-member-group ">
-				<h2>Properties</h2>
-				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
-					<a name="requestid" class="tsd-anchor"></a>
-					<h3>request<wbr>Id</h3>
-					<div class="tsd-signature tsd-kind-icon">request<wbr>Id<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span></div>
+				<h2>Enumeration members</h2>
+				<section class="tsd-panel tsd-member tsd-kind-enum-member tsd-parent-kind-enum">
+					<a name="account_creation" class="tsd-anchor"></a>
+					<h3>ACCOUNT_<wbr>CREATION</h3>
+					<div class="tsd-signature tsd-kind-icon">ACCOUNT_<wbr>CREATION<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-symbol"> =&nbsp;&quot;ACCOUNT_CREATION&quot;</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/alphagov/passport-verify/blob/c6565b9/lib/verify-service-provider-api/authn-request-response.ts#L7">verify-service-provider-api/authn-request-response.ts:7</a></li>
+							<li>Defined in <a href="https://github.com/alphagov/passport-verify/blob/c6565b9/lib/verify-service-provider-api/response-body.ts#L24">verify-service-provider-api/response-body.ts:24</a></li>
 						</ul>
 					</aside>
 				</section>
-				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
-					<a name="samlrequest" class="tsd-anchor"></a>
-					<h3>saml<wbr>Request</h3>
-					<div class="tsd-signature tsd-kind-icon">saml<wbr>Request<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span></div>
+				<section class="tsd-panel tsd-member tsd-kind-enum-member tsd-parent-kind-enum">
+					<a name="authentication_failed" class="tsd-anchor"></a>
+					<h3>AUTHENTICATION_<wbr>FAILED</h3>
+					<div class="tsd-signature tsd-kind-icon">AUTHENTICATION_<wbr>FAILED<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-symbol"> =&nbsp;&quot;AUTHENTICATION_FAILED&quot;</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/alphagov/passport-verify/blob/c6565b9/lib/verify-service-provider-api/authn-request-response.ts#L6">verify-service-provider-api/authn-request-response.ts:6</a></li>
+							<li>Defined in <a href="https://github.com/alphagov/passport-verify/blob/c6565b9/lib/verify-service-provider-api/response-body.ts#L27">verify-service-provider-api/response-body.ts:27</a></li>
 						</ul>
 					</aside>
 				</section>
-				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
-					<a name="ssolocation" class="tsd-anchor"></a>
-					<h3>sso<wbr>Location</h3>
-					<div class="tsd-signature tsd-kind-icon">sso<wbr>Location<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span></div>
+				<section class="tsd-panel tsd-member tsd-kind-enum-member tsd-parent-kind-enum">
+					<a name="cancellation" class="tsd-anchor"></a>
+					<h3>CANCELLATION</h3>
+					<div class="tsd-signature tsd-kind-icon">CANCELLATION<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-symbol"> =&nbsp;&quot;CANCELLATION&quot;</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/alphagov/passport-verify/blob/c6565b9/lib/verify-service-provider-api/authn-request-response.ts#L8">verify-service-provider-api/authn-request-response.ts:8</a></li>
+							<li>Defined in <a href="https://github.com/alphagov/passport-verify/blob/c6565b9/lib/verify-service-provider-api/response-body.ts#L26">verify-service-provider-api/response-body.ts:26</a></li>
+						</ul>
+					</aside>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-enum-member tsd-parent-kind-enum">
+					<a name="identity_verified" class="tsd-anchor"></a>
+					<h3>IDENTITY_<wbr>VERIFIED</h3>
+					<div class="tsd-signature tsd-kind-icon">IDENTITY_<wbr>VERIFIED<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-symbol"> =&nbsp;&quot;IDENTITY_VERIFIED&quot;</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in <a href="https://github.com/alphagov/passport-verify/blob/c6565b9/lib/verify-service-provider-api/response-body.ts#L22">verify-service-provider-api/response-body.ts:22</a></li>
+						</ul>
+					</aside>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-enum-member tsd-parent-kind-enum">
+					<a name="no_match" class="tsd-anchor"></a>
+					<h3>NO_<wbr>MATCH</h3>
+					<div class="tsd-signature tsd-kind-icon">NO_<wbr>MATCH<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-symbol"> =&nbsp;&quot;NO_MATCH&quot;</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in <a href="https://github.com/alphagov/passport-verify/blob/c6565b9/lib/verify-service-provider-api/response-body.ts#L25">verify-service-provider-api/response-body.ts:25</a></li>
+						</ul>
+					</aside>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-enum-member tsd-parent-kind-enum">
+					<a name="request_error" class="tsd-anchor"></a>
+					<h3>REQUEST_<wbr>ERROR</h3>
+					<div class="tsd-signature tsd-kind-icon">REQUEST_<wbr>ERROR<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-symbol"> =&nbsp;&quot;REQUEST_ERROR&quot;</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in <a href="https://github.com/alphagov/passport-verify/blob/c6565b9/lib/verify-service-provider-api/response-body.ts#L28">verify-service-provider-api/response-body.ts:28</a></li>
+						</ul>
+					</aside>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-enum-member tsd-parent-kind-enum">
+					<a name="success_match" class="tsd-anchor"></a>
+					<h3>SUCCESS_<wbr>MATCH</h3>
+					<div class="tsd-signature tsd-kind-icon">SUCCESS_<wbr>MATCH<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-symbol"> =&nbsp;&quot;SUCCESS_MATCH&quot;</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in <a href="https://github.com/alphagov/passport-verify/blob/c6565b9/lib/verify-service-provider-api/response-body.ts#L23">verify-service-provider-api/response-body.ts:23</a></li>
 						</ul>
 					</aside>
 				</section>
@@ -152,13 +188,13 @@
 					<li class=" tsd-kind-external-module">
 						<a href="../modules/_passport_verify_strategy_.html">"passport-<wbr>verify-<wbr>strategy"</a>
 					</li>
-					<li class="current tsd-kind-external-module">
+					<li class=" tsd-kind-external-module">
 						<a href="../modules/_verify_service_provider_api_authn_request_response_.html">"verify-<wbr>service-<wbr>provider-<wbr>api/authn-<wbr>request-<wbr>response"</a>
 					</li>
 					<li class=" tsd-kind-external-module">
 						<a href="../modules/_verify_service_provider_api_error_message_.html">"verify-<wbr>service-<wbr>provider-<wbr>api/error-<wbr>message"</a>
 					</li>
-					<li class=" tsd-kind-external-module">
+					<li class="current tsd-kind-external-module">
 						<a href="../modules/_verify_service_provider_api_response_body_.html">"verify-<wbr>service-<wbr>provider-<wbr>api/response-<wbr>body"</a>
 					</li>
 					<li class=" tsd-kind-external-module">
@@ -173,22 +209,37 @@
 				<ul class="before-current">
 				</ul>
 				<ul class="current">
-					<li class="current tsd-kind-interface tsd-parent-kind-external-module">
-						<a href="_verify_service_provider_api_authn_request_response_.authnrequestresponse.html" class="tsd-kind-icon">Authn<wbr>Request<wbr>Response</a>
+					<li class="current tsd-kind-enum tsd-parent-kind-external-module">
+						<a href="_verify_service_provider_api_response_body_.scenario.html" class="tsd-kind-icon">Scenario</a>
 						<ul>
-							<li class=" tsd-kind-property tsd-parent-kind-interface">
-								<a href="_verify_service_provider_api_authn_request_response_.authnrequestresponse.html#requestid" class="tsd-kind-icon">request<wbr>Id</a>
+							<li class=" tsd-kind-enum-member tsd-parent-kind-enum">
+								<a href="_verify_service_provider_api_response_body_.scenario.html#account_creation" class="tsd-kind-icon">ACCOUNT_<wbr>CREATION</a>
 							</li>
-							<li class=" tsd-kind-property tsd-parent-kind-interface">
-								<a href="_verify_service_provider_api_authn_request_response_.authnrequestresponse.html#samlrequest" class="tsd-kind-icon">saml<wbr>Request</a>
+							<li class=" tsd-kind-enum-member tsd-parent-kind-enum">
+								<a href="_verify_service_provider_api_response_body_.scenario.html#authentication_failed" class="tsd-kind-icon">AUTHENTICATION_<wbr>FAILED</a>
 							</li>
-							<li class=" tsd-kind-property tsd-parent-kind-interface">
-								<a href="_verify_service_provider_api_authn_request_response_.authnrequestresponse.html#ssolocation" class="tsd-kind-icon">sso<wbr>Location</a>
+							<li class=" tsd-kind-enum-member tsd-parent-kind-enum">
+								<a href="_verify_service_provider_api_response_body_.scenario.html#cancellation" class="tsd-kind-icon">CANCELLATION</a>
+							</li>
+							<li class=" tsd-kind-enum-member tsd-parent-kind-enum">
+								<a href="_verify_service_provider_api_response_body_.scenario.html#identity_verified" class="tsd-kind-icon">IDENTITY_<wbr>VERIFIED</a>
+							</li>
+							<li class=" tsd-kind-enum-member tsd-parent-kind-enum">
+								<a href="_verify_service_provider_api_response_body_.scenario.html#no_match" class="tsd-kind-icon">NO_<wbr>MATCH</a>
+							</li>
+							<li class=" tsd-kind-enum-member tsd-parent-kind-enum">
+								<a href="_verify_service_provider_api_response_body_.scenario.html#request_error" class="tsd-kind-icon">REQUEST_<wbr>ERROR</a>
+							</li>
+							<li class=" tsd-kind-enum-member tsd-parent-kind-enum">
+								<a href="_verify_service_provider_api_response_body_.scenario.html#success_match" class="tsd-kind-icon">SUCCESS_<wbr>MATCH</a>
 							</li>
 						</ul>
 					</li>
 				</ul>
 				<ul class="after-current">
+					<li class=" tsd-kind-interface tsd-parent-kind-external-module">
+						<a href="../interfaces/_verify_service_provider_api_response_body_.responsebody.html" class="tsd-kind-icon">Response<wbr>Body</a>
+					</li>
 				</ul>
 			</nav>
 		</div>

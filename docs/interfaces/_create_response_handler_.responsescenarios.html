@@ -72,11 +72,10 @@
 			<section class="tsd-panel tsd-comment">
 				<div class="tsd-comment tsd-typography">
 					<div class="lead">
-						<p>ResponseScenarios</p>
+						<p>The callbacks in the <code>ResponseScenarios</code> interface define scenarios
+						that can occur when handling a response from GOV.UK Verify.</p>
 					</div>
-					<p>An object enumerating scenarios that can occur when handling a response from
-					Verify.</p>
-					<p>Relying Parties should handle each of these scenarios appropriately.</p>
+					<p>Services should handle each of these scenarios appropriately.</p>
 				</div>
 			</section>
 			<section class="tsd-panel tsd-hierarchy">
@@ -113,13 +112,13 @@
 					<div class="tsd-signature tsd-kind-icon">on<wbr>Authn<wbr>Failed<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">function</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/alphagov/passport-verify/blob/7d321bc/lib/create-response-handler.ts#L52">create-response-handler.ts:52</a></li>
+							<li>Defined in <a href="https://github.com/alphagov/passport-verify/blob/c6565b9/lib/create-response-handler.ts#L57">create-response-handler.ts:57</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
 						<div class="lead">
-							<p>Called when the user failed to authenticate with Verify,
-							for example if the user got their password wrong.</p>
+							<p>Called when the user failed to verify, for example if the user got
+							their password wrong.</p>
 						</div>
 						<p>Your callback should redirect the user to a page offering them other ways
 							to use your service (e.g. using a non-verify way of proving their
@@ -147,7 +146,7 @@
 					<div class="tsd-signature tsd-kind-icon">on<wbr>Cancel<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">function</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/alphagov/passport-verify/blob/7d321bc/lib/create-response-handler.ts#L73">create-response-handler.ts:73</a></li>
+							<li>Defined in <a href="https://github.com/alphagov/passport-verify/blob/c6565b9/lib/create-response-handler.ts#L80">create-response-handler.ts:80</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -181,7 +180,7 @@
 					<div class="tsd-signature tsd-kind-icon">on<wbr>Create<wbr>User<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">function</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/alphagov/passport-verify/blob/7d321bc/lib/create-response-handler.ts#L43">create-response-handler.ts:43</a></li>
+							<li>Defined in <a href="https://github.com/alphagov/passport-verify/blob/c6565b9/lib/create-response-handler.ts#L47">create-response-handler.ts:47</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -191,8 +190,8 @@
 								should redirect the user to the appropriate page so they can begin using your
 							service (you may or may not want to treat new users differently to existing users).</p>
 						</div>
-						<p>The callback will be provided with a <code>user</code> object, which will be whatever
-						was returned from your <code>createUser</code> callback.</p>
+						<p>The callback will be provided with a <code>user</code> object, which will be the output
+						from your <code>createUser</code> callback.</p>
 					</div>
 					<div class="tsd-type-declaration">
 						<h4>Type declaration</h4>
@@ -222,7 +221,7 @@
 					<div class="tsd-signature tsd-kind-icon">on<wbr>Error<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">function</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/alphagov/passport-verify/blob/7d321bc/lib/create-response-handler.ts#L86">create-response-handler.ts:86</a></li>
+							<li>Defined in <a href="https://github.com/alphagov/passport-verify/blob/c6565b9/lib/create-response-handler.ts#L94">create-response-handler.ts:94</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -265,7 +264,7 @@
 					<div class="tsd-signature tsd-kind-icon">on<wbr>Match<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">function</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/alphagov/passport-verify/blob/7d321bc/lib/create-response-handler.ts#L33">create-response-handler.ts:33</a></li>
+							<li>Defined in <a href="https://github.com/alphagov/passport-verify/blob/c6565b9/lib/create-response-handler.ts#L36">create-response-handler.ts:36</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -274,8 +273,8 @@
 								matching service. Your callback should redirect the user to the appropriate
 							page so they can begin using your service.</p>
 						</div>
-						<p>The callback will be provided with a <code>user</code> object, which will be whatever
-						was returned from your <code>verifyUser</code> callback.</p>
+						<p>The callback will be provided with a <code>user</code> object, which will be the output
+						from your <code>verifyUser</code> callback.</p>
 					</div>
 					<div class="tsd-type-declaration">
 						<h4>Type declaration</h4>
@@ -305,13 +304,13 @@
 					<div class="tsd-signature tsd-kind-icon">on<wbr>NoMatch<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">function</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/alphagov/passport-verify/blob/7d321bc/lib/create-response-handler.ts#L64">create-response-handler.ts:64</a></li>
+							<li>Defined in <a href="https://github.com/alphagov/passport-verify/blob/c6565b9/lib/create-response-handler.ts#L70">create-response-handler.ts:70</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
 						<div class="lead">
-							<p>Called when the user successfully authenticated with Verify, but
-							was not matched by your matching service.</p>
+							<p>Called when the user&#39;s identity was successfully verified by an identity
+							provider, but was not matched by your matching service.</p>
 						</div>
 						<p>Note that <code>onCreateUser</code> will be called instead if your service is
 						configured to perform user account creation.</p>
@@ -343,6 +342,9 @@
 					<li class="globals  ">
 						<a href="../index.html"><em>Globals</em></a>
 					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="../modules/_create_identity_response_handler_.html">"create-<wbr>identity-<wbr>response-<wbr>handler"</a>
+					</li>
 					<li class="current tsd-kind-external-module">
 						<a href="../modules/_create_response_handler_.html">"create-<wbr>response-<wbr>handler"</a>
 					</li>
@@ -357,6 +359,9 @@
 					</li>
 					<li class=" tsd-kind-external-module">
 						<a href="../modules/_verify_service_provider_api_error_message_.html">"verify-<wbr>service-<wbr>provider-<wbr>api/error-<wbr>message"</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="../modules/_verify_service_provider_api_response_body_.html">"verify-<wbr>service-<wbr>provider-<wbr>api/response-<wbr>body"</a>
 					</li>
 					<li class=" tsd-kind-external-module">
 						<a href="../modules/_verify_service_provider_api_translated_response_body_.html">"verify-<wbr>service-<wbr>provider-<wbr>api/translated-<wbr>response-<wbr>body"</a>

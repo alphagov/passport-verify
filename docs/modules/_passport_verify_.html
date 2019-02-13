@@ -71,30 +71,7 @@
 					<div class="lead">
 						<p>Entry point for the passport-verify npm module.</p>
 					</div>
-					<p>Exports <a href="_passport_verify_strategy_.html#createstrategy">createStrategy</a> and <a href="_create_response_handler_.html#createresponsehandler">createResponseHandler</a> which can be used as follows:</p>
-					<pre><code><span class="hljs-keyword">const</span> passportVerify = <span class="hljs-keyword">require</span>(<span class="hljs-string">'passport-verify'</span>)
-passport.<span class="hljs-keyword">use</span>(passportVerify.createStrategy(
-  verifyServiceProviderHost,
-  <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">createUser</span> <span class="hljs-params">(user)</span> </span>{ },
-  <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">verifyUser</span> <span class="hljs-params">(user)</span> </span>{ },
-  <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">saveRequestId</span> <span class="hljs-params">(requestId, request)</span> </span>{ },
-  <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">loadRequestId</span> <span class="hljs-params">(request)</span> </span>{ }
-))
-</code></pre><pre><code><span class="hljs-comment">// route for authenticating a user</span>
-app.post(<span class="hljs-string">'/verify/start'</span>, passport.authenticate(<span class="hljs-string">'verify'</span>))
-
-<span class="hljs-comment">// route for handling a callback from verify</span>
-app.post(<span class="hljs-string">'/verify/response'</span>, <span class="hljs-function">(<span class="hljs-params">req, res, next</span>) =&gt;</span> (
-  passport.authenticate(<span class="hljs-string">'verify'</span>,
-    passportVerify.createResponseHandler({
-      onMatch: <span class="hljs-function"><span class="hljs-params">user</span> =&gt;</span> {},
-      onCreateUser: <span class="hljs-function"><span class="hljs-params">user</span> =&gt;</span> {},
-      onAuthnFailed: <span class="hljs-function"><span class="hljs-params">failure</span> =&gt;</span> {},
-      onError: <span class="hljs-function"><span class="hljs-params">error</span> =&gt;</span> {},
-    })
-  )
-)(req, res, next))
-</code></pre>
+					<p>Exports <a href="_passport_verify_strategy_.html#createstrategy">createStrategy</a>, <a href="_passport_verify_strategy_.html#createidentitystrategy">createIdentityStrategy</a>, <a href="_create_response_handler_.html#createresponsehandler">createResponseHandler</a> and <a href="_create_identity_response_handler_.html#createidentityresponsehandler">createIdentityResponseHandler</a>.</p>
 				</div>
 			</section>
 		</div>
@@ -103,6 +80,9 @@ app.post(<span class="hljs-string">'/verify/response'</span>, <span class="hljs-
 				<ul>
 					<li class="globals  ">
 						<a href="../index.html"><em>Globals</em></a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="_create_identity_response_handler_.html">"create-<wbr>identity-<wbr>response-<wbr>handler"</a>
 					</li>
 					<li class=" tsd-kind-external-module">
 						<a href="_create_response_handler_.html">"create-<wbr>response-<wbr>handler"</a>
@@ -118,6 +98,9 @@ app.post(<span class="hljs-string">'/verify/response'</span>, <span class="hljs-
 					</li>
 					<li class=" tsd-kind-external-module">
 						<a href="_verify_service_provider_api_error_message_.html">"verify-<wbr>service-<wbr>provider-<wbr>api/error-<wbr>message"</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="_verify_service_provider_api_response_body_.html">"verify-<wbr>service-<wbr>provider-<wbr>api/response-<wbr>body"</a>
 					</li>
 					<li class=" tsd-kind-external-module">
 						<a href="_verify_service_provider_api_translated_response_body_.html">"verify-<wbr>service-<wbr>provider-<wbr>api/translated-<wbr>response-<wbr>body"</a>
