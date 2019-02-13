@@ -92,6 +92,7 @@
 						<section class="tsd-index-section ">
 							<h3>Functions</h3>
 							<ul class="tsd-index-list">
+								<li class="tsd-kind-function tsd-parent-kind-external-module"><a href="_passport_verify_strategy_.html#createidentitystrategy" class="tsd-kind-icon">create<wbr>Identity<wbr>Strategy</a></li>
 								<li class="tsd-kind-function tsd-parent-kind-external-module"><a href="_passport_verify_strategy_.html#createstrategy" class="tsd-kind-icon">create<wbr>Strategy</a></li>
 							</ul>
 						</section>
@@ -101,22 +102,24 @@
 			<section class="tsd-panel-group tsd-member-group ">
 				<h2>Functions</h2>
 				<section class="tsd-panel tsd-member tsd-kind-function tsd-parent-kind-external-module">
-					<a name="createstrategy" class="tsd-anchor"></a>
-					<h3>create<wbr>Strategy</h3>
+					<a name="createidentitystrategy" class="tsd-anchor"></a>
+					<h3>create<wbr>Identity<wbr>Strategy</h3>
 					<ul class="tsd-signatures tsd-kind-function tsd-parent-kind-external-module">
-						<li class="tsd-signature tsd-kind-icon">create<wbr>Strategy<span class="tsd-signature-symbol">(</span>verifyServiceProviderHost<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span>, createUser<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">function</span>, verifyUser<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">function</span>, saveRequestId<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">function</span>, loadRequestId<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">function</span>, serviceEntityId<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">string</span>, samlFormTemplateName<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">string</span>, levelOfAssurance<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">"LEVEL_1"</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">"LEVEL_2"</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="../classes/_passport_verify_strategy_.passportverifystrategy.html" class="tsd-signature-type">PassportVerifyStrategy</a></li>
+						<li class="tsd-signature tsd-kind-icon">create<wbr>Identity<wbr>Strategy<span class="tsd-signature-symbol">(</span>verifyServiceProviderHost<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span>, handleIdentity<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">function</span>, saveRequestId<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">function</span>, loadRequestId<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">function</span>, serviceEntityId<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">string</span>, samlFormTemplateName<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">string</span>, levelOfAssurance<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">"LEVEL_1"</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">"LEVEL_2"</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="../classes/_passport_verify_strategy_.passportverifystrategy.html" class="tsd-signature-type">PassportVerifyStrategy</a></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/alphagov/passport-verify/blob/7d321bc/lib/passport-verify-strategy.ts#L152">passport-verify-strategy.ts:152</a></li>
+									<li>Defined in <a href="https://github.com/alphagov/passport-verify/blob/c6565b9/lib/passport-verify-strategy.ts#L214">passport-verify-strategy.ts:214</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
 								<div class="lead">
 									<p>Creates an instance of <a href="../classes/_passport_verify_strategy_.passportverifystrategy.html">PassportVerifyStrategy</a></p>
 								</div>
+								<p>This version of the function should only be used if your service connects to GOV.UK Verify using the
+								Verify Service Provider (VSP) without a Matching Service Adapter (MSA).</p>
 							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
@@ -127,55 +130,26 @@
 									</div>
 								</li>
 								<li>
-									<h5>createUser: <span class="tsd-signature-type">function</span></h5>
+									<h5>handleIdentity: <span class="tsd-signature-type">function</span></h5>
 									<div class="tsd-comment tsd-typography">
-										<p>A callback that will be invoked when a response with a new user is received.
-											The <code>user</code> object will contain the users&#39; attributes (i.e. firstName, surname etc.).
+										<p>A callback that will be invoked when a response with an identity is received.
+											The <code>identity</code> object will contain the users&#39; attributes (i.e. firstName, surname etc.).
 										Your callback should store details of the user in your datastore and return an object representing the user.</p>
 									</div>
 									<ul class="tsd-parameters">
 										<li class="tsd-parameter-siganture">
 											<ul class="tsd-signatures tsd-kind-type-literal tsd-is-not-exported">
-												<li class="tsd-signature tsd-kind-icon"><span class="tsd-signature-symbol">(</span>user<span class="tsd-signature-symbol">: </span><a href="../interfaces/_verify_service_provider_api_translated_response_body_.translatedresponsebody.html" class="tsd-signature-type">TranslatedResponseBody</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">false</span></li>
+												<li class="tsd-signature tsd-kind-icon"><span class="tsd-signature-symbol">(</span>identity<span class="tsd-signature-symbol">: </span><a href="../interfaces/_verify_service_provider_api_translated_response_body_.translatedidentityresponsebody.html" class="tsd-signature-type">TranslatedIdentityResponseBody</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">object</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">false</span></li>
 											</ul>
 											<ul class="tsd-descriptions">
 												<li class="tsd-description">
 													<h4 class="tsd-parameters-title">Parameters</h4>
 													<ul class="tsd-parameters">
 														<li>
-															<h5>user: <a href="../interfaces/_verify_service_provider_api_translated_response_body_.translatedresponsebody.html" class="tsd-signature-type">TranslatedResponseBody</a></h5>
+															<h5>identity: <a href="../interfaces/_verify_service_provider_api_translated_response_body_.translatedidentityresponsebody.html" class="tsd-signature-type">TranslatedIdentityResponseBody</a></h5>
 														</li>
 													</ul>
-													<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">any</span>
-														<span class="tsd-signature-symbol"> | </span>
-														<span class="tsd-signature-type">false</span>
-													</h4>
-												</li>
-											</ul>
-										</li>
-									</ul>
-								</li>
-								<li>
-									<h5>verifyUser: <span class="tsd-signature-type">function</span></h5>
-									<div class="tsd-comment tsd-typography">
-										<p>A callback that will be invoked when a response with a matched user is received.
-											Your callback should look the user up in your datastore using their <code>pid</code> (persistent identitfier)
-										and return an object representing the user.</p>
-									</div>
-									<ul class="tsd-parameters">
-										<li class="tsd-parameter-siganture">
-											<ul class="tsd-signatures tsd-kind-type-literal tsd-is-not-exported">
-												<li class="tsd-signature tsd-kind-icon"><span class="tsd-signature-symbol">(</span>user<span class="tsd-signature-symbol">: </span><a href="../interfaces/_verify_service_provider_api_translated_response_body_.translatedresponsebody.html" class="tsd-signature-type">TranslatedResponseBody</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">false</span></li>
-											</ul>
-											<ul class="tsd-descriptions">
-												<li class="tsd-description">
-													<h4 class="tsd-parameters-title">Parameters</h4>
-													<ul class="tsd-parameters">
-														<li>
-															<h5>user: <a href="../interfaces/_verify_service_provider_api_translated_response_body_.translatedresponsebody.html" class="tsd-signature-type">TranslatedResponseBody</a></h5>
-														</li>
-													</ul>
-													<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">any</span>
+													<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">object</span>
 														<span class="tsd-signature-symbol"> | </span>
 														<span class="tsd-signature-type">false</span>
 													</h4>
@@ -265,8 +239,178 @@
 							</ul>
 							<h4 class="tsd-returns-title">Returns <a href="../classes/_passport_verify_strategy_.passportverifystrategy.html" class="tsd-signature-type">PassportVerifyStrategy</a></h4>
 							<p>A strategy to be registered in passport with</p>
-							<pre><code>passport.<span class="hljs-keyword">use</span>(passportVerifyStrategy)
-</code></pre>
+							<pre><code>passport.<span class="hljs-keyword">use</span>(passportVerifyStrategy)</code></pre>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-function tsd-parent-kind-external-module">
+					<a name="createstrategy" class="tsd-anchor"></a>
+					<h3>create<wbr>Strategy</h3>
+					<ul class="tsd-signatures tsd-kind-function tsd-parent-kind-external-module">
+						<li class="tsd-signature tsd-kind-icon">create<wbr>Strategy<span class="tsd-signature-symbol">(</span>verifyServiceProviderHost<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span>, createUser<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">function</span>, verifyUser<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">function</span>, saveRequestId<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">function</span>, loadRequestId<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">function</span>, serviceEntityId<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">string</span>, samlFormTemplateName<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">string</span>, levelOfAssurance<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">"LEVEL_1"</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">"LEVEL_2"</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="../classes/_passport_verify_strategy_.passportverifystrategy.html" class="tsd-signature-type">PassportVerifyStrategy</a></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/alphagov/passport-verify/blob/c6565b9/lib/passport-verify-strategy.ts#L170">passport-verify-strategy.ts:170</a></li>
+								</ul>
+							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Creates an instance of <a href="../classes/_passport_verify_strategy_.passportverifystrategy.html">PassportVerifyStrategy</a></p>
+								</div>
+								<p>This version of the function should only be used if your service uses the legacy setup. A legacy setup
+								involves connecting to GOV.UK Verify with a Matching Service Adapter (MSA).</p>
+							</div>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>verifyServiceProviderHost: <span class="tsd-signature-type">string</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>The URL that the Verify Service Provider is running on (e.g. <a href="http://localhost:50400">http://localhost:50400</a>)</p>
+									</div>
+								</li>
+								<li>
+									<h5>createUser: <span class="tsd-signature-type">function</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>A callback that will be invoked when a response with a new user is received.
+											The <code>user</code> object will contain the users&#39; attributes (i.e. firstName, surname etc.).
+										Your callback should store details of the user in your datastore and return an object representing the user.</p>
+									</div>
+									<ul class="tsd-parameters">
+										<li class="tsd-parameter-siganture">
+											<ul class="tsd-signatures tsd-kind-type-literal tsd-is-not-exported">
+												<li class="tsd-signature tsd-kind-icon"><span class="tsd-signature-symbol">(</span>user<span class="tsd-signature-symbol">: </span><a href="../interfaces/_verify_service_provider_api_translated_response_body_.translatedmatchingresponsebody.html" class="tsd-signature-type">TranslatedMatchingResponseBody</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">object</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">false</span></li>
+											</ul>
+											<ul class="tsd-descriptions">
+												<li class="tsd-description">
+													<h4 class="tsd-parameters-title">Parameters</h4>
+													<ul class="tsd-parameters">
+														<li>
+															<h5>user: <a href="../interfaces/_verify_service_provider_api_translated_response_body_.translatedmatchingresponsebody.html" class="tsd-signature-type">TranslatedMatchingResponseBody</a></h5>
+														</li>
+													</ul>
+													<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">object</span>
+														<span class="tsd-signature-symbol"> | </span>
+														<span class="tsd-signature-type">false</span>
+													</h4>
+												</li>
+											</ul>
+										</li>
+									</ul>
+								</li>
+								<li>
+									<h5>verifyUser: <span class="tsd-signature-type">function</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>A callback that will be invoked when a response with a matched user is received.
+											Your callback should look the user up in your datastore using their <code>pid</code> (persistent identitfier)
+										and return an object representing the user.</p>
+									</div>
+									<ul class="tsd-parameters">
+										<li class="tsd-parameter-siganture">
+											<ul class="tsd-signatures tsd-kind-type-literal tsd-is-not-exported">
+												<li class="tsd-signature tsd-kind-icon"><span class="tsd-signature-symbol">(</span>user<span class="tsd-signature-symbol">: </span><a href="../interfaces/_verify_service_provider_api_translated_response_body_.translatedmatchingresponsebody.html" class="tsd-signature-type">TranslatedMatchingResponseBody</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">object</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">false</span></li>
+											</ul>
+											<ul class="tsd-descriptions">
+												<li class="tsd-description">
+													<h4 class="tsd-parameters-title">Parameters</h4>
+													<ul class="tsd-parameters">
+														<li>
+															<h5>user: <a href="../interfaces/_verify_service_provider_api_translated_response_body_.translatedmatchingresponsebody.html" class="tsd-signature-type">TranslatedMatchingResponseBody</a></h5>
+														</li>
+													</ul>
+													<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">object</span>
+														<span class="tsd-signature-symbol"> | </span>
+														<span class="tsd-signature-type">false</span>
+													</h4>
+												</li>
+											</ul>
+										</li>
+									</ul>
+								</li>
+								<li>
+									<h5>saveRequestId: <span class="tsd-signature-type">function</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>A callback that will be invoked to save the requestId that has been generated by
+											the verify service provider. Your callback should save the request Id in a secure manner so that it
+										can be matched against the corresponding SAML response.</p>
+									</div>
+									<ul class="tsd-parameters">
+										<li class="tsd-parameter-siganture">
+											<ul class="tsd-signatures tsd-kind-type-literal tsd-is-not-exported">
+												<li class="tsd-signature tsd-kind-icon"><span class="tsd-signature-symbol">(</span>requestId<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span>, request<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">express.Request</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+											</ul>
+											<ul class="tsd-descriptions">
+												<li class="tsd-description">
+													<h4 class="tsd-parameters-title">Parameters</h4>
+													<ul class="tsd-parameters">
+														<li>
+															<h5>requestId: <span class="tsd-signature-type">string</span></h5>
+														</li>
+														<li>
+															<h5>request: <span class="tsd-signature-type">express.Request</span></h5>
+														</li>
+													</ul>
+													<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
+												</li>
+											</ul>
+										</li>
+									</ul>
+								</li>
+								<li>
+									<h5>loadRequestId: <span class="tsd-signature-type">function</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>A callback that will be invoked to load the requestId that has been securely saved
+										for the user&#39;s session.</p>
+									</div>
+									<ul class="tsd-parameters">
+										<li class="tsd-parameter-siganture">
+											<ul class="tsd-signatures tsd-kind-type-literal tsd-is-not-exported">
+												<li class="tsd-signature tsd-kind-icon"><span class="tsd-signature-symbol">(</span>request<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">express.Request</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span></li>
+											</ul>
+											<ul class="tsd-descriptions">
+												<li class="tsd-description">
+													<h4 class="tsd-parameters-title">Parameters</h4>
+													<ul class="tsd-parameters">
+														<li>
+															<h5>request: <span class="tsd-signature-type">express.Request</span></h5>
+														</li>
+													</ul>
+													<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">string</span></h4>
+												</li>
+											</ul>
+										</li>
+									</ul>
+								</li>
+								<li>
+									<h5><span class="tsd-flag ts-flagOptional">Optional</span> serviceEntityId: <span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">string</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>(Optional) The entityId that will be passed to the Verify Service Provider. This is
+										only required if the service provider is configured to be multi tenanted.</p>
+									</div>
+								</li>
+								<li>
+									<h5><span class="tsd-flag ts-flagOptional">Optional</span> samlFormTemplateName: <span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">string</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>(Optional) The name of a template in your service which will provide the form
+											used to post an authn request. If present, this will be rendered with the ssoLocation and samlRequest passed
+											in. Otherwise, a default form will be used. You should use this option if you wish to style the form, which
+										should be autoposting so only seen if the user has javascript disabled, to match the rest of your service.</p>
+									</div>
+								</li>
+								<li>
+									<h5><span class="tsd-flag ts-flagOptional">Optional</span> levelOfAssurance: <span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">"LEVEL_1"</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">"LEVEL_2"</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>(Optional) LEVEL_1 or LEVEL_2 - defaults to LEVEL_2. The Level of Assurance to
+											request from the Verify Service Provider and the minimum level to expect in the Response (e.g. if you
+										specify LEVEL_1 a LEVEL_2 Response would also be permissible).</p>
+									</div>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <a href="../classes/_passport_verify_strategy_.passportverifystrategy.html" class="tsd-signature-type">PassportVerifyStrategy</a></h4>
+							<p>A strategy to be registered in passport with</p>
+							<pre><code>passport.<span class="hljs-keyword">use</span>(passportVerifyStrategy)</code></pre>
 						</li>
 					</ul>
 				</section>
@@ -277,6 +421,9 @@
 				<ul>
 					<li class="globals  ">
 						<a href="../index.html"><em>Globals</em></a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="_create_identity_response_handler_.html">"create-<wbr>identity-<wbr>response-<wbr>handler"</a>
 					</li>
 					<li class=" tsd-kind-external-module">
 						<a href="_create_response_handler_.html">"create-<wbr>response-<wbr>handler"</a>
@@ -294,6 +441,9 @@
 						<a href="_verify_service_provider_api_error_message_.html">"verify-<wbr>service-<wbr>provider-<wbr>api/error-<wbr>message"</a>
 					</li>
 					<li class=" tsd-kind-external-module">
+						<a href="_verify_service_provider_api_response_body_.html">"verify-<wbr>service-<wbr>provider-<wbr>api/response-<wbr>body"</a>
+					</li>
+					<li class=" tsd-kind-external-module">
 						<a href="_verify_service_provider_api_translated_response_body_.html">"verify-<wbr>service-<wbr>provider-<wbr>api/translated-<wbr>response-<wbr>body"</a>
 					</li>
 					<li class=" tsd-kind-external-module">
@@ -308,6 +458,9 @@
 					</li>
 					<li class=" tsd-kind-interface tsd-parent-kind-external-module">
 						<a href="../interfaces/_passport_verify_strategy_.passportverifyoptions.html" class="tsd-kind-icon">Passport<wbr>Verify<wbr>Options</a>
+					</li>
+					<li class=" tsd-kind-function tsd-parent-kind-external-module">
+						<a href="_passport_verify_strategy_.html#createidentitystrategy" class="tsd-kind-icon">create<wbr>Identity<wbr>Strategy</a>
 					</li>
 					<li class=" tsd-kind-function tsd-parent-kind-external-module">
 						<a href="_passport_verify_strategy_.html#createstrategy" class="tsd-kind-icon">create<wbr>Strategy</a>

@@ -3,7 +3,7 @@
 <head>
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<title>AuthnRequestResponse | passport-verify</title>
+	<title>IdentityResponseScenarios | passport-verify</title>
 	<meta name="description" content="">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link rel="stylesheet" href="../assets/css/main.css">
@@ -56,13 +56,13 @@
 					<a href="../index.html">Globals</a>
 				</li>
 				<li>
-					<a href="../modules/_verify_service_provider_api_authn_request_response_.html">&quot;verify-service-provider-api/authn-request-response&quot;</a>
+					<a href="../modules/_create_identity_response_handler_.html">&quot;create-identity-response-handler&quot;</a>
 				</li>
 				<li>
-					<a href="_verify_service_provider_api_authn_request_response_.authnrequestresponse.html">AuthnRequestResponse</a>
+					<a href="_create_identity_response_handler_.identityresponsescenarios.html">IdentityResponseScenarios</a>
 				</li>
 			</ul>
-			<h1>Interface AuthnRequestResponse</h1>
+			<h1>Interface IdentityResponseScenarios</h1>
 		</div>
 	</div>
 </header>
@@ -72,16 +72,17 @@
 			<section class="tsd-panel tsd-comment">
 				<div class="tsd-comment tsd-typography">
 					<div class="lead">
-						<p>Represents the JSON returned by a success response from the
-						<code>/generate-request</code> endpoint in the verify-service-provider</p>
+						<p>The callbacks in the <code>IdentityResponseScenarios</code> interface define scenarios that
+						can occur when handling a response from GOV.UK Verify.</p>
 					</div>
+					<p>Services should handle each of these scenarios appropriately.</p>
 				</div>
 			</section>
 			<section class="tsd-panel tsd-hierarchy">
 				<h3>Hierarchy</h3>
 				<ul class="tsd-hierarchy">
 					<li>
-						<span class="target">AuthnRequestResponse</span>
+						<span class="target">IdentityResponseScenarios</span>
 					</li>
 				</ul>
 			</section>
@@ -92,9 +93,10 @@
 						<section class="tsd-index-section ">
 							<h3>Properties</h3>
 							<ul class="tsd-index-list">
-								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="_verify_service_provider_api_authn_request_response_.authnrequestresponse.html#requestid" class="tsd-kind-icon">request<wbr>Id</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="_verify_service_provider_api_authn_request_response_.authnrequestresponse.html#samlrequest" class="tsd-kind-icon">saml<wbr>Request</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="_verify_service_provider_api_authn_request_response_.authnrequestresponse.html#ssolocation" class="tsd-kind-icon">sso<wbr>Location</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="_create_identity_response_handler_.identityresponsescenarios.html#onauthnfailed" class="tsd-kind-icon">on<wbr>Authn<wbr>Failed</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="_create_identity_response_handler_.identityresponsescenarios.html#oncancel" class="tsd-kind-icon">on<wbr>Cancel</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="_create_identity_response_handler_.identityresponsescenarios.html#onerror" class="tsd-kind-icon">on<wbr>Error</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="_create_identity_response_handler_.identityresponsescenarios.html#onidentityverified" class="tsd-kind-icon">on<wbr>Identity<wbr>Verified</a></li>
 							</ul>
 						</section>
 					</div>
@@ -103,34 +105,154 @@
 			<section class="tsd-panel-group tsd-member-group ">
 				<h2>Properties</h2>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
-					<a name="requestid" class="tsd-anchor"></a>
-					<h3>request<wbr>Id</h3>
-					<div class="tsd-signature tsd-kind-icon">request<wbr>Id<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span></div>
+					<a name="onauthnfailed" class="tsd-anchor"></a>
+					<h3>on<wbr>Authn<wbr>Failed</h3>
+					<div class="tsd-signature tsd-kind-icon">on<wbr>Authn<wbr>Failed<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">function</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/alphagov/passport-verify/blob/c6565b9/lib/verify-service-provider-api/authn-request-response.ts#L7">verify-service-provider-api/authn-request-response.ts:7</a></li>
+							<li>Defined in <a href="https://github.com/alphagov/passport-verify/blob/c6565b9/lib/create-identity-response-handler.ts#L45">create-identity-response-handler.ts:45</a></li>
 						</ul>
 					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>Called when the user failed to verify, for example if the user got their
+							password wrong.</p>
+						</div>
+						<p>Your callback should redirect the user to a page offering them other ways
+							to use your service (e.g. using a non-verify way of proving their
+						identity or going somewhere in person).</p>
+					</div>
+					<div class="tsd-type-declaration">
+						<h4>Type declaration</h4>
+						<ul class="tsd-parameters">
+							<li class="tsd-parameter-siganture">
+								<ul class="tsd-signatures tsd-kind-type-literal tsd-parent-kind-property tsd-is-not-exported">
+									<li class="tsd-signature tsd-kind-icon"><span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span></li>
+								</ul>
+								<ul class="tsd-descriptions">
+									<li class="tsd-description">
+										<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">any</span></h4>
+									</li>
+								</ul>
+							</li>
+						</ul>
+					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
-					<a name="samlrequest" class="tsd-anchor"></a>
-					<h3>saml<wbr>Request</h3>
-					<div class="tsd-signature tsd-kind-icon">saml<wbr>Request<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span></div>
+					<a name="oncancel" class="tsd-anchor"></a>
+					<h3>on<wbr>Cancel</h3>
+					<div class="tsd-signature tsd-kind-icon">on<wbr>Cancel<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">function</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/alphagov/passport-verify/blob/c6565b9/lib/verify-service-provider-api/authn-request-response.ts#L6">verify-service-provider-api/authn-request-response.ts:6</a></li>
+							<li>Defined in <a href="https://github.com/alphagov/passport-verify/blob/c6565b9/lib/create-identity-response-handler.ts#L55">create-identity-response-handler.ts:55</a></li>
 						</ul>
 					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>Called when the user cancelled at the identity provider (e.g. because
+							they don&#39;t have the required documentation with them).</p>
+						</div>
+						<p>Your callback should redirect the user to a page offering them other ways
+							to use your service (e.g. using a non-verify way of proving their
+						identity or going somewhere in person).</p>
+					</div>
+					<div class="tsd-type-declaration">
+						<h4>Type declaration</h4>
+						<ul class="tsd-parameters">
+							<li class="tsd-parameter-siganture">
+								<ul class="tsd-signatures tsd-kind-type-literal tsd-parent-kind-property tsd-is-not-exported">
+									<li class="tsd-signature tsd-kind-icon"><span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span></li>
+								</ul>
+								<ul class="tsd-descriptions">
+									<li class="tsd-description">
+										<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">any</span></h4>
+									</li>
+								</ul>
+							</li>
+						</ul>
+					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
-					<a name="ssolocation" class="tsd-anchor"></a>
-					<h3>sso<wbr>Location</h3>
-					<div class="tsd-signature tsd-kind-icon">sso<wbr>Location<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span></div>
+					<a name="onerror" class="tsd-anchor"></a>
+					<h3>on<wbr>Error</h3>
+					<div class="tsd-signature tsd-kind-icon">on<wbr>Error<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">function</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/alphagov/passport-verify/blob/c6565b9/lib/verify-service-provider-api/authn-request-response.ts#L8">verify-service-provider-api/authn-request-response.ts:8</a></li>
+							<li>Defined in <a href="https://github.com/alphagov/passport-verify/blob/c6565b9/lib/create-identity-response-handler.ts#L69">create-identity-response-handler.ts:69</a></li>
 						</ul>
 					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>Called when the response from verify can&#39;t be handled correctly
+								(for example if its signature is invalid or if its validUntil date
+							is in the past), or if the response from verify represents an error.</p>
+						</div>
+						<p>Your callback should make sure the error is logged appropriately and
+							render an error page telling the user that there are technical problems
+						with Verify.</p>
+						<p>The callback will be provided with an <code>error</code> object, which will provide
+						details of what went wrong.</p>
+					</div>
+					<div class="tsd-type-declaration">
+						<h4>Type declaration</h4>
+						<ul class="tsd-parameters">
+							<li class="tsd-parameter-siganture">
+								<ul class="tsd-signatures tsd-kind-type-literal tsd-parent-kind-property tsd-is-not-exported">
+									<li class="tsd-signature tsd-kind-icon"><span class="tsd-signature-symbol">(</span>error<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Error</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span></li>
+								</ul>
+								<ul class="tsd-descriptions">
+									<li class="tsd-description">
+										<h4 class="tsd-parameters-title">Parameters</h4>
+										<ul class="tsd-parameters">
+											<li>
+												<h5>error: <span class="tsd-signature-type">Error</span></h5>
+											</li>
+										</ul>
+										<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">any</span></h4>
+									</li>
+								</ul>
+							</li>
+						</ul>
+					</div>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
+					<a name="onidentityverified" class="tsd-anchor"></a>
+					<h3>on<wbr>Identity<wbr>Verified</h3>
+					<div class="tsd-signature tsd-kind-icon">on<wbr>Identity<wbr>Verified<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">function</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in <a href="https://github.com/alphagov/passport-verify/blob/c6565b9/lib/create-identity-response-handler.ts#L35">create-identity-response-handler.ts:35</a></li>
+						</ul>
+					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>Called when handling an <code>IDENTITY_VERIFIED</code> response. Your callback should
+							redirect the user to the appropriate page so they can begin using your service.</p>
+						</div>
+						<p>The callback will be passed an <code>identity</code> object, which will be the output from
+						your <code>handleIdentity</code> callback.</p>
+					</div>
+					<div class="tsd-type-declaration">
+						<h4>Type declaration</h4>
+						<ul class="tsd-parameters">
+							<li class="tsd-parameter-siganture">
+								<ul class="tsd-signatures tsd-kind-type-literal tsd-parent-kind-property tsd-is-not-exported">
+									<li class="tsd-signature tsd-kind-icon"><span class="tsd-signature-symbol">(</span>user<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span></li>
+								</ul>
+								<ul class="tsd-descriptions">
+									<li class="tsd-description">
+										<h4 class="tsd-parameters-title">Parameters</h4>
+										<ul class="tsd-parameters">
+											<li>
+												<h5>user: <span class="tsd-signature-type">any</span></h5>
+											</li>
+										</ul>
+										<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">any</span></h4>
+									</li>
+								</ul>
+							</li>
+						</ul>
+					</div>
 				</section>
 			</section>
 		</div>
@@ -140,7 +262,7 @@
 					<li class="globals  ">
 						<a href="../index.html"><em>Globals</em></a>
 					</li>
-					<li class=" tsd-kind-external-module">
+					<li class="current tsd-kind-external-module">
 						<a href="../modules/_create_identity_response_handler_.html">"create-<wbr>identity-<wbr>response-<wbr>handler"</a>
 					</li>
 					<li class=" tsd-kind-external-module">
@@ -152,7 +274,7 @@
 					<li class=" tsd-kind-external-module">
 						<a href="../modules/_passport_verify_strategy_.html">"passport-<wbr>verify-<wbr>strategy"</a>
 					</li>
-					<li class="current tsd-kind-external-module">
+					<li class=" tsd-kind-external-module">
 						<a href="../modules/_verify_service_provider_api_authn_request_response_.html">"verify-<wbr>service-<wbr>provider-<wbr>api/authn-<wbr>request-<wbr>response"</a>
 					</li>
 					<li class=" tsd-kind-external-module">
@@ -174,21 +296,27 @@
 				</ul>
 				<ul class="current">
 					<li class="current tsd-kind-interface tsd-parent-kind-external-module">
-						<a href="_verify_service_provider_api_authn_request_response_.authnrequestresponse.html" class="tsd-kind-icon">Authn<wbr>Request<wbr>Response</a>
+						<a href="_create_identity_response_handler_.identityresponsescenarios.html" class="tsd-kind-icon">Identity<wbr>Response<wbr>Scenarios</a>
 						<ul>
 							<li class=" tsd-kind-property tsd-parent-kind-interface">
-								<a href="_verify_service_provider_api_authn_request_response_.authnrequestresponse.html#requestid" class="tsd-kind-icon">request<wbr>Id</a>
+								<a href="_create_identity_response_handler_.identityresponsescenarios.html#onauthnfailed" class="tsd-kind-icon">on<wbr>Authn<wbr>Failed</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-interface">
-								<a href="_verify_service_provider_api_authn_request_response_.authnrequestresponse.html#samlrequest" class="tsd-kind-icon">saml<wbr>Request</a>
+								<a href="_create_identity_response_handler_.identityresponsescenarios.html#oncancel" class="tsd-kind-icon">on<wbr>Cancel</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-interface">
-								<a href="_verify_service_provider_api_authn_request_response_.authnrequestresponse.html#ssolocation" class="tsd-kind-icon">sso<wbr>Location</a>
+								<a href="_create_identity_response_handler_.identityresponsescenarios.html#onerror" class="tsd-kind-icon">on<wbr>Error</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-interface">
+								<a href="_create_identity_response_handler_.identityresponsescenarios.html#onidentityverified" class="tsd-kind-icon">on<wbr>Identity<wbr>Verified</a>
 							</li>
 						</ul>
 					</li>
 				</ul>
 				<ul class="after-current">
+					<li class=" tsd-kind-function tsd-parent-kind-external-module">
+						<a href="../modules/_create_identity_response_handler_.html#createidentityresponsehandler" class="tsd-kind-icon">create<wbr>Identity<wbr>Response<wbr>Handler</a>
+					</li>
 				</ul>
 			</nav>
 		</div>

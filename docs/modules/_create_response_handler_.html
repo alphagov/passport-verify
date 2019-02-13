@@ -69,13 +69,16 @@
 			<section class="tsd-panel tsd-comment">
 				<div class="tsd-comment tsd-typography">
 					<div class="lead">
-						<p>create-response-handler</p>
+						<p>The contents of this file are only relevant if your service uses the
+							legacy setup. A legacy setup involves connecting to GOV.UK Verify with a
+						Matching Service Adapter (MSA).</p>
 					</div>
+					<p>create-response-handler</p>
 					<p>Helper function to make handling callbacks from
 					<code>passport.authenticate(&#39;verify&#39;, callback)</code> easier.</p>
 					<p>This is necessary because there are a number of different scenarios
-						that relying parties need to handle when dealing with Verify responses.
-					passport.js isn&#39;t aware of these, so the interface its provides is not ideal.</p>
+						that services need to handle when dealing with Verify responses.
+					passport.js isn&#39;t aware of these, so the interface it provides is not ideal.</p>
 				</div>
 			</section>
 			<section class="tsd-panel-group tsd-index-group">
@@ -109,22 +112,26 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/alphagov/passport-verify/blob/7d321bc/lib/create-response-handler.ts#L96">create-response-handler.ts:96</a></li>
+									<li>Defined in <a href="https://github.com/alphagov/passport-verify/blob/c6565b9/lib/create-response-handler.ts#L109">create-response-handler.ts:109</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
 								<div class="lead">
-									<p>To make handling the passport.authenticate() callback easier we provide a createResponseHandler
-										function. This takes separate callbacks for each of the response scenarios you have to handle
-									and returns a function that will call the appropriate callback when called by passport.</p>
+									<p>The <code>createResponseHandler</code> function should be used if your service uses the
+										legacy setup. A legacy setup involves connecting to GOV.UK Verify with a Matching
+									Service Adapter (MSA).</p>
 								</div>
+								<p>This function makes it easier to handle the passport.authenticate() callback. The
+									function takes separate callbacks for each of the response scenarios you have to
+									handle and returns a function that will invoke the appropriate callback when called
+								by passport.</p>
 							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
 									<h5>responseScenarios: <a href="../interfaces/_create_response_handler_.responsescenarios.html" class="tsd-signature-type">ResponseScenarios</a></h5>
 									<div class="tsd-comment tsd-typography">
-										<p>Callbacks to handle each type of response that Verify can return</p>
+										<p>Callbacks to handle each type of response that GOV.UK Verify can return</p>
 									</div>
 								</li>
 							</ul>
@@ -140,6 +147,9 @@
 					<li class="globals  ">
 						<a href="../index.html"><em>Globals</em></a>
 					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="_create_identity_response_handler_.html">"create-<wbr>identity-<wbr>response-<wbr>handler"</a>
+					</li>
 					<li class="current tsd-kind-external-module">
 						<a href="_create_response_handler_.html">"create-<wbr>response-<wbr>handler"</a>
 					</li>
@@ -154,6 +164,9 @@
 					</li>
 					<li class=" tsd-kind-external-module">
 						<a href="_verify_service_provider_api_error_message_.html">"verify-<wbr>service-<wbr>provider-<wbr>api/error-<wbr>message"</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="_verify_service_provider_api_response_body_.html">"verify-<wbr>service-<wbr>provider-<wbr>api/response-<wbr>body"</a>
 					</li>
 					<li class=" tsd-kind-external-module">
 						<a href="_verify_service_provider_api_translated_response_body_.html">"verify-<wbr>service-<wbr>provider-<wbr>api/translated-<wbr>response-<wbr>body"</a>

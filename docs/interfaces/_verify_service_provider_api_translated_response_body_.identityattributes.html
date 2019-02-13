@@ -3,7 +3,7 @@
 <head>
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<title>AuthnRequestResponse | passport-verify</title>
+	<title>IdentityAttributes | passport-verify</title>
 	<meta name="description" content="">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link rel="stylesheet" href="../assets/css/main.css">
@@ -56,13 +56,13 @@
 					<a href="../index.html">Globals</a>
 				</li>
 				<li>
-					<a href="../modules/_verify_service_provider_api_authn_request_response_.html">&quot;verify-service-provider-api/authn-request-response&quot;</a>
+					<a href="../modules/_verify_service_provider_api_translated_response_body_.html">&quot;verify-service-provider-api/translated-response-body&quot;</a>
 				</li>
 				<li>
-					<a href="_verify_service_provider_api_authn_request_response_.authnrequestresponse.html">AuthnRequestResponse</a>
+					<a href="_verify_service_provider_api_translated_response_body_.identityattributes.html">IdentityAttributes</a>
 				</li>
 			</ul>
-			<h1>Interface AuthnRequestResponse</h1>
+			<h1>Interface IdentityAttributes</h1>
 		</div>
 	</div>
 </header>
@@ -72,8 +72,8 @@
 			<section class="tsd-panel tsd-comment">
 				<div class="tsd-comment tsd-typography">
 					<div class="lead">
-						<p>Represents the JSON returned by a success response from the
-						<code>/generate-request</code> endpoint in the verify-service-provider</p>
+						<p>Identity attributes - these will be present
+						on the response.</p>
 					</div>
 				</div>
 			</section>
@@ -81,7 +81,7 @@
 				<h3>Hierarchy</h3>
 				<ul class="tsd-hierarchy">
 					<li>
-						<span class="target">AuthnRequestResponse</span>
+						<span class="target">IdentityAttributes</span>
 					</li>
 				</ul>
 			</section>
@@ -92,9 +92,12 @@
 						<section class="tsd-index-section ">
 							<h3>Properties</h3>
 							<ul class="tsd-index-list">
-								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="_verify_service_provider_api_authn_request_response_.authnrequestresponse.html#requestid" class="tsd-kind-icon">request<wbr>Id</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="_verify_service_provider_api_authn_request_response_.authnrequestresponse.html#samlrequest" class="tsd-kind-icon">saml<wbr>Request</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="_verify_service_provider_api_authn_request_response_.authnrequestresponse.html#ssolocation" class="tsd-kind-icon">sso<wbr>Location</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="_verify_service_provider_api_translated_response_body_.identityattributes.html#addresses" class="tsd-kind-icon">addresses</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="_verify_service_provider_api_translated_response_body_.identityattributes.html#dateofbirth" class="tsd-kind-icon">date<wbr>OfBirth</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="_verify_service_provider_api_translated_response_body_.identityattributes.html#firstname" class="tsd-kind-icon">first<wbr>Name</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="_verify_service_provider_api_translated_response_body_.identityattributes.html#gender" class="tsd-kind-icon">gender</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="_verify_service_provider_api_translated_response_body_.identityattributes.html#middlenames" class="tsd-kind-icon">middle<wbr>Names</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="_verify_service_provider_api_translated_response_body_.identityattributes.html#surnames" class="tsd-kind-icon">surnames</a></li>
 							</ul>
 						</section>
 					</div>
@@ -103,32 +106,62 @@
 			<section class="tsd-panel-group tsd-member-group ">
 				<h2>Properties</h2>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
-					<a name="requestid" class="tsd-anchor"></a>
-					<h3>request<wbr>Id</h3>
-					<div class="tsd-signature tsd-kind-icon">request<wbr>Id<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span></div>
+					<a name="addresses" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagOptional">Optional</span> addresses</h3>
+					<div class="tsd-signature tsd-kind-icon">addresses<span class="tsd-signature-symbol">:</span> <a href="_verify_service_provider_api_translated_response_body_.verifiableidentityattribute.html" class="tsd-signature-type">VerifiableIdentityAttribute</a><span class="tsd-signature-symbol">&lt;</span><a href="_verify_service_provider_api_translated_response_body_.identityaddress.html" class="tsd-signature-type">IdentityAddress</a><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">[]</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/alphagov/passport-verify/blob/c6565b9/lib/verify-service-provider-api/authn-request-response.ts#L7">verify-service-provider-api/authn-request-response.ts:7</a></li>
+							<li>Defined in <a href="https://github.com/alphagov/passport-verify/blob/c6565b9/lib/verify-service-provider-api/translated-response-body.ts#L109">verify-service-provider-api/translated-response-body.ts:109</a></li>
 						</ul>
 					</aside>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
-					<a name="samlrequest" class="tsd-anchor"></a>
-					<h3>saml<wbr>Request</h3>
-					<div class="tsd-signature tsd-kind-icon">saml<wbr>Request<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span></div>
+					<a name="dateofbirth" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagOptional">Optional</span> date<wbr>OfBirth</h3>
+					<div class="tsd-signature tsd-kind-icon">date<wbr>OfBirth<span class="tsd-signature-symbol">:</span> <a href="_verify_service_provider_api_translated_response_body_.verifiableidentityattribute.html" class="tsd-signature-type">VerifiableIdentityAttribute</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">String</span><span class="tsd-signature-symbol">&gt;</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/alphagov/passport-verify/blob/c6565b9/lib/verify-service-provider-api/authn-request-response.ts#L6">verify-service-provider-api/authn-request-response.ts:6</a></li>
+							<li>Defined in <a href="https://github.com/alphagov/passport-verify/blob/c6565b9/lib/verify-service-provider-api/translated-response-body.ts#L107">verify-service-provider-api/translated-response-body.ts:107</a></li>
 						</ul>
 					</aside>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
-					<a name="ssolocation" class="tsd-anchor"></a>
-					<h3>sso<wbr>Location</h3>
-					<div class="tsd-signature tsd-kind-icon">sso<wbr>Location<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span></div>
+					<a name="firstname" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagOptional">Optional</span> first<wbr>Name</h3>
+					<div class="tsd-signature tsd-kind-icon">first<wbr>Name<span class="tsd-signature-symbol">:</span> <a href="_verify_service_provider_api_translated_response_body_.verifiableidentityattribute.html" class="tsd-signature-type">VerifiableIdentityAttribute</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">String</span><span class="tsd-signature-symbol">&gt;</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/alphagov/passport-verify/blob/c6565b9/lib/verify-service-provider-api/authn-request-response.ts#L8">verify-service-provider-api/authn-request-response.ts:8</a></li>
+							<li>Defined in <a href="https://github.com/alphagov/passport-verify/blob/c6565b9/lib/verify-service-provider-api/translated-response-body.ts#L104">verify-service-provider-api/translated-response-body.ts:104</a></li>
+						</ul>
+					</aside>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
+					<a name="gender" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagOptional">Optional</span> gender</h3>
+					<div class="tsd-signature tsd-kind-icon">gender<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">String</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in <a href="https://github.com/alphagov/passport-verify/blob/c6565b9/lib/verify-service-provider-api/translated-response-body.ts#L108">verify-service-provider-api/translated-response-body.ts:108</a></li>
+						</ul>
+					</aside>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
+					<a name="middlenames" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagOptional">Optional</span> middle<wbr>Names</h3>
+					<div class="tsd-signature tsd-kind-icon">middle<wbr>Names<span class="tsd-signature-symbol">:</span> <a href="_verify_service_provider_api_translated_response_body_.verifiableidentityattribute.html" class="tsd-signature-type">VerifiableIdentityAttribute</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">String</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">[]</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in <a href="https://github.com/alphagov/passport-verify/blob/c6565b9/lib/verify-service-provider-api/translated-response-body.ts#L105">verify-service-provider-api/translated-response-body.ts:105</a></li>
+						</ul>
+					</aside>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
+					<a name="surnames" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagOptional">Optional</span> surnames</h3>
+					<div class="tsd-signature tsd-kind-icon">surnames<span class="tsd-signature-symbol">:</span> <a href="_verify_service_provider_api_translated_response_body_.verifiableidentityattribute.html" class="tsd-signature-type">VerifiableIdentityAttribute</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">String</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">[]</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in <a href="https://github.com/alphagov/passport-verify/blob/c6565b9/lib/verify-service-provider-api/translated-response-body.ts#L106">verify-service-provider-api/translated-response-body.ts:106</a></li>
 						</ul>
 					</aside>
 				</section>
@@ -152,7 +185,7 @@
 					<li class=" tsd-kind-external-module">
 						<a href="../modules/_passport_verify_strategy_.html">"passport-<wbr>verify-<wbr>strategy"</a>
 					</li>
-					<li class="current tsd-kind-external-module">
+					<li class=" tsd-kind-external-module">
 						<a href="../modules/_verify_service_provider_api_authn_request_response_.html">"verify-<wbr>service-<wbr>provider-<wbr>api/authn-<wbr>request-<wbr>response"</a>
 					</li>
 					<li class=" tsd-kind-external-module">
@@ -161,7 +194,7 @@
 					<li class=" tsd-kind-external-module">
 						<a href="../modules/_verify_service_provider_api_response_body_.html">"verify-<wbr>service-<wbr>provider-<wbr>api/response-<wbr>body"</a>
 					</li>
-					<li class=" tsd-kind-external-module">
+					<li class="current tsd-kind-external-module">
 						<a href="../modules/_verify_service_provider_api_translated_response_body_.html">"verify-<wbr>service-<wbr>provider-<wbr>api/translated-<wbr>response-<wbr>body"</a>
 					</li>
 					<li class=" tsd-kind-external-module">
@@ -171,24 +204,57 @@
 			</nav>
 			<nav class="tsd-navigation secondary menu-sticky">
 				<ul class="before-current">
+					<li class=" tsd-kind-enum tsd-parent-kind-external-module">
+						<a href="../enums/_verify_service_provider_api_translated_response_body_.scenario.html" class="tsd-kind-icon">Scenario</a>
+					</li>
+					<li class=" tsd-kind-interface tsd-parent-kind-external-module">
+						<a href="_verify_service_provider_api_translated_response_body_.address.html" class="tsd-kind-icon">Address</a>
+					</li>
+					<li class=" tsd-kind-interface tsd-parent-kind-external-module">
+						<a href="_verify_service_provider_api_translated_response_body_.attributes.html" class="tsd-kind-icon">Attributes</a>
+					</li>
+					<li class=" tsd-kind-interface tsd-parent-kind-external-module">
+						<a href="_verify_service_provider_api_translated_response_body_.identityaddress.html" class="tsd-kind-icon">Identity<wbr>Address</a>
+					</li>
 				</ul>
 				<ul class="current">
 					<li class="current tsd-kind-interface tsd-parent-kind-external-module">
-						<a href="_verify_service_provider_api_authn_request_response_.authnrequestresponse.html" class="tsd-kind-icon">Authn<wbr>Request<wbr>Response</a>
+						<a href="_verify_service_provider_api_translated_response_body_.identityattributes.html" class="tsd-kind-icon">Identity<wbr>Attributes</a>
 						<ul>
 							<li class=" tsd-kind-property tsd-parent-kind-interface">
-								<a href="_verify_service_provider_api_authn_request_response_.authnrequestresponse.html#requestid" class="tsd-kind-icon">request<wbr>Id</a>
+								<a href="_verify_service_provider_api_translated_response_body_.identityattributes.html#addresses" class="tsd-kind-icon">addresses</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-interface">
-								<a href="_verify_service_provider_api_authn_request_response_.authnrequestresponse.html#samlrequest" class="tsd-kind-icon">saml<wbr>Request</a>
+								<a href="_verify_service_provider_api_translated_response_body_.identityattributes.html#dateofbirth" class="tsd-kind-icon">date<wbr>OfBirth</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-interface">
-								<a href="_verify_service_provider_api_authn_request_response_.authnrequestresponse.html#ssolocation" class="tsd-kind-icon">sso<wbr>Location</a>
+								<a href="_verify_service_provider_api_translated_response_body_.identityattributes.html#firstname" class="tsd-kind-icon">first<wbr>Name</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-interface">
+								<a href="_verify_service_provider_api_translated_response_body_.identityattributes.html#gender" class="tsd-kind-icon">gender</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-interface">
+								<a href="_verify_service_provider_api_translated_response_body_.identityattributes.html#middlenames" class="tsd-kind-icon">middle<wbr>Names</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-interface">
+								<a href="_verify_service_provider_api_translated_response_body_.identityattributes.html#surnames" class="tsd-kind-icon">surnames</a>
 							</li>
 						</ul>
 					</li>
 				</ul>
 				<ul class="after-current">
+					<li class=" tsd-kind-interface tsd-parent-kind-external-module">
+						<a href="_verify_service_provider_api_translated_response_body_.translatedidentityresponsebody.html" class="tsd-kind-icon">Translated<wbr>Identity<wbr>Response<wbr>Body</a>
+					</li>
+					<li class=" tsd-kind-interface tsd-parent-kind-external-module">
+						<a href="_verify_service_provider_api_translated_response_body_.translatedmatchingresponsebody.html" class="tsd-kind-icon">Translated<wbr>Matching<wbr>Response<wbr>Body</a>
+					</li>
+					<li class=" tsd-kind-interface tsd-parent-kind-external-module tsd-has-type-parameter">
+						<a href="_verify_service_provider_api_translated_response_body_.verifiableattribute.html" class="tsd-kind-icon">Verifiable<wbr>Attribute</a>
+					</li>
+					<li class=" tsd-kind-interface tsd-parent-kind-external-module tsd-has-type-parameter">
+						<a href="_verify_service_provider_api_translated_response_body_.verifiableidentityattribute.html" class="tsd-kind-icon">Verifiable<wbr>Identity<wbr>Attribute</a>
+					</li>
 				</ul>
 			</nav>
 		</div>
