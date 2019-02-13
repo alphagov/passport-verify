@@ -19,7 +19,7 @@ Usage
 
 1. Configure `passport-verify` [strategy](http://passportjs.org/docs/configure#strategies).
 
-   IMPORTANT: Any new services connecting to Verify (and not using MSA) should use the `createIdentityStrategy` method. Any legacy services using matching (MSA) should keep using the `createStrategy` method below.
+   **IMPORTANT:** Any new services connecting to Verify (and not using MSA) should use the `createIdentityStrategy` method. Any legacy services using matching (MSA) should keep using the `createStrategy` method below.
 
    See [createIdentityStrategy](https://alphagov.github.io/passport-verify/modules/_passport_verify_strategy_.html#createidentitystrategy) in the API documentation for new services not using MSA.
    ```javascript
@@ -33,7 +33,7 @@ Usage
    // to be configured as a middleware.
    app.use(bodyParser.urlencoded({extended: false}))
 
-   passport.use(passportVerify.createStrategy(
+   passport.use(passportVerify.createIdentityStrategy(
 
      // verifyServiceProviderHost
      'http://localhost:50400',
@@ -44,7 +44,7 @@ Usage
      // it should either return a user object or false if the user is not
      // accepted by the application for whatever reason. It can also return a
      // Promise in case it is asynchronous.
-     function handleIdentity (user) {
+     function handleIdentity (identity) {
 
        // This should be an error case if the local matching strategy is
        // done correctly.
@@ -55,8 +55,8 @@ Usage
            'but the User PID already exists.')
        }
 
-       fakeUserDatabase[user.pid] = Object.assign({id: user.pid}, user.attributes)
-       return Object.assign({ levelOfAssurance: user.levelOfAssurance }, fakeUserDatabase[user.pid])
+       fakeUserDatabase[user.pid] = Object.assign({id: identity.pid}, identity.attributes)
+       return Object.assign({ levelOfAssurance: identity.levelOfAssurance }, fakeUserDatabase[identity.pid])
      },
 
     // A callback that saves the unique request ID associated with the SAML messages
@@ -226,6 +226,42 @@ Usage
    ```
 
 1. Configure routes for the authentication flow
+
+   **IMPORTANT:** Any new services connecting to Verify (and not using MSA) should use the `createIdentityResponseHandler` method. 
+   Any legacy services using matching (MSA) should keep using the `createResponseHandler` method below.
+
+   See [createIdentityResponseHandler](https://alphagov.github.io/passport-verify/modules/_create_identity_response_handler_.html#createidentityresponsehandler)
+   and its [callbacks](https://alphagov.github.io/passport-verify/interfaces/_create_identity_response_handler_.responsescenarios.html) in the API documentation.
+
+   ```javascript
+   // route for authenticating a user
+   app.post('/verify/start', passport.authenticate('verify'))
+
+   // route for handling a callback from verify
+   app.post('/verify/response', (req, res, next) => (
+   
+     // in this example, authenticate() is being called from within the route handler
+     // rather than being used as middleware, this provides access to the request
+     // and response objects through closure
+     const authMiddleware = passport.authenticate('verify', function (error, identity, infoOrError, status) {
+
+      if (error) {
+        return res.send(`TODO: render error-page with message ${error: error.message}`)
+      }
+
+      if (identity) {
+        // passport-verify requires the use of a custom callback to handle successful
+        // authentication
+        return req.logIn(identity, () => res.send('TODO: redirect to service landing page')))
+      }
+
+      return res.send(`TODO: redirect to authentication failed page with ${error: infoOrError}`)
+
+    })
+    authMiddleware(req, res, next)
+   ```
+
+   For legacy/existing services (using MSA):
 
    See [createResponseHandler](https://alphagov.github.io/passport-verify/modules/_create_response_handler_.html#createresponsehandler)
    and its [callbacks](https://alphagov.github.io/passport-verify/interfaces/_create_response_handler_.responsescenarios.html#onauthnfailed) in the API documentation.
