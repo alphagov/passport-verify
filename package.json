@@ -19,7 +19,7 @@
   },
   "license": "MIT",
   "dependencies": {
-    "@types/debug": "4.1.0",
+    "@types/debug": "4.1.1",
     "@types/escape-html": "^0.0.20",
     "@types/express-serve-static-core": "^4.0.48",
     "@types/form-data": "^2.2.0",
