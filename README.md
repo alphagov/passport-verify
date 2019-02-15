@@ -1,27 +1,35 @@
-passport-verify
-===============
+# passport-verify
+
 
 [![Build Status](https://travis-ci.org/alphagov/passport-verify.svg?branch=master)](https://travis-ci.org/alphagov/passport-verify)
 [![Known Vulnerabilities](https://snyk.io/test/github/alphagov/passport-verify/badge.svg)](https://snyk.io/test/github/alphagov/passport-verify)
 [![Greenkeeper badge](https://badges.greenkeeper.io/alphagov/passport-verify.svg)](https://greenkeeper.io/)
 
-`passport-verify` is the best way to integrate with GOV.UK Verify if you are using node and [passport.js](http://passportjs.org/).
+`passport-verify` is a node and [passport.js](http://passportjs.org/) client for the [Verify Service Provider (VSP)](https://github.com/alphagov/verify-service-provider).
 
-Usage
------
+## Before you start
 
-1. Install `passport-verify`
-   ```bash
-   npm install --save passport-verify
-   ```
+[Set up the VSP](https://github.com/alphagov/verify-service-provider/README.md).
 
-1. Install [Verify Service Provider](https://github.com/alphagov/verify-service-provider).
+## Usage
 
-1. Configure `passport-verify` [strategy](http://passportjs.org/docs/configure#strategies).
+### Step 1 Install`passport-verify
 
-   **IMPORTANT:** Any new services connecting to Verify (and not using MSA) should use the `createIdentityStrategy` method. Any legacy services using matching (MSA) should keep using the `createStrategy` method below.
+```bash
+npm install --save passport-verify
+```
 
-   See [createIdentityStrategy](https://alphagov.github.io/passport-verify/modules/_passport_verify_strategy_.html#createidentitystrategy) in the API documentation for new services not using MSA.
+### Step 2 Configure the `passport-verify` strategy
+
+TODO To configure the strategy you need the info in the code blocks when following instructions on here => [Configure `passport-verify` strategy](http://passportjs.org/docs/configure#strategies).
+
+If your service connects to GOV.UK Verify using the VSP without a Matching Service Adapter, you should use the `createIdentityStrategy` method. Use this method to create a strategy when configuring passport.js. See [createIdentityStrategy](https://alphagov.github.io/passport-verify/modules/_passport_verify_strategy_.html#createidentitystrategy) in the API documentation.
+   
+   <details>
+   <summary>
+   See an example of how to call the `createIdentityStrategy` method
+   </summary>
+   
    ```javascript
    const passportVerify = require('passport-verify')
    const bodyParser = require('body-parser')
@@ -113,7 +121,20 @@ Usage
    ))
    ```
   
+  </details>
+
+<br>
+<br>
+
+Any legacy services using matching (MSA) should keep using the `createStrategy` method below.
    See [createStrategy](https://alphagov.github.io/passport-verify/modules/_passport_verify_strategy_.html#createstrategy) in the API documentation for legacy services using MSA.
+   
+   <details>
+   <summary>
+   See an example of how to call the `createStrategy` method
+   </summary>
+   
+   
    ```javascript
    const passportVerify = require('passport-verify')
    const bodyParser = require('body-parser')
@@ -224,6 +245,8 @@ Usage
     'LEVEL_2'
    ))
    ```
+   </details>
+
 
 1. Configure routes for the authentication flow
 
