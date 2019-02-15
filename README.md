@@ -13,13 +13,13 @@
 
 ## Usage
 
-### Step 1 Install`passport-verify
+### Step 1. Install`passport-verify`
 
 ```bash
 npm install --save passport-verify
 ```
 
-### Step 2 Configure the `passport-verify` strategy
+### Step 2. Configure the `passport-verify` strategy
 
 **TODO** To configure the strategy you need the info in the code blocks when following instructions on here => [Configure `passport-verify` strategy](http://passportjs.org/docs/configure#strategies).
 
@@ -125,8 +125,7 @@ function loadRequestId (request) {
 
 <br>
 
-Any legacy services using matching (MSA) should keep using the `createStrategy` method below.
-   See [createStrategy](https://alphagov.github.io/passport-verify/modules/_passport_verify_strategy_.html#createstrategy) in the API documentation for legacy services using MSA.
+If your service connects to GOV.UK Verify using a Matching Service Adapter, you should use the `createStrategy` method. Use this method to create a strategy when configuring passport.js. See [createStrategy](https://alphagov.github.io/passport-verify/modules/_passport_verify_strategy_.html#createstrategy) in the API documentation.
 
 <details>
 <summary>
@@ -246,13 +245,12 @@ function loadRequestId (request) {
 </details>
 
 
-1. Configure routes for the authentication flow
+### Step 3. Configure routes for the authentication flow
 
-   **IMPORTANT:** Any new services connecting to Verify (and not using MSA) should use the `createIdentityResponseHandler` method.
-   Any legacy services using matching (MSA) should keep using the `createResponseHandler` method below.
+If your service connects to GOV.UK Verify using the VSP without a Matching Service Adapter, you should use the  `createIdentityResponseHandler` method.
 
-   See [createIdentityResponseHandler](https://alphagov.github.io/passport-verify/modules/_create_identity_response_handler_.html#createidentityresponsehandler)
-   and its [callbacks](https://alphagov.github.io/passport-verify/interfaces/_create_identity_response_handler_.responsescenarios.html) in the API documentation.
+See [createIdentityResponseHandler](https://alphagov.github.io/passport-verify/modules/_create_identity_response_handler_.html#createidentityresponsehandler)
+and its [callbacks](https://alphagov.github.io/passport-verify/interfaces/_create_identity_response_handler_.responsescenarios.html) in the API documentation.
 
 <details>
 <summary>
@@ -288,11 +286,10 @@ app.post('/verify/response', (req, res, next) => (
 ```
 </details>
 
-
-For legacy/existing services (using MSA):
+If your service connects to GOV.UK Verify using a Matching Service Adapter, you should use the `createResponseHandler` method.
 
 See [createResponseHandler](https://alphagov.github.io/passport-verify/modules/_create_response_handler_.html#createresponsehandler)
-   and its [callbacks](https://alphagov.github.io/passport-verify/interfaces/_create_response_handler_.responsescenarios.html#onauthnfailed) in the API documentation.
+and its [callbacks](https://alphagov.github.io/passport-verify/interfaces/_create_response_handler_.responsescenarios.html#onauthnfailed) in the API documentation.
 
 <details>
 <summary>
