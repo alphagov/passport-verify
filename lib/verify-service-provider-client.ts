@@ -49,12 +49,12 @@ export default class VerifyServiceProviderClient {
       }
 
       const responseBody = await this.sendRequest<ResponseBody>('/translate-response', requestBody)
-      const TranslatedResponseBody = responseBody.scenario === Scenario.IDENTITY_VERIFIED ? responseBody as TranslatedIdentityResponseBody : responseBody as TranslatedMatchingResponseBody
+      const translatedResponseBody = responseBody.scenario === Scenario.IDENTITY_VERIFIED ? responseBody as TranslatedIdentityResponseBody : responseBody as TranslatedMatchingResponseBody
 
       this.infoLog('response translated for request: ', requestId, 'Scenario: ', responseBody.scenario)
       return {
         status: 200,
-        body: TranslatedResponseBody
+        body: translatedResponseBody
       }
     } catch (reason) {
       this.infoLog('error translating response for request id: ', requestId, reason, 'Use "passport-verify:requests" log to see full request')
