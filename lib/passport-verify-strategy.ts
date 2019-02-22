@@ -51,7 +51,7 @@ export class PassportVerifyStrategy extends Strategy {
     }
   }
 
-  success (user: any, info: TranslatedMatchingResponseBody) { throw new Error('`success` should be overridden by passport') }
+  success (user: any, info: TranslatedMatchingResponseBody | TranslatedIdentityResponseBody) { throw new Error('`success` should be overridden by passport') }
   fail (challenge: any, status?: number) { throw new Error('`fail` should be overridden by passport') }
   error (reason: Error) { throw reason }
 
@@ -87,7 +87,7 @@ export class PassportVerifyStrategy extends Strategy {
   private async _handleSuccessResponse (responseBody: TranslatedIdentityResponseBody) {
     switch (responseBody.scenario) {
       case Scenario.IDENTITY_VERIFIED:
-        await this._verifyUser(responseBody, this.handleIdentity)
+        await this._handleIdentity(responseBody, this.handleIdentity)
         break
       default:
         this.fail(responseBody.scenario)
@@ -111,6 +111,16 @@ export class PassportVerifyStrategy extends Strategy {
     const user = await fetchUser(responseBody)
     if (user) {
       this.success(user, responseBody)
+    } else {
+      this.fail(Scenario.REQUEST_ERROR)
+    }
+    return Promise.resolve()
+  }
+
+  private async _handleIdentity (responseBody: TranslatedIdentityResponseBody, handleIdentity: (identity: TranslatedIdentityResponseBody) => any) {
+    const identity = await handleIdentity(responseBody)
+    if (identity) {
+      this.success(identity, responseBody)
     } else {
       this.fail(Scenario.REQUEST_ERROR)
     }
