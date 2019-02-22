@@ -101,10 +101,10 @@ export interface Address {
  */
 
 export interface IdentityAttributes {
-  firstName?: VerifiableIdentityAttribute<String>,
+  firstNames?: VerifiableIdentityAttribute<String>[],
   middleNames?: VerifiableIdentityAttribute<String>[],
   surnames?: VerifiableIdentityAttribute<String>[],
-  dateOfBirth?: VerifiableIdentityAttribute<String>,
+  datesOfBirth?: VerifiableIdentityAttribute<String>[],
   gender?: String,
   addresses?: VerifiableIdentityAttribute<IdentityAddress>[]
 }
@@ -117,4 +117,5 @@ export interface IdentityAddress {
   lines?: string[],
   postCode?: string,
   internationalPostCode?: string,
+  uprn?: string
 }
