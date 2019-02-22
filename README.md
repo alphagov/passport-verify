@@ -5,15 +5,13 @@
 [![Known Vulnerabilities](https://snyk.io/test/github/alphagov/passport-verify/badge.svg)](https://snyk.io/test/github/alphagov/passport-verify)
 [![Greenkeeper badge](https://badges.greenkeeper.io/alphagov/passport-verify.svg)](https://greenkeeper.io/)
 
-`passport-verify` is a node and [passport.js](http://passportjs.org/) client for the [Verify Service Provider (VSP)](https://github.com/alphagov/verify-service-provider).
+`passport-verify` is a Node.js and [Passport.js](http://passportjs.org/) client for the [Verify Service Provider (VSP)](https://github.com/alphagov/verify-service-provider).
 
 ## Before you start
 
 [Set up the VSP](https://github.com/alphagov/verify-service-provider/README.md).
 
 ## Usage
-
-The information here applies to services connecting using VSP 2.0.0 or above. If your connection involves a Matching Service Adapter
 
 ### Step 1. Install `passport-verify`
 
@@ -118,9 +116,7 @@ function loadRequestId (request) {
 ))
 ```
 
-If your service connects to GOV.UK Verify using a Matching Service Adapter, you should use the `createStrategy` method to create a strategy when configuring passport.js.
-
-See the [API documentation for the createStrategy method](https://alphagov.github.io/passport-verify/modules/_passport_verify_strategy_.html#createstrategy) for more details.
+If your service uses Matching Service Adapter, you should use the `createStrategy` method to create a strategy when configuring passport.js. See the [API documentation for the createStrategy method](https://alphagov.github.io/passport-verify/modules/_passport_verify_strategy_.html#createstrategy) for more details.
 
 ### Step 3. Configure routes for the authentication flow
 
@@ -160,9 +156,7 @@ app.post('/verify/response', (req, res, next) => (
   authMiddleware(req, res, next)
 ```
 
-If your service connects to GOV.UK Verify using a Matching Service Adapter, you should use the `createResponseHandler` method to configure routes for the authentication flow.
-
-See the API documentation for more details about the [`createResponseHandler` method](https://alphagov.github.io/passport-verify/modules/_create_response_handler_.html#createresponsehandler)
+If your service uses a Matching Service Adapter, you should use the `createResponseHandler` method to configure routes for the authentication flow. See the API documentation for more details about the [`createResponseHandler` method](https://alphagov.github.io/passport-verify/modules/_create_response_handler_.html#createresponsehandler)
 and its [callbacks](https://alphagov.github.io/passport-verify/interfaces/_create_response_handler_.responsescenarios.html#onauthnfailed).
 
 For a more detailed example with session support, see [the example implementation](https://github.com/alphagov/passport-verify-stub-relying-party/blob/master/src/app.ts).
@@ -190,7 +184,7 @@ See [the API documentation](https://alphagov.github.io/passport-verify/modules/_
  * _Relying party_ is a service that needs to authenticate users
  * [_Verify Service Provider_](https://github.com/alphagov/verify-service-provider)
     is a service that consumes and produces SAML messages that can be used to communicate with GOV.UK Verify
- * [_Passport.js_](http://passportjs.org/) is a node js library that provides a generic authentication framework for various authentication providers.
+ * [_Passport.js_](http://passportjs.org/) is a Node.js library that provides a generic authentication framework for various authentication providers.
 
 
 ## Contribute to `passport-verify`
