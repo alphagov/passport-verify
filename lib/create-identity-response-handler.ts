@@ -45,14 +45,14 @@ export interface IdentityResponseScenarios {
   onAuthnFailed: () => any,
 
   /**
-   * Called when the user cancelled at the identity provider (e.g. because
+   * Called when the user fails to authenticate or times out at the identity provider (e.g. because
    * they don't have the required documentation with them).
    *
    * Your callback should redirect the user to a page offering them other ways
    * to use your service (e.g. using a non-verify way of proving their
    * identity or going somewhere in person).
    */
-  onCancel: () => any,
+  onNoAuthentication: () => any,
 
   /**
    * Called when the response from verify can't be handled correctly
@@ -94,8 +94,8 @@ export function createIdentityResponseHandler (responseScenarios: IdentityRespon
     switch (infoOrError as Scenario) {
       case Scenario.REQUEST_ERROR:
         return responseScenarios.onError(new Error('SAML Response was an error'))
-      case Scenario.CANCELLATION:
-        return responseScenarios.onCancel()
+      case Scenario.NO_AUTHENTICATION:
+        return responseScenarios.onNoAuthentication()
       case Scenario.AUTHENTICATION_FAILED:
         return responseScenarios.onAuthnFailed()
       default:

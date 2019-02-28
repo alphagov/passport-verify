@@ -11,19 +11,19 @@ describe('The createIdentityResponseHandler function', () => {
   let scenarios: IdentityResponseScenarios
   let onIdentityVerified: any
   let onAuthnFailed: any
-  let onCancel: any
+  let onNoAuthentication: any
   let onError: any
 
   beforeEach(() => {
     onIdentityVerified = td.function()
     onAuthnFailed = td.function()
-    onCancel = td.function()
+    onNoAuthentication = td.function()
     onError = td.function()
 
     scenarios = {
       onIdentityVerified,
       onAuthnFailed,
-      onCancel,
+      onNoAuthentication,
       onError
     }
   })
@@ -45,7 +45,7 @@ describe('The createIdentityResponseHandler function', () => {
     td.verify(onIdentityVerified(identity))
 
     verifyNotCalled(onAuthnFailed)
-    verifyNotCalled(onCancel)
+    verifyNotCalled(onNoAuthentication)
     verifyNotCalled(onError)
   })
 
@@ -60,19 +60,19 @@ describe('The createIdentityResponseHandler function', () => {
     td.verify(onAuthnFailed())
 
     verifyNotCalled(onIdentityVerified)
-    verifyNotCalled(onCancel)
+    verifyNotCalled(onNoAuthentication)
     verifyNotCalled(onError)
   })
 
-  it('callback should call onCancel when called with no user, no error, and a CANCELLATION scenario', () => {
+  it('callback should call onNoAuthentication when called with no user, no error, and a NO_AUTHENTICATION scenario', () => {
     const error = null as any
     const identity = null
-    const info = Scenario.CANCELLATION
+    const info = Scenario.NO_AUTHENTICATION
     const status = null as any
 
     createIdentityResponseHandler(scenarios)(error, identity, info, status)
 
-    td.verify(onCancel())
+    td.verify(onNoAuthentication())
 
     verifyNotCalled(onIdentityVerified)
     verifyNotCalled(onAuthnFailed)
@@ -91,7 +91,7 @@ describe('The createIdentityResponseHandler function', () => {
 
     verifyNotCalled(onIdentityVerified)
     verifyNotCalled(onAuthnFailed)
-    verifyNotCalled(onCancel)
+    verifyNotCalled(onNoAuthentication)
   })
 
   it('callback should call onError when called with no user, no error, and a REQUEST_ERROR info', () => {
@@ -106,7 +106,7 @@ describe('The createIdentityResponseHandler function', () => {
 
     verifyNotCalled(onIdentityVerified)
     verifyNotCalled(onAuthnFailed)
-    verifyNotCalled(onCancel)
+    verifyNotCalled(onNoAuthentication)
   })
 
   it('callback should call onError when called with an error', () => {
@@ -121,6 +121,6 @@ describe('The createIdentityResponseHandler function', () => {
 
     verifyNotCalled(onIdentityVerified)
     verifyNotCalled(onAuthnFailed)
-    verifyNotCalled(onCancel)
+    verifyNotCalled(onNoAuthentication)
   })
 })
