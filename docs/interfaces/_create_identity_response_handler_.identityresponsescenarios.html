@@ -94,9 +94,9 @@
 							<h3>Properties</h3>
 							<ul class="tsd-index-list">
 								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="_create_identity_response_handler_.identityresponsescenarios.html#onauthnfailed" class="tsd-kind-icon">on<wbr>Authn<wbr>Failed</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="_create_identity_response_handler_.identityresponsescenarios.html#oncancel" class="tsd-kind-icon">on<wbr>Cancel</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="_create_identity_response_handler_.identityresponsescenarios.html#onerror" class="tsd-kind-icon">on<wbr>Error</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="_create_identity_response_handler_.identityresponsescenarios.html#onidentityverified" class="tsd-kind-icon">on<wbr>Identity<wbr>Verified</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="_create_identity_response_handler_.identityresponsescenarios.html#onnoauthentication" class="tsd-kind-icon">on<wbr>NoAuthentication</a></li>
 							</ul>
 						</section>
 					</div>
@@ -110,7 +110,7 @@
 					<div class="tsd-signature tsd-kind-icon">on<wbr>Authn<wbr>Failed<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">function</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/alphagov/passport-verify/blob/1d7cedd/lib/create-identity-response-handler.ts#L45">create-identity-response-handler.ts:45</a></li>
+							<li>Defined in <a href="https://github.com/alphagov/passport-verify/blob/1e27edb/lib/create-identity-response-handler.ts#L45">create-identity-response-handler.ts:45</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -139,46 +139,12 @@
 					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
-					<a name="oncancel" class="tsd-anchor"></a>
-					<h3>on<wbr>Cancel</h3>
-					<div class="tsd-signature tsd-kind-icon">on<wbr>Cancel<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">function</span></div>
-					<aside class="tsd-sources">
-						<ul>
-							<li>Defined in <a href="https://github.com/alphagov/passport-verify/blob/1d7cedd/lib/create-identity-response-handler.ts#L55">create-identity-response-handler.ts:55</a></li>
-						</ul>
-					</aside>
-					<div class="tsd-comment tsd-typography">
-						<div class="lead">
-							<p>Called when the user cancelled at the identity provider (e.g. because
-							they don&#39;t have the required documentation with them).</p>
-						</div>
-						<p>Your callback should redirect the user to a page offering them other ways
-							to use your service (e.g. using a non-verify way of proving their
-						identity or going somewhere in person).</p>
-					</div>
-					<div class="tsd-type-declaration">
-						<h4>Type declaration</h4>
-						<ul class="tsd-parameters">
-							<li class="tsd-parameter-siganture">
-								<ul class="tsd-signatures tsd-kind-type-literal tsd-parent-kind-property tsd-is-not-exported">
-									<li class="tsd-signature tsd-kind-icon"><span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span></li>
-								</ul>
-								<ul class="tsd-descriptions">
-									<li class="tsd-description">
-										<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">any</span></h4>
-									</li>
-								</ul>
-							</li>
-						</ul>
-					</div>
-				</section>
-				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
 					<a name="onerror" class="tsd-anchor"></a>
 					<h3>on<wbr>Error</h3>
 					<div class="tsd-signature tsd-kind-icon">on<wbr>Error<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">function</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/alphagov/passport-verify/blob/1d7cedd/lib/create-identity-response-handler.ts#L69">create-identity-response-handler.ts:69</a></li>
+							<li>Defined in <a href="https://github.com/alphagov/passport-verify/blob/1e27edb/lib/create-identity-response-handler.ts#L69">create-identity-response-handler.ts:69</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -221,7 +187,7 @@
 					<div class="tsd-signature tsd-kind-icon">on<wbr>Identity<wbr>Verified<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">function</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/alphagov/passport-verify/blob/1d7cedd/lib/create-identity-response-handler.ts#L35">create-identity-response-handler.ts:35</a></li>
+							<li>Defined in <a href="https://github.com/alphagov/passport-verify/blob/1e27edb/lib/create-identity-response-handler.ts#L35">create-identity-response-handler.ts:35</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -247,6 +213,40 @@
 												<h5>user: <span class="tsd-signature-type">any</span></h5>
 											</li>
 										</ul>
+										<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">any</span></h4>
+									</li>
+								</ul>
+							</li>
+						</ul>
+					</div>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
+					<a name="onnoauthentication" class="tsd-anchor"></a>
+					<h3>on<wbr>NoAuthentication</h3>
+					<div class="tsd-signature tsd-kind-icon">on<wbr>NoAuthentication<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">function</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in <a href="https://github.com/alphagov/passport-verify/blob/1e27edb/lib/create-identity-response-handler.ts#L55">create-identity-response-handler.ts:55</a></li>
+						</ul>
+					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>Called when the user fails to authenticate or times out at the identity provider (e.g. because
+							they don&#39;t have the required documentation with them).</p>
+						</div>
+						<p>Your callback should redirect the user to a page offering them other ways
+							to use your service (e.g. using a non-verify way of proving their
+						identity or going somewhere in person).</p>
+					</div>
+					<div class="tsd-type-declaration">
+						<h4>Type declaration</h4>
+						<ul class="tsd-parameters">
+							<li class="tsd-parameter-siganture">
+								<ul class="tsd-signatures tsd-kind-type-literal tsd-parent-kind-property tsd-is-not-exported">
+									<li class="tsd-signature tsd-kind-icon"><span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span></li>
+								</ul>
+								<ul class="tsd-descriptions">
+									<li class="tsd-description">
 										<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">any</span></h4>
 									</li>
 								</ul>
@@ -302,13 +302,13 @@
 								<a href="_create_identity_response_handler_.identityresponsescenarios.html#onauthnfailed" class="tsd-kind-icon">on<wbr>Authn<wbr>Failed</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-interface">
-								<a href="_create_identity_response_handler_.identityresponsescenarios.html#oncancel" class="tsd-kind-icon">on<wbr>Cancel</a>
-							</li>
-							<li class=" tsd-kind-property tsd-parent-kind-interface">
 								<a href="_create_identity_response_handler_.identityresponsescenarios.html#onerror" class="tsd-kind-icon">on<wbr>Error</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-interface">
 								<a href="_create_identity_response_handler_.identityresponsescenarios.html#onidentityverified" class="tsd-kind-icon">on<wbr>Identity<wbr>Verified</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-interface">
+								<a href="_create_identity_response_handler_.identityresponsescenarios.html#onnoauthentication" class="tsd-kind-icon">on<wbr>NoAuthentication</a>
 							</li>
 						</ul>
 					</li>
