@@ -36,7 +36,7 @@
     "request-promise-native": "^1.0.5"
   },
   "devDependencies": {
-    "mocha": "^5.2.0",
+    "mocha": "^6.1.0",
     "testdouble": "^3.10.0",
     "tslint": "5.12.1",
     "tslint-config-standard": "^8.0.1",
