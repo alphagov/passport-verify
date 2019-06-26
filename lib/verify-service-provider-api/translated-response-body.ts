@@ -65,8 +65,8 @@ export interface VerifiableAttribute<T> {
 export interface VerifiableIdentityAttribute<T> {
   value: T,
   verified: boolean
-  from?: String
-  to?: String
+  from?: string
+  to?: string
 }
 
 /**
@@ -75,10 +75,10 @@ export interface VerifiableIdentityAttribute<T> {
  * and the service is configured to perform user account creation.
  */
 export interface Attributes {
-  firstName?: VerifiableAttribute<String>,
-  middleName?: VerifiableAttribute<String>,
-  surname?: VerifiableAttribute<String>,
-  dateOfBirth?: VerifiableAttribute<String>,
+  firstName?: VerifiableAttribute<string>,
+  middleName?: VerifiableAttribute<string>,
+  surname?: VerifiableAttribute<string>,
+  dateOfBirth?: VerifiableAttribute<string>,
   address?: VerifiableAttribute<Address>,
   addressHistory?: VerifiableAttribute<Address>[],
   cycle3?: string
@@ -92,8 +92,8 @@ export interface Address {
   postCode?: string,
   internationalPostCode?: string,
   uprn?: string,
-  fromDate?: String,
-  toDate?: String
+  fromDate?: string,
+  toDate?: string
 }
 
 /**
@@ -102,11 +102,11 @@ export interface Address {
  */
 
 export interface IdentityAttributes {
-  firstNames?: VerifiableIdentityAttribute<String>[],
-  middleNames?: VerifiableIdentityAttribute<String>[],
-  surnames?: VerifiableIdentityAttribute<String>[],
-  datesOfBirth?: VerifiableIdentityAttribute<String>[],
-  gender?: String,
+  firstNames?: VerifiableIdentityAttribute<string>[],
+  middleNames?: VerifiableIdentityAttribute<string>[],
+  surnames?: VerifiableIdentityAttribute<string>[],
+  datesOfBirth?: VerifiableIdentityAttribute<string>[],
+  gender?: string,
   addresses?: VerifiableIdentityAttribute<IdentityAddress>[]
 }
 
