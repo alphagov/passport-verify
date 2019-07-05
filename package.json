@@ -12,7 +12,9 @@
     "build": "tsc -d",
     "lint": "eslint -c eslintrc.json lib/**/*",
     "pre-commit": "npm install && npm test",
-    "docs": "mv {,.}test && typedoc --readme none --out docs --excludePrivate && touch docs/.nojekyll; mv {.,}test"
+    "docs": "mv {,.}test && typedoc --readme none --out docs --excludePrivate && touch docs/.nojekyll; mv {.,}test",
+    "snyk-protect": "snyk protect",
+    "prepare": "npm run snyk-protect"
   },
   "author": {
     "name": "Government Digital Service developers"
@@ -33,7 +35,8 @@
     "escape-html": "^1.0.3",
     "passport-strategy": "^1.0.0",
     "request": "^2.87.0",
-    "request-promise-native": "^1.0.5"
+    "request-promise-native": "^1.0.5",
+    "snyk": "^1.192.3"
   },
   "devDependencies": {
     "@typescript-eslint/eslint-plugin": "^1.11.0",
@@ -48,5 +51,6 @@
   },
   "files": [
     "build"
-  ]
+  ],
+  "snyk": true
 }
