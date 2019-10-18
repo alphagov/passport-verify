@@ -40,7 +40,7 @@
     "@typescript-eslint/parser": "^1.11.0",
     "@typescript-eslint/typescript-estree": "^1.11.0",
     "eslint": "^5.16.0",
-    "mocha": "^5.2.0",
+    "mocha": "^6.2.2",
     "prettier": "^1.18.2",
     "testdouble": "^3.10.0",
     "typedoc": "0.14.2",
