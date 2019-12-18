@@ -111,7 +111,7 @@ function loadRequestId (request) {
 // with the correct attributes.
 
 // Level of Assurance
-// LEVEL_1 or LEVEL2 depending on your service's requirements. Defaults to LEVEL_2.
+// LEVEL_1 or LEVEL_2 depending on your service's requirements. Defaults to LEVEL_2.
 'LEVEL_2'
 ))
 ```
