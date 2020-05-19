@@ -28,7 +28,7 @@
     "@types/passport-strategy": "^0.2.30",
     "@types/request": "^2.0.1",
     "@types/request-promise-native": "^1.0.6",
-    "@types/serve-static": "^1.7.31",
+    "@types/serve-static": "^1.13.4",
     "debug": "^4.0.0",
     "escape-html": "^1.0.3",
     "passport-strategy": "^1.0.0",
